@@ -111,7 +111,13 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             if (cursorPractices.moveToPosition(position)) {
                 practiceImage.setContentDescription(cursorPractices.getString(NAME_ID));
                 practiceImage.setImageDrawable(cv.getResources().getDrawable(cursorPractices.getInt(PRACTICE_IMAGE_ID_ID)));
-                practiceName.setText(cursorPractices.getString(NAME_ID)); //cv.getResources().getText(R.string.name_practice) +" "+
+
+                String name = cursorPractices.getString(NAME_ID);
+                name = name.replace("\n", " ");
+                name = name.substring(0, name.length() <= 32 ? name.length() : 32);
+                name += name.length() < 32 ? "" : "...";
+
+                practiceName.setText(name); //cv.getResources().getText(R.string.name_practice) +" "+
                 practiceProgress.setMax(cursorPractices.getInt(MAX_REPETITION_ID));
                 practiceProgress.setProgress(cursorPractices.getInt(PROGRESS_ID));
                 practiceStatus.setText(String.valueOf(cursorPractices.getInt(PROGRESS_ID)) + " / " + String.valueOf(cursorPractices.getInt(MAX_REPETITION_ID)));

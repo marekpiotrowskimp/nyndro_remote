@@ -151,7 +151,7 @@ public class PracticeMainFragment extends Fragment {
                         paint.setARGB(220, 10, 10, 10);
                         paint.setTextSize(40);
                         String deleteText = getActivity().getString(R.string.delete_practice);
-                        c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2, paint);
+                        c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2 + 8, paint);
                     }
 
                     super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -177,7 +177,7 @@ public class PracticeMainFragment extends Fragment {
                         paint.setARGB(220, 250, 250, 255);
                         paint.setTextSize(40);
                         String deleteText = getActivity().getString(R.string.delete_practice);
-                        c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2, paint);
+                        c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2 + 8, paint);
                     }
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                 }
