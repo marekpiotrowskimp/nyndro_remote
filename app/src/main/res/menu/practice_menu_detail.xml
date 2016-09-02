@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainPracticsActivity">
+
+    <item android:id="@+id/edit_toolbar"
+        android:title="@string/edit_toolbar"
+        android:icon="@mipmap/ic_edit_white_48pt"
+        android:orderInCategory="2"
+        android:visible="true"
+        app:showAsAction="ifRoom">
+    </item>
+
+</menu>

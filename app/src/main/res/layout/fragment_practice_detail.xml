@@ -1,0 +1,154 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/fragment_detail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        tools:context=".practice.PracticeDetailFragment">
+
+        <ImageView
+            android:id="@+id/practice_image_detail"
+            android:layout_width="250dp"
+            android:layout_height="375dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="Practice Image"
+            android:src="@drawable/buddha" />
+
+        <TextView
+            android:id="@+id/practice_name_detail"
+            android:text="Practice name"
+            android:layout_below="@id/practice_image_detail"
+            android:layout_marginTop="16dp"
+            android:textSize="@dimen/text_size_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/practice_name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_toRightOf="@id/practice_name_detail"
+            android:layout_alignBottom="@id/practice_name_detail"
+            android:background="@color/colorGrayLight"/>
+
+        <TextView
+            android:id="@+id/practice_status_progress_detail"
+            android:text="Practice name"
+            android:textSize="@dimen/text_size_detail"
+            android:layout_below="@id/practice_name_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/practice_status_progress_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:inputType="number"
+            android:layout_toRightOf="@id/practice_status_progress_detail"
+            android:layout_alignBottom="@id/practice_status_progress_detail"
+            android:background="@color/colorGrayLight"/>
+
+        <TextView
+            android:id="@+id/practice_status_maxrepetition_detail"
+            android:text="Practice name"
+            android:textSize="@dimen/text_size_detail"
+            android:layout_below="@id/practice_status_progress_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/practice_status_maxrepetition_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:inputType="number"
+            android:layout_toRightOf="@id/practice_status_maxrepetition_detail"
+            android:layout_alignBottom="@id/practice_status_maxrepetition_detail"
+            android:background="@color/colorGrayLight"/>
+
+        <iso.piotrowski.marek.nyndro.practice.BuddaProgressBar
+            xmlns:custom="http://schemas.android.com/apk/res/iso.piotrowski.marek.nyndro"
+            android:id="@+id/practice_progress_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/practice_status_maxrepetition_detail"
+            android:layout_alignLeft="@+id/practice_name_detail"
+            android:layout_marginTop="0dp"
+            android:visibility="visible"
+            custom:color_buddha="#A80808"
+            custom:progress="0"
+            custom:max_progress="111111" />
+
+        <LinearLayout
+            android:id="@+id/description_group"
+            android:layout_below="@id/practice_progress_detail"
+            android:layout_alignLeft="@id/practice_progress_detail"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/practice_description_detail"
+                    android:text="Practice description"
+                    android:textSize="@dimen/text_size_detail"
+                    android:background="@color/colorGrayLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/practice_description_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_toRightOf="@id/practice_description_detail"
+                    android:layout_alignTop="@id/practice_description_detail"
+                    android:background="@color/colorGrayLight"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/practice_date_last_detail"
+            android:text="Practice date"
+            android:textSize="@dimen/text_size_detail"
+            android:layout_below="@id/description_group"
+            android:layout_alignLeft="@id/description_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/practice_date_next_detail"
+            android:text="Practice date"
+            android:textSize="@dimen/text_size_detail"
+            android:layout_alignLeft="@id/practice_date_last_detail"
+            android:layout_below="@id/practice_date_last_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/practice_repetition_detail"
+            android:text="Practice repetition"
+            android:textSize="@dimen/text_size_detail"
+            android:layout_below="@id/practice_date_next_detail"
+            android:layout_marginBottom="64dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/practice_repetition_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:visibility="visible"
+            android:layout_toRightOf="@id/practice_repetition_detail"
+            android:layout_alignBottom="@id/practice_repetition_detail"
+            android:background="@color/colorGrayLight"/>
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,40 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <!--<item name="android:windowSharedElementsUseOverlay">false</item>-->
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="AppTheme.Drawer" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
+
+    <style name="NyndroStyle" parent="Platform.V14.AppCompat.Light">
+        <item name="android:background">@color/colorLightCoffee</item>
+        <item name="android:textSize">28dp</item>
+    </style>
+
+    <style name="NyndroStyle.CardView">
+        <item name="android:textSize">16dp</item>
+        <item name="android:background">@color/colorLightCoffeeDarker</item>
+    </style>
+
+    <style name="NyndroStyle.Repeater">
+        <item name="android:textSize">16dp</item>
+        <item name="android:background">@color/colorLightCoffeeDarker</item>
+    </style>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="iso.piotrowski.marek.nyndro">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/icon_nyndro1"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:backupAgent="NyndroBackupAgent"
+        android:theme="@style/AppTheme">
+        <meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAIQ4iQ2TdUwXEp79Bx_taxfpOWaAnxk5z_MvO1EQ" />
+        <activity
+            android:name=".MainPracticsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".RemainderService.RemainderService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".RemainderService.RemainderReceiver">
+            <intent-filter>
+                <action android:name="iso.piotrowski.marek.nyndro.restart" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/NyndroStyle.CardView"
+    app:cardBackgroundColor="@android:color/darker_gray"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="4dp"
+    android:layout_width="150dp"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:theme="@style/NyndroStyle.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/add_remainder_image_practice"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_width="100dp"
+            android:layout_height="150dp" />
+
+        <TextView
+            android:id="@+id/add_remainder_name_practice"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

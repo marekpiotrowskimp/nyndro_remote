@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BuddaProgressBar">
+        <attr name="max_progress" format="integer">100</attr>
+        <attr name="progress" format="integer">0</attr>
+        <attr name="color_buddha" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="BarChart">
+        <attr name="text_size" format="integer"/>
+        <attr name="bar_size" format="integer"/>
+        <attr name="bar_margin" format="integer"/>
+        <attr name="max_count" format="integer"/>
+        <attr name="column_count" format="integer"/>
+        <attr name="color_bar_chart" format="color"/>
+    </declare-styleable>
+</resources>
