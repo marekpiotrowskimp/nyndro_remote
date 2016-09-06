@@ -19,7 +19,9 @@ import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 /**
  * Created by Marek on 25.07.2016.
+ * Adapter to practices
  */
+
 public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPracticeHolder> {
 
     public static final int _ID = 0;
@@ -47,8 +49,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         this.imageButtonListener = imageButtonListener;
     }
 
-    public static interface CardViewListener {
-        public void onClick (View view, int position);
+    public interface CardViewListener {
+         void onClick (View view, int position);
     }
 
 
@@ -114,8 +116,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
 
                 String name = cursorPractices.getString(NAME_ID);
                 name = name.replace("\n", " ");
-                name = name.substring(0, name.length() <= 32 ? name.length() : 32);
-                name += name.length() < 32 ? "" : "...";
+//                name = name.substring(0, name.length() <= 32 ? name.length() : 32);
+//                name += name.length() < 32 ? "" : "...";
 
                 practiceName.setText(name); //cv.getResources().getText(R.string.name_practice) +" "+
                 practiceProgress.setMax(cursorPractices.getInt(MAX_REPETITION_ID));
@@ -124,8 +126,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
                 practiceRepetition.setText(String.valueOf(cursorPractices.getInt(REPETITION_ID)));
                 String description = cursorPractices.getString(DESCRIPTION_ID);
                 description = description.replace("\n", " ");
-                description = description.substring(0, description.length() <= 45 ? description.length() : 45);
-                description += description.length() < 45 ? "" : "...";
+//                description = description.substring(0, description.length() <= 45 ? description.length() : 45);
+//                description += description.length() < 45 ? "" : "...";
                 practiceDescription.setText(description);
 
                 Calendar calendar = Calendar.getInstance();

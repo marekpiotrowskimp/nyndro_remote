@@ -9,8 +9,8 @@ android {
         applicationId "iso.piotrowski.marek.nyndro"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName '1.1'
     }
     buildTypes {
         release {
@@ -18,6 +18,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
+    }
+    productFlavors {
     }
 }
 
