@@ -4,7 +4,7 @@ android {
     signingConfigs {
     }
     compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "iso.piotrowski.marek.nyndro"
         minSdkVersion 17
