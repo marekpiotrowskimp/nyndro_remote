@@ -168,7 +168,8 @@ public class SQLHelper {
             switch (typeCursor) {
                 case 1:
                     sqlQuery = "SELECT history._id, history.practice_id, history.progress, history.practice_date, " +
-                            "history.repetition, practice.name, practice.practice_image_id FROM history INNER JOIN practice ON history.practice_id=practice._id WHERE history.active = ?";
+                            "history.repetition, practice.name, practice.practice_image_id FROM history " +
+                            "INNER JOIN practice ON history.practice_id=practice._id WHERE history.active = ? ORDER BY history.practice_date DESC";
                     cursor = db.rawQuery(sqlQuery, new String[]{"1"});
                     break;
                 case 2:
