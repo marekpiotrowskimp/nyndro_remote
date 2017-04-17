@@ -49,6 +49,21 @@ public class StatsPagerFragment extends Fragment {
         }
 
         @Override
+        public CharSequence getPageTitle(int position) {
+            String title = "";
+            switch (position)
+            {
+                case 0:
+                    title = "Statistics";
+                    break;
+                case 1:
+                    title = "History";
+                    break;
+            }
+            return title;
+        }
+
+        @Override
         public Fragment getItem(int position) {
             Fragment fragment=null;
             switch (position)

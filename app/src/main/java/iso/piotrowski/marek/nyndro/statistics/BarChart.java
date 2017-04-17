@@ -22,8 +22,8 @@ import iso.piotrowski.marek.nyndro.R;
 public class BarChart extends View {
 
     private Context context;
-    private int desiredWidth=100;
-    private int desiredHeight=100;
+    private int desiredWidth = 100;
+    private int desiredHeight = 100;
     private int maxCount;
     private int columnCount;
     private int color;
@@ -108,13 +108,15 @@ public class BarChart extends View {
         requestLayout();
     }
 
-    public static class DataObj{
+    public static class DataObj {
         private String columnName;
         private int progress;
         private int color;
 
-        DataObj (String columnName, int progress, int color){
-            this.setColumnName(columnName); this.setProgress(progress); this.setColor(color);
+        DataObj(String columnName, int progress, int color) {
+            this.setColumnName(columnName);
+            this.setProgress(progress);
+            this.setColor(color);
         }
 
         @Override
@@ -147,9 +149,9 @@ public class BarChart extends View {
         }
     }
 
-    public BarChart (Context context, AttributeSet attributeSet) {
-        super(context,attributeSet);
-        this.context=context;
+    public BarChart(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        this.context = context;
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attributeSet,
                 R.styleable.BarChart,
@@ -158,28 +160,27 @@ public class BarChart extends View {
         try {
             setMaxCount(a.getInteger(R.styleable.BarChart_max_count, 100));
             setColumnCount(a.getInteger(R.styleable.BarChart_column_count, 7));
-            setColor(a.getColor(R.styleable.BarChart_color_bar_chart,0x202020));
-            setBarSize(a.getInteger(R.styleable.BarChart_bar_size, 20));
-            setBarMargin(a.getInteger(R.styleable.BarChart_bar_margin, 4));
-            setTextSize(a.getInteger(R.styleable.BarChart_text_size, 10));
+            setColor(a.getColor(R.styleable.BarChart_color_bar_chart, 0x202020));
+            setBarSize(a.getDimensionPixelSize(R.styleable.BarChart_bar_size, 20));
+            setBarMargin(a.getDimensionPixelOffset(R.styleable.BarChart_bar_margin, 4));
+            setTextSize(a.getDimensionPixelSize(R.styleable.BarChart_text_size, 10));
         } finally {
             a.recycle();
         }
     }
 
-    private void Init(){
-        columnCount=columnCount<dataChart.size()?dataChart.size():columnCount;
+    private void Init() {
+        columnCount = columnCount < dataChart.size() ? dataChart.size() : columnCount;
         paints = new Paint[columnCount];
         Iterator<DataObj> iterator = dataChart.iterator();
-        int ind = 0; countMaximum=0;
-        while (iterator.hasNext())
-        {
+        int ind = 0;
+        countMaximum = 0;
+        while (iterator.hasNext()) {
             DataObj dataObj = iterator.next();
-            paints[ind]=new Paint();
+            paints[ind] = new Paint();
             paints[ind].setColor(dataObj.getColor());
             paints[ind].setAlpha(255);
-            if (countMaximum<dataObj.getProgress())
-            {
+            if (countMaximum < dataObj.getProgress()) {
                 countMaximum = dataObj.getProgress();
             }
             ind++;
@@ -195,7 +196,7 @@ public class BarChart extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        lenght = (w)/countMaximum;
+        lenght = (w) / countMaximum;
     }
 
     @Override
@@ -211,8 +212,8 @@ public class BarChart extends View {
         int height;
 
         //desire dimensions
-        desiredWidth = desiredWidth < widthSize? widthSize : desiredWidth;
-        desiredHeight = columnCount*(getBarSize() + getBarMargin());
+        desiredWidth = desiredWidth < widthSize ? widthSize : desiredWidth;
+        desiredHeight = columnCount * (getBarSize() + getBarMargin());
         //Measure Width
         if (widthMode == MeasureSpec.EXACTLY) {
             //Must be this size
@@ -245,16 +246,19 @@ public class BarChart extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawRect(0,0, canvas.getWidth(),canvas.getHeight(),background);
+        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), background);
 
-        if ((dataChart!=null)&&(!dataChart.isEmpty()))
-        {
+        if ((dataChart != null) && (!dataChart.isEmpty())) {
             Iterator<DataObj> iterator = dataChart.iterator();
-            int ind=0; int marginInWidth=5; int marginInHight = getBarSize()+getBarMargin();
-            while (iterator.hasNext()){
-                DataObj dataObj=iterator.next();
-                canvas.drawRect(marginInWidth, ind*marginInHight+2, lenght*dataObj.getProgress(),ind*marginInHight+getBarSize(),paints[ind]);
-                canvas.drawText(dataObj.getColumnName(), marginInWidth, ind*marginInHight+16,textPaint);
+            int ind = 0;
+            int marginInWidth = 0;
+            int marginInHeight = getBarSize() + getBarMargin();
+            while (iterator.hasNext()) {
+                DataObj dataObj = iterator.next();
+                canvas.drawRect(marginInWidth, ind * marginInHeight,
+                        lenght * dataObj.getProgress(), ind * marginInHeight + getBarSize(), paints[ind]);
+                canvas.drawText(dataObj.getColumnName(), marginInWidth + getBarMargin(),
+                        ind * marginInHeight + getTextSize(), textPaint);
                 ind++;
             }
         }
