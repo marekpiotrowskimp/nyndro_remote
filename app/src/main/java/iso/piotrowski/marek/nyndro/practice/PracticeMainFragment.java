@@ -2,6 +2,8 @@ package iso.piotrowski.marek.nyndro.practice;
 
 
 import android.app.backup.BackupManager;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
@@ -17,9 +19,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import java.util.Date;
@@ -46,9 +49,49 @@ public class PracticeMainFragment extends Fragment {
                 int progressAdd = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID)+cursorPractice.getInt(PracticeAdapter.REPETITION_ID);
                 SQLHelper.updatePractice (db, cursorPractice.getInt(0), progressAdd);
                 SQLHelper.insertHistory(db,cursorPractice.getInt(0),progressAdd,new Date().getTime(), cursorPractice.getInt(PracticeAdapter.REPETITION_ID));
-                refreshPracticeRecyclerView();
+//                refreshPracticeRecyclerView();
                 requestBackup();
+                startEffect(view);
             }
+        }
+
+        public void startSoundEffect(){
+            MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.tweet);
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    if (mediaPlayer != null) {
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+                    }
+                }
+            });
+            mediaPlayer.start();
+        }
+
+        public void startEffect(final View view){
+            startSoundEffect();
+            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.add_button_animation);
+            view.clearAnimation();
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    refreshPracticeRecyclerView();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            ((View)view.getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.color_blinking_cardview));
+            view.startAnimation(animation);
+
         }
     }
     public void requestBackup() {
