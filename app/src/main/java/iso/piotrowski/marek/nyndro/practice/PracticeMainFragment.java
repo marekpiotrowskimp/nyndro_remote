@@ -88,7 +88,7 @@ public class PracticeMainFragment extends Fragment {
 
                 }
             });
-            ((View)view.getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.color_blinking_cardview));
+            ((View)view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.color_blinking_cardview));
             view.startAnimation(animation);
 
         }
