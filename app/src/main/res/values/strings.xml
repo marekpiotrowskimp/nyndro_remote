@@ -60,6 +60,7 @@
     <string name="average_days">Daily average:</string>
     <string name="expected_day">Expected end of practice:</string>
     <string name="add_remainder_button">ADD REMINDER</string>
+    <string name="modify_remainder_button">UPDATE REMINDER</string>
     <string name="remaind_text_notificator">"Reminder: "</string>
     <string name="app_label_plans">Plan - Reminder</string>
     <string name="app_label_practice">Add the practice</string>

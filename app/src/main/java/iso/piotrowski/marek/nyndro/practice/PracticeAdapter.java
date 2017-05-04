@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -39,18 +40,22 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
     private SQLiteDatabase db;
     private Cursor cursorPractices;
     private CardViewListener cardViewListener=null;
-    private CardViewListener imageButtonListener=null;
+    private ImageCardViewListener imageButtonListener=null;
 
     public void setCardViewListener(CardViewListener cardViewListener) {
         this.cardViewListener = cardViewListener;
     }
 
-    public void setImageButtonListener(CardViewListener imageButtonListener) {
+    public void setImageButtonListener(ImageCardViewListener imageButtonListener) {
         this.imageButtonListener = imageButtonListener;
     }
 
     public interface CardViewListener {
          void onClick (View view, int position);
+    }
+
+    public interface ImageCardViewListener {
+         void onClick (View view, int position, int multiple);
     }
 
 
@@ -104,11 +109,33 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             TextView practiceName = (TextView) cv.findViewById(R.id.practice_name);
             TextView practiceStatus = (TextView) cv.findViewById(R.id.practice_status);
             TextView practiceRepetition = (TextView) cv.findViewById(R.id.practice_repetition);
+            final TextView practiceRepetitionMultiple = (TextView) cv.findViewById(R.id.practice_repetition_multiple);
             TextView practiceDateLast = (TextView) cv.findViewById(R.id.practice_date_last);
             TextView practiceDateNext = (TextView) cv.findViewById(R.id.practice_date_next);
             TextView practiceDescription = (TextView) cv.findViewById(R.id.practice_description);
+            final SeekBar multiplePracticeSeekBar = (SeekBar) cv.findViewById(R.id.multiple_seek_bar);
             ImageButton practiceRapetitionAdd = (ImageButton) cv.findViewById(R.id.practice_repetition_add);
             ProgressBar practiceProgress = (ProgressBar) cv.findViewById(R.id.practice_progress);
+
+            multiplePracticeSeekBar.setProgress(1);
+            practiceRepetitionMultiple.setText(String.valueOf(multiplePracticeSeekBar.getProgress()));
+            multiplePracticeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    practiceRepetitionMultiple.setText(String.valueOf(progress));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+
 
             if (cursorPractices.moveToPosition(position)) {
                 practiceImage.setContentDescription(cursorPractices.getString(NAME_ID));
@@ -159,7 +186,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
                     @Override
                     public void onClick(View view) {
                         if (imageButtonListener != null) {
-                            imageButtonListener.onClick(view, position);
+                            imageButtonListener.onClick(view, position, multiplePracticeSeekBar.getProgress());
                         }
 
                     }

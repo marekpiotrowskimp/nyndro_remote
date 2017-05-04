@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -77,6 +78,8 @@ public class AddRemainderFragment extends Fragment implements View.OnClickListen
                 DatePicker datePicker = (DatePicker) getActivity().findViewById(R.id.plans_date_picker);
                 TimePicker timePicker = (TimePicker) getActivity().findViewById(R.id.plans_time_picker);
 
+                Button plansAddButton = (Button) getActivity().findViewById(R.id.plans_add_button);
+                plansAddButton.setText(getActivity().getResources().getText(R.string.modify_remainder_button));
                 SwitchCompat switchRepeater = (SwitchCompat) getActivity().findViewById(R.id.switch_repeater);
                 RadioButton rbDaily = (RadioButton) getActivity().findViewById(R.id.rb_daily);
                 RadioButton rbWeekly = (RadioButton) getActivity().findViewById(R.id.rb_weekly);

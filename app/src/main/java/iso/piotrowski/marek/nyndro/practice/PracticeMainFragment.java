@@ -41,15 +41,14 @@ public class PracticeMainFragment extends Fragment {
     private RecyclerView practiceMainRecycleView;
     private boolean canceledDelete;
 
-    private class ImageButtonListener implements PracticeAdapter.CardViewListener
+    private class ImageButtonListener implements PracticeAdapter.ImageCardViewListener
     {
         @Override
-        public void onClick(View view, int position) {
+        public void onClick(View view, int position, int multiple) {
             if (cursorPractice.moveToPosition(position)) {
-                int progressAdd = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID)+cursorPractice.getInt(PracticeAdapter.REPETITION_ID);
+                int progressAdd = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID)+cursorPractice.getInt(PracticeAdapter.REPETITION_ID)*multiple;
                 SQLHelper.updatePractice (db, cursorPractice.getInt(0), progressAdd);
                 SQLHelper.insertHistory(db,cursorPractice.getInt(0),progressAdd,new Date().getTime(), cursorPractice.getInt(PracticeAdapter.REPETITION_ID));
-//                refreshPracticeRecyclerView();
                 requestBackup();
                 startEffect(view);
             }
