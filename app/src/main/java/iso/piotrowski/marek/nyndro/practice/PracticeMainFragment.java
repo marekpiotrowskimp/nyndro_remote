@@ -30,7 +30,9 @@ import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
+import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
+import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
@@ -133,8 +135,12 @@ public class PracticeMainFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        List<PracticeModel> allPractice = DBQuery.getAll();
-        Toast.makeText(getContext(),"Size of Practice " + allPractice.size(),Toast.LENGTH_LONG).show();
+        List<PracticeModel> allPractice = DBQuery.getPractice(1);
+        List<HistoryModel> allHistory = DBQuery.getHistory();
+        List<ReminderModel> allReminders = DBQuery.getReminders();
+        Toast.makeText(getContext(),"Size of Practice " + allPractice.size()+
+                "  History " + allHistory.size() + " Reminders " + allReminders.size(),
+                Toast.LENGTH_LONG).show();
 
         try {
             PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
