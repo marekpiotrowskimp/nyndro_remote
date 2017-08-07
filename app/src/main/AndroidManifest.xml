@@ -3,6 +3,7 @@
     package="iso.piotrowski.marek.nyndro">
 
     <application
+        android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/icon_nyndro1"
         android:label="@string/app_name"
@@ -10,6 +11,17 @@
         android:backupAgent="NyndroBackupAgent"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAIQ4iQ2TdUwXEp79Bx_taxfpOWaAnxk5z_MvO1EQ" />
+
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="practice" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="iso.piotrowski.marek.nyndro.Model" />
+
         <activity
             android:name=".MainPracticsActivity"
             android:label="@string/app_name"

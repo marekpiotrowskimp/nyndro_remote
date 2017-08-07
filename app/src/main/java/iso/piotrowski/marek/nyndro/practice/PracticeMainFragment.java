@@ -24,9 +24,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.Date;
+import java.util.List;
 
+import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
+import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
@@ -129,8 +133,10 @@ public class PracticeMainFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        try {
+        List<PracticeModel> allPractice = DBQuery.getAll();
+        Toast.makeText(getContext(),"Size of Practice " + allPractice.size(),Toast.LENGTH_LONG).show();
 
+        try {
             PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
             db = practiceDatabaseHelper.getReadableDatabase();
             cursorPractice = SQLHelper.getCursorPractice(db);
@@ -149,7 +155,6 @@ public class PracticeMainFragment extends Fragment {
         {
 
         }
-
     }
 
     @Override
