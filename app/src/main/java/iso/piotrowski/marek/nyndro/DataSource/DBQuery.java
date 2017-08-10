@@ -1,8 +1,14 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
+import android.util.Log;
+
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
 
+import java.util.Enumeration;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
@@ -14,20 +20,54 @@ import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 
 public class DBQuery {
 
-    public static List<PracticeModel> getPractices(){
+    public static List<PracticeModel> getPractices() {
         return new Select().from(PracticeModel.class).execute();
     }
 
-    public static List<PracticeModel> getPractice(Integer id){
-        return new Select().from(PracticeModel.class).where("_id = ?", id).execute();
+    public static PracticeModel getPractice(long id) {
+        return new Select().from(PracticeModel.class).where("_id = ?", id).executeSingle();
     }
 
-    public static List<HistoryModel> getHistory(){
+    public static List<HistoryModel> getHistory() {
         return new Select().from(HistoryModel.class).execute();
     }
 
-    public static List<ReminderModel> getReminders(){
+    public static List<ReminderModel> getReminders() {
         return new Select().from(ReminderModel.class).execute();
+    }
+
+    public <TItem> boolean getParam(Predicate<TItem> predicate, TItem item) {
+        return predicate.negate().test(item);
+    }
+
+    public static boolean adjustDatabase() {
+        if (ActiveAndroid.getDatabase().getVersion() == 2) {
+            List<PracticeModel> practices = getPractices();
+            List<HistoryModel> histories = getHistory();
+            List<ReminderModel> remainders = getReminders();
+            if (isNotEmpty(practices, histories, remainders)) {
+
+                for (ReminderModel remainder : remainders) {
+                    if (remainder.getPractice() == null) {
+                        remainder.setPractice(getPractice(remainder.getID()));
+                        remainder.save();
+                    }
+                }
+
+                for (HistoryModel history : histories) {
+                    if (history.getPractice() == null) {
+                        history.setPractice(getPractice(history.getID()));
+                        history.save();
+                    }
+                }
+            }
+
+        }
+        return true;
+    }
+
+    private static boolean isNotEmpty(List<PracticeModel> practices, List<HistoryModel> histories, List<ReminderModel> remainders) {
+        return practices.size() + histories.size() + remainders.size() > 0;
     }
 
 }

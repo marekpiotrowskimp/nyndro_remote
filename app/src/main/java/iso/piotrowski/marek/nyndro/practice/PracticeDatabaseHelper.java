@@ -19,7 +19,7 @@ import java.util.Date;
 public class PracticeDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "practice";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public PracticeDatabaseHelper (Context context){
         super(context,DB_NAME, null, DB_VERSION);

@@ -11,8 +11,6 @@ import com.activeandroid.annotation.Table;
 @Table(name = "HISTORY", id = "_id")
 public class HistoryModel extends Model {
 
-    @Column(name = "_id", unique = true, onUniqueConflict = Column.ConflictAction.ABORT)
-    private Integer _id;
     @Column(name = "PRACTICE_ID")
     private Integer practiceId;
     @Column(name = "PROGRESS")
@@ -23,6 +21,8 @@ public class HistoryModel extends Model {
     private Integer repetition;
     @Column(name = "ACTIVE")
     private boolean active;
+    @Column(name = "PRACTICE")
+    private PracticeModel practice;
 
     public HistoryModel(){
         super();
@@ -41,43 +41,57 @@ public class HistoryModel extends Model {
         return practiceId;
     }
 
-    public void setPracticeId(Integer practiceId) {
+    public HistoryModel setPracticeId(Integer practiceId) {
         this.practiceId = practiceId;
+        return this;
     }
 
     public Integer getProgress() {
         return progress;
     }
 
-    public void setProgress(Integer progress) {
+    public HistoryModel setProgress(Integer progress) {
         this.progress = progress;
+        return this;
     }
 
     public Integer getPracticeData() {
         return practiceData;
     }
 
-    public void setPracticeData(Integer practiceData) {
+    public HistoryModel setPracticeData(Integer practiceData) {
         this.practiceData = practiceData;
+        return this;
     }
 
     public Integer getRepetition() {
         return repetition;
     }
 
-    public void setRepetition(Integer repetition) {
+    public HistoryModel setRepetition(Integer repetition) {
         this.repetition = repetition;
+        return this;
     }
 
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public HistoryModel setActive(boolean active) {
         this.active = active;
+        return this;
     }
 
-    public Integer getID() {
-        return _id;
+    public long getID() {
+        return super.getId();
+    }
+
+    public PracticeModel getPractice() {
+        return practice;
+    }
+
+    public HistoryModel setPractice(PracticeModel practice) {
+        this.practice = practice;
+        return this;
     }
 }

@@ -9,8 +9,7 @@ import com.activeandroid.annotation.Table;
  */
 @Table(name = "REMAINDER", id = "_id")
 public class ReminderModel extends Model {
-    @Column(name = "_id", unique = true, onUniqueConflict = Column.ConflictAction.ABORT)
-    private Integer _id;
+
     @Column(name = "PRACTICE_ID")
     private Integer practiceId;
     @Column(name = "PRACTICE_DATE")
@@ -21,6 +20,8 @@ public class ReminderModel extends Model {
     private boolean active;
     @Column(name = "REPEATER")
     private Integer repeater;
+    @Column(name = "PRACTICE")
+    private PracticeModel practice;
 
     public ReminderModel(){
         super();
@@ -39,43 +40,57 @@ public class ReminderModel extends Model {
         return practiceId;
     }
 
-    public void setPracticeId(Integer practiceId) {
+    public ReminderModel setPracticeId(Integer practiceId) {
         this.practiceId = practiceId;
+        return this;
     }
 
     public Integer getPracticeDate() {
         return practiceDate;
     }
 
-    public void setPracticeDate(Integer practiceDate) {
+    public ReminderModel setPracticeDate(Integer practiceDate) {
         this.practiceDate = practiceDate;
+        return this;
     }
 
     public Integer getRepetition() {
         return repetition;
     }
 
-    public void setRepetition(Integer repetition) {
+    public ReminderModel setRepetition(Integer repetition) {
         this.repetition = repetition;
+        return this;
     }
 
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public ReminderModel setActive(boolean active) {
         this.active = active;
+        return this;
     }
 
     public Integer getRepeater() {
         return repeater;
     }
 
-    public void setRepeater(Integer repeater) {
+    public ReminderModel setRepeater(Integer repeater) {
         this.repeater = repeater;
+        return this;
     }
 
-    public Integer getID() {
-        return _id;
+    public long getID() {
+        return super.getId();
+    }
+
+    public PracticeModel getPractice() {
+        return practice;
+    }
+
+    public ReminderModel setPractice(PracticeModel practice) {
+        this.practice = practice;
+        return this;
     }
 }

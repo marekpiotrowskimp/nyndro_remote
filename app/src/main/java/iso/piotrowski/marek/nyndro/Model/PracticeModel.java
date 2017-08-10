@@ -10,8 +10,7 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "PRACTICE", id = "_id")
 public class PracticeModel extends Model {
-    @Column(name = "_id", unique = true, onUniqueConflict = Column.ConflictAction.ABORT)
-    private Integer _id;
+
     @Column(name = "NAME")
     private String name;
     @Column(name = "DESCRIPTION")
@@ -46,60 +45,67 @@ public class PracticeModel extends Model {
         return name;
     }
 
-    public void setName(String name) {
+    public PracticeModel setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public PracticeModel setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public Integer getPracticeImageId() {
         return practiceImageId;
     }
 
-    public void setPracticeImageId(Integer practiceImageId) {
+    public PracticeModel setPracticeImageId(Integer practiceImageId) {
         this.practiceImageId = practiceImageId;
+        return this;
     }
 
     public Integer getProgress() {
         return progress;
     }
 
-    public void setProgress(Integer progress) {
+    public PracticeModel setProgress(Integer progress) {
         this.progress = progress;
+        return this;
     }
 
     public Integer getMaxRepetition() {
         return maxRepetition;
     }
 
-    public void setMaxRepetition(Integer maxRepetition) {
+    public PracticeModel setMaxRepetition(Integer maxRepetition) {
         this.maxRepetition = maxRepetition;
+        return this;
     }
 
     public Integer getRepetition() {
         return repetition;
     }
 
-    public void setRepetition(Integer repetition) {
+    public PracticeModel setRepetition(Integer repetition) {
         this.repetition = repetition;
+        return this;
     }
 
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public PracticeModel setActive(boolean active) {
         this.active = active;
+        return this;
     }
 
-    public Integer getID() {
-        return _id;
+    public long getID() {
+        return super.getId();
     }
 }
 

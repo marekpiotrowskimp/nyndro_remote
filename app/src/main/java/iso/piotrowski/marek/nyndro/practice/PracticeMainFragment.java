@@ -135,12 +135,7 @@ public class PracticeMainFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        List<PracticeModel> allPractice = DBQuery.getPractice(1);
-        List<HistoryModel> allHistory = DBQuery.getHistory();
-        List<ReminderModel> allReminders = DBQuery.getReminders();
-        Toast.makeText(getContext(),"Size of Practice " + allPractice.size()+
-                "  History " + allHistory.size() + " Reminders " + allReminders.size(),
-                Toast.LENGTH_LONG).show();
+        setUpActivieAndroid();
 
         try {
             PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
@@ -161,6 +156,23 @@ public class PracticeMainFragment extends Fragment {
         {
 
         }
+    }
+
+    private void setUpActivieAndroid() {
+        List<PracticeModel> allPractice = DBQuery.getPractices();
+        List<HistoryModel> allHistory = DBQuery.getHistory();
+        List<ReminderModel> allReminders = DBQuery.getReminders();
+        Toast.makeText(getContext(),"Size of Practice " + allPractice.size()+
+                "  History " + allHistory.size() + " Reminders " + allReminders.size(),
+                Toast.LENGTH_LONG).show();
+        DBQuery.adjustDatabase();
+
+        List<PracticeModel> allPracticeX = DBQuery.getPractices();
+        List<HistoryModel> allHistoryX = DBQuery.getHistory();
+        List<ReminderModel> allRemindersX = DBQuery.getReminders();
+        Toast.makeText(getContext(),"Size of Practice " + allPracticeX.size()+
+                        "  History " + allHistoryX.size() + " Reminders " + allRemindersX.size(),
+                Toast.LENGTH_LONG).show();
     }
 
     @Override
