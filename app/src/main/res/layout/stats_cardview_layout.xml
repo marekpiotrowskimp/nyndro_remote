@@ -123,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <iso.piotrowski.marek.nyndro.statistics.BarChart
+            <iso.piotrowski.marek.nyndro.UIComponents.BarChart
                 android:id="@+id/statystics_bar_chart"
                 xmlns:custom="http://schemas.android.com/apk/res/iso.piotrowski.marek.nyndro"
                 custom:max_count = "100"
@@ -150,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <iso.piotrowski.marek.nyndro.statistics.BarChart
+            <iso.piotrowski.marek.nyndro.UIComponents.BarChart
                 android:id="@+id/statystics_bar_chart_month"
                 xmlns:custom="http://schemas.android.com/apk/res/iso.piotrowski.marek.nyndro"
                 custom:max_count = "100"

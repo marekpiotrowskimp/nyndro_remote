@@ -2,7 +2,6 @@ package iso.piotrowski.marek.nyndro.practice;
 
 
 import android.app.backup.BackupManager;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -30,37 +29,38 @@ import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PracticeMainFragment extends Fragment {
+public class PracticeMainFragment extends Fragment implements PracticeContract.IViewer {
 
-    private SQLiteDatabase db;
-    private Cursor cursorPractice;
     private PracticeAdapter practiceAdapter;
     private RecyclerView practiceMainRecycleView;
     private boolean canceledDelete;
+    private PracticeContract.IPresenter presenter;
 
-    private class ImageButtonListener implements PracticeAdapter.ImageCardViewListener
-    {
+    public class ImageButtonListener implements PracticeAdapter.ImageCardViewListener {
         @Override
         public void onClick(View view, int position, int multiple) {
-            if (cursorPractice.moveToPosition(position)) {
-                int progressAdd = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID)+cursorPractice.getInt(PracticeAdapter.REPETITION_ID)*multiple;
-                SQLHelper.updatePractice (db, cursorPractice.getInt(0), progressAdd);
-                SQLHelper.insertHistory(db,cursorPractice.getInt(0),progressAdd,new Date().getTime(), cursorPractice.getInt(PracticeAdapter.REPETITION_ID));
-                requestBackup();
-                startEffect(view);
-            }
+//            if (cursorPractice.moveToPosition(position)) {
+//                int progressAdd = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID) + cursorPractice.getInt(PracticeAdapter.REPETITION_ID) * multiple;
+//                SQLHelper.updatePractice(db, cursorPractice.getInt(0), progressAdd);
+//                SQLHelper.insertHistory(db, cursorPractice.getInt(0), progressAdd, new Date().getTime(), cursorPractice.getInt(PracticeAdapter.REPETITION_ID));
+//                requestBackup();
+//                startEffect(view);
+//            }
         }
 
-        public void startSoundEffect(){
+        public void startSoundEffect() {
             MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.tweet);
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -74,7 +74,7 @@ public class PracticeMainFragment extends Fragment {
             mediaPlayer.start();
         }
 
-        public void startEffect(final View view){
+        public void startEffect(final View view) {
             startSoundEffect();
             Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.add_button_animation);
             view.clearAnimation();
@@ -94,11 +94,12 @@ public class PracticeMainFragment extends Fragment {
 
                 }
             });
-            ((View)view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.color_blinking_cardview));
+            ((View) view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.color_blinking_cardview));
             view.startAnimation(animation);
 
         }
     }
+
     public void requestBackup() {
         if (SQLHelper.isUpdateDatabase) {
             try {
@@ -110,82 +111,57 @@ public class PracticeMainFragment extends Fragment {
         }
     }
 
-    private class PracticeCardViewListener implements PracticeAdapter.CardViewListener{
+    private class PracticeCardViewListener implements PracticeAdapter.CardViewListener {
         @Override
         public void onClick(View view, int position) {
             PracticeDetailFragment practiceDetailFragment = new PracticeDetailFragment();
             practiceDetailFragment.setPosition(position);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.main_fragment_container,practiceDetailFragment,"visible_tag");
+            ft.replace(R.id.main_fragment_container, practiceDetailFragment, "visible_tag");
             ft.addToBackStack(null);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
-         }
+        }
     }
 
-    public PracticeMainFragment() {    }
+    public PracticeMainFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        practiceMainRecycleView = (RecyclerView)inflater.inflate(R.layout.fragment_practice_main,container, false);
+        new PracticePresenter(this, DataSource.getInstance());
+        practiceMainRecycleView = (RecyclerView) inflater.inflate(R.layout.fragment_practice_main, container, false);
         return practiceMainRecycleView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        setUpActivieAndroid();
-
-        try {
-            PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
-            db = practiceDatabaseHelper.getReadableDatabase();
-            cursorPractice = SQLHelper.getCursorPractice(db);
-
-            practiceAdapter = new PracticeAdapter(cursorPractice,db);
-            practiceAdapter.setImageButtonListener(new ImageButtonListener());
-            practiceAdapter.setCardViewListener(new PracticeCardViewListener());
-            practiceMainRecycleView.setAdapter(practiceAdapter);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
-            layoutManager.setOrientation(LinearLayout.VERTICAL);
-            practiceMainRecycleView.setLayoutManager(layoutManager);
-            setUpItemTouchHelper();
-
-        } catch (SQLException e)
-        {
-
-        }
+        presenter.loadPracticeData();
     }
 
-    private void setUpActivieAndroid() {
-        List<PracticeModel> allPractice = DBQuery.getPractices();
-        List<HistoryModel> allHistory = DBQuery.getHistory();
-        List<ReminderModel> allReminders = DBQuery.getReminders();
-        Toast.makeText(getContext(),"Size of Practice " + allPractice.size()+
-                "  History " + allHistory.size() + " Reminders " + allReminders.size(),
-                Toast.LENGTH_LONG).show();
-        DBQuery.adjustDatabase();
-
-        List<PracticeModel> allPracticeX = DBQuery.getPractices();
-        List<HistoryModel> allHistoryX = DBQuery.getHistory();
-        List<ReminderModel> allRemindersX = DBQuery.getReminders();
-        Toast.makeText(getContext(),"Size of Practice " + allPracticeX.size()+
-                        "  History " + allHistoryX.size() + " Reminders " + allRemindersX.size(),
-                Toast.LENGTH_LONG).show();
+    @Override
+    public void setUpRecyclerView(List<PracticeModel> practices) {
+        practiceAdapter = new PracticeAdapter(practices);
+        practiceAdapter.setImageButtonListener(new ImageButtonListener());
+        practiceAdapter.setCardViewListener(new PracticeCardViewListener());
+        practiceMainRecycleView.setAdapter(practiceAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayout.VERTICAL);
+        practiceMainRecycleView.setLayoutManager(layoutManager);
+        setUpItemTouchHelper();
     }
 
     @Override
     public void onDestroy() {
-        if (cursorPractice!=null) cursorPractice.close();
-        if (db!=null) db.close();
         super.onDestroy();
     }
 
 
     private void setUpItemTouchHelper() {
 
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -193,7 +169,7 @@ public class PracticeMainFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (viewHolder.getItemViewType()==PracticeAdapter.STANDARD_TYPE) {
+                if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
                     deletePractice(viewHolder.getAdapterPosition(), viewHolder.itemView);
                 }
 
@@ -201,7 +177,7 @@ public class PracticeMainFragment extends Fragment {
 
             @Override
             public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (viewHolder.getItemViewType()==PracticeAdapter.STANDARD_TYPE) {
+                if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
                     if (isCurrentlyActive) {
                         final int margine = 10;
                         View itemView = viewHolder.itemView;
@@ -225,7 +201,7 @@ public class PracticeMainFragment extends Fragment {
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (viewHolder.getItemViewType()==PracticeAdapter.STANDARD_TYPE) {
+                if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
                     if (isCurrentlyActive) {
                         final int margine = 10;
                         View itemView = viewHolder.itemView;
@@ -253,42 +229,49 @@ public class PracticeMainFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(practiceMainRecycleView);
     }
 
+    public void refreshPracticeRecyclerView() {
 
-    private void refreshPracticeRecyclerView ()
-    {
-        cursorPractice = SQLHelper.getCursorPractice(db);
-        practiceAdapter = new PracticeAdapter(cursorPractice,db);
-        practiceAdapter.setImageButtonListener(new ImageButtonListener());
-        practiceAdapter.setCardViewListener(new PracticeCardViewListener());
-        practiceMainRecycleView.swapAdapter(practiceAdapter,false);
     }
 
-    void deletePractice (final int position, View view)
-    {
-        SQLHelper.deletePractice(db,cursorPractice,position);
-        cursorPractice.moveToPosition(position);
-        SQLHelper.updateHistoryInactive(db,cursorPractice.getInt(0),0);
-        SQLHelper.updateRemainderActive(db,cursorPractice.getInt(0));
-        canceledDelete = false;
-        Snackbar.make(view,getActivity().getResources().getString(R.string.deleted_practice_info)+" "+cursorPractice.getString(PracticeAdapter.NAME_ID),10000)
-                .setAction(R.string.cancel_action, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        canceledDelete= true;
-                        SQLHelper.recoverPracticeHistoryRemainder(db);
-                        refreshPracticeRecyclerView();                    }
-                }).show();
+    @Override
+    public void refreshPracticeRecyclerView(List<PracticeModel> practices) {
+        practiceAdapter = new PracticeAdapter(practices);
+        practiceAdapter.setImageButtonListener(new ImageButtonListener());
+        practiceAdapter.setCardViewListener(new PracticeCardViewListener());
+        practiceMainRecycleView.swapAdapter(practiceAdapter, false);
+    }
 
-        Handler deleteHandler = new Handler();
-        deleteHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!canceledDelete){
-                    SQLHelper.deleteAllInactive(db);
-                    requestBackup();
-                }
-            }
-        }, 11000);
+    @Override
+    public void setPresenter(PracticeContract.IPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    void deletePractice(final int position, View view) {
+//        SQLHelper.deletePractice(db, cursorPractice, position);
+//        cursorPractice.moveToPosition(position);
+//        SQLHelper.updateHistoryInactive(db, cursorPractice.getInt(0), 0);
+//        SQLHelper.updateRemainderActive(db, cursorPractice.getInt(0));
+//        canceledDelete = false;
+//        Snackbar.make(view, getActivity().getResources().getString(R.string.deleted_practice_info) + " " + cursorPractice.getString(PracticeAdapter.NAME_ID), 10000)
+//                .setAction(R.string.cancel_action, new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        canceledDelete = true;
+//                        SQLHelper.recoverPracticeHistoryRemainder(db);
+//                        refreshPracticeRecyclerView();
+//                    }
+//                }).show();
+//
+//        Handler deleteHandler = new Handler();
+//        deleteHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (!canceledDelete) {
+//                    SQLHelper.deleteAllInactive(db);
+//                    requestBackup();
+//                }
+//            }
+//        }, 11000);
 
         refreshPracticeRecyclerView();
     }

@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.practice;
+package iso.piotrowski.marek.nyndro.practice.Details;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,13 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link } and makes a call to the
- * specified {@link }.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class PracticeListRecyclerViewAdapter extends RecyclerView.Adapter<PracticeListRecyclerViewAdapter.ViewHolder> {
 
     private final Practice[] mPractices;

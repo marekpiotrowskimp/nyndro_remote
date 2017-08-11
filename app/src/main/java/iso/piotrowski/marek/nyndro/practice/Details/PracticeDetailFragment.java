@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.practice;
+package iso.piotrowski.marek.nyndro.practice.Details;
 
 
 import android.database.Cursor;
@@ -18,7 +18,10 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Date;
 
+import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
+import iso.piotrowski.marek.nyndro.practice.PracticeAdapter;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 

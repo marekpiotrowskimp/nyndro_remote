@@ -28,14 +28,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.Date;
-
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
 import iso.piotrowski.marek.nyndro.plans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.plans.PlansFragment;
-import iso.piotrowski.marek.nyndro.practice.Practice;
-import iso.piotrowski.marek.nyndro.practice.PracticeDetailFragment;
-import iso.piotrowski.marek.nyndro.practice.PracticeListFragment;
+import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
+import iso.piotrowski.marek.nyndro.practice.Details.PracticeListFragment;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
 import iso.piotrowski.marek.nyndro.statistics.StatsPagerFragment;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;

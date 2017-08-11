@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.practice;
+package iso.piotrowski.marek.nyndro.UIComponents;
 
 import android.content.Context;
 import android.content.res.TypedArray;

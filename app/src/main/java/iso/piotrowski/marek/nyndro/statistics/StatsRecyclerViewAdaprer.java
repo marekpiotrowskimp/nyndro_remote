@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.UIComponents.BarChart;
 import iso.piotrowski.marek.nyndro.history.HistoryAnalysis;
 
 /**

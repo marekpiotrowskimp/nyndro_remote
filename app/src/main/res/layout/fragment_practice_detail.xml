@@ -11,7 +11,7 @@
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        tools:context=".practice.PracticeDetailFragment">
+        tools:context=".practice.Details.PracticeDetailFragment">
 
         <ImageView
             android:id="@+id/practice_image_detail"
@@ -75,7 +75,7 @@
             android:layout_alignBottom="@id/practice_status_maxrepetition_detail"
             android:background="@color/colorGrayLight"/>
 
-        <iso.piotrowski.marek.nyndro.practice.BuddaProgressBar
+        <iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar
             xmlns:custom="http://schemas.android.com/apk/res/iso.piotrowski.marek.nyndro"
             android:id="@+id/practice_progress_detail"
             android:layout_width="match_parent"

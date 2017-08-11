@@ -19,11 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Date;
-
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.practice.PracticeAdapter;
-import iso.piotrowski.marek.nyndro.practice.PracticeDatabaseHelper;
+import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 

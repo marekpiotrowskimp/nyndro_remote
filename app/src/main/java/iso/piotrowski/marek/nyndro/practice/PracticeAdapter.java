@@ -14,7 +14,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.List;
 
+import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
@@ -37,8 +39,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
     public static final int STANDARD_TYPE = 1;
     public static final int END_TYPE = 2;
 
-    private SQLiteDatabase db;
-    private Cursor cursorPractices;
+    private List<PracticeModel> practices;
     private CardViewListener cardViewListener=null;
     private ImageCardViewListener imageButtonListener=null;
 
@@ -59,9 +60,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
     }
 
 
-    public PracticeAdapter (Cursor cursorPractices, SQLiteDatabase db){
-        this.cursorPractices = cursorPractices;
-        this.db=db;
+    public PracticeAdapter (List<PracticeModel> practices){
+        this.practices = practices;
     }
 
     public static class ViewPracticeHolder extends RecyclerView.ViewHolder {
@@ -77,7 +77,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
     @Override
     public int getItemViewType(int position) {
         int type;
-        if (cursorPractices.getCount()>position) {
+        if (practices.size()>position) {
             type = STANDARD_TYPE;
         } else {
             type = END_TYPE;
@@ -136,42 +136,38 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
                 }
             });
 
+            PracticeModel practice = practices.get(position);
+            if (practice != null) {
+                practiceImage.setContentDescription(practice.getName());
+                practiceImage.setImageDrawable(cv.getResources().getDrawable(practice.getPracticeImageId()));
 
-            if (cursorPractices.moveToPosition(position)) {
-                practiceImage.setContentDescription(cursorPractices.getString(NAME_ID));
-                practiceImage.setImageDrawable(cv.getResources().getDrawable(cursorPractices.getInt(PRACTICE_IMAGE_ID_ID)));
-
-                String name = cursorPractices.getString(NAME_ID);
+                String name = practice.getName();
                 name = name.replace("\n", " ");
-//                name = name.substring(0, name.length() <= 32 ? name.length() : 32);
-//                name += name.length() < 32 ? "" : "...";
 
-                practiceName.setText(name); //cv.getResources().getText(R.string.name_practice) +" "+
-                practiceProgress.setMax(cursorPractices.getInt(MAX_REPETITION_ID));
-                practiceProgress.setProgress(cursorPractices.getInt(PROGRESS_ID));
-                practiceStatus.setText(String.valueOf(cursorPractices.getInt(PROGRESS_ID)) + " / " + String.valueOf(cursorPractices.getInt(MAX_REPETITION_ID)));
-                practiceRepetition.setText(String.valueOf(cursorPractices.getInt(REPETITION_ID)));
-                String description = cursorPractices.getString(DESCRIPTION_ID);
+                practiceName.setText(name);
+                practiceProgress.setMax(practice.getMaxRepetition());
+                practiceProgress.setProgress(practice.getProgress());
+                practiceStatus.setText(String.valueOf(practice.getProgress()) + " / " + String.valueOf(practice.getMaxRepetition()));
+                practiceRepetition.setText(String.valueOf(practice.getRepetition()));
+                String description = practice.getDescription();
                 description = description.replace("\n", " ");
-//                description = description.substring(0, description.length() <= 45 ? description.length() : 45);
-//                description += description.length() < 45 ? "" : "...";
                 practiceDescription.setText(description);
 
-                Calendar calendar = Calendar.getInstance();
-                long lastDate = SQLHelper.lastPractice(db, cursorPractices.getInt(_ID));
-                if (lastDate == -1) {
-                    practiceDateLast.setText(cv.getResources().getString(R.string.last_practice_date) + " -----------");
-                } else {
-                    calendar.setTimeInMillis(lastDate); //cursorPractices.getLong(LAST_PRACTICE_DATE_ID));
-                    practiceDateLast.setText(cv.getResources().getString(R.string.last_practice_date) + String.format(" %tD", calendar));
-                }
-                long nextDate = SQLHelper.nextPractice(db, cursorPractices.getInt(_ID));
-                if (nextDate == -1) {
-                    practiceDateNext.setText(cv.getResources().getString(R.string.next_practice_date) + " -----------");
-                } else{
-                    calendar.setTimeInMillis(nextDate);  //cursorPractices.getLong(NEXT_PRACTICE_DATE_ID));
-                    practiceDateNext.setText(cv.getResources().getString(R.string.next_practice_date) + String.format(" %tD", calendar));
-                }
+//                Calendar calendar = Calendar.getInstance();
+//                long lastDate = SQLHelper.lastPractice(db, cursorPractices.getInt(_ID));
+//                if (lastDate == -1) {
+//                    practiceDateLast.setText(cv.getResources().getString(R.string.last_practice_date) + " -----------");
+//                } else {
+//                    calendar.setTimeInMillis(lastDate); //cursorPractices.getLong(LAST_PRACTICE_DATE_ID));
+//                    practiceDateLast.setText(cv.getResources().getString(R.string.last_practice_date) + String.format(" %tD", calendar));
+//                }
+//                long nextDate = SQLHelper.nextPractice(db, cursorPractices.getInt(_ID));
+//                if (nextDate == -1) {
+//                    practiceDateNext.setText(cv.getResources().getString(R.string.next_practice_date) + " -----------");
+//                } else{
+//                    calendar.setTimeInMillis(nextDate);  //cursorPractices.getLong(NEXT_PRACTICE_DATE_ID));
+//                    practiceDateNext.setText(cv.getResources().getString(R.string.next_practice_date) + String.format(" %tD", calendar));
+//                }
 
                 cv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -199,6 +195,6 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
 
     @Override
     public int getItemCount() {
-        return cursorPractices.getCount()+1;
+        return practices.size() + 1;
     }
 }

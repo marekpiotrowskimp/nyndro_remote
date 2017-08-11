@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.tools;
 
-import android.app.backup.BackupManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,8 +9,8 @@ import android.database.sqlite.SQLiteException;
 import java.util.Date;
 
 import iso.piotrowski.marek.nyndro.history.HistoryRecyclerViewAdapter;
-import iso.piotrowski.marek.nyndro.practice.Practice;
-import iso.piotrowski.marek.nyndro.practice.PracticeDatabaseHelper;
+import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 
 /**
  * Created by Marek on 03.08.2016.
@@ -303,7 +302,8 @@ public class SQLHelper {
         Cursor cursor;
         long lastDate = -1;
         try {
-            cursor = db.query("history", new String[]{"_id", "practice_date"}, "practice_id=?", new String[]{String.valueOf(practice_id)}, null, null, "practice_date DESC");  //db.rawQuery(sqlQuery, new String[]{Integer.toString(practice_id)});
+            cursor = db.query("history", new String[]{"_id", "practice_date"}, "practice_id=?",
+                    new String[]{String.valueOf(practice_id)}, null, null, "practice_date DESC");  //db.rawQuery(sqlQuery, new String[]{Integer.toString(practice_id)});
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 lastDate = cursor.getLong(1);

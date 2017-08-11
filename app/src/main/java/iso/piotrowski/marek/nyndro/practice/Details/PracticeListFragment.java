@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.practice;
+package iso.piotrowski.marek.nyndro.practice.Details;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
 
 /**

@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.statistics;
+package iso.piotrowski.marek.nyndro.UIComponents;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -113,7 +113,7 @@ public class BarChart extends View {
         private int progress;
         private int color;
 
-        DataObj(String columnName, int progress, int color) {
+        public DataObj(String columnName, int progress, int color) {
             this.setColumnName(columnName);
             this.setProgress(progress);
             this.setColor(color);

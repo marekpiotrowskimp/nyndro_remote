@@ -5,15 +5,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,12 +18,11 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.practice.PracticeDatabaseHelper;
+import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 /**

@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.practice;
+package iso.piotrowski.marek.nyndro.DataSource.ConstantsData;
 
 import java.util.Date;
 

@@ -1,15 +1,8 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
-import android.util.Log;
-
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
-
-import java.util.Enumeration;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
@@ -36,15 +29,12 @@ public class DBQuery {
         return new Select().from(ReminderModel.class).execute();
     }
 
-    public <TItem> boolean getParam(Predicate<TItem> predicate, TItem item) {
-        return predicate.negate().test(item);
-    }
-
     public static boolean adjustDatabase() {
         if (ActiveAndroid.getDatabase().getVersion() == 2) {
             List<PracticeModel> practices = getPractices();
             List<HistoryModel> histories = getHistory();
             List<ReminderModel> remainders = getReminders();
+
             if (isNotEmpty(practices, histories, remainders)) {
 
                 for (ReminderModel remainder : remainders) {

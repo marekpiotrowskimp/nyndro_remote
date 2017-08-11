@@ -20,7 +20,7 @@ import java.util.Date;
 
 import iso.piotrowski.marek.nyndro.MainPracticsActivity;
 import iso.piotrowski.marek.nyndro.plans.PlansAdapter;
-import iso.piotrowski.marek.nyndro.practice.PracticeDatabaseHelper;
+import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
