@@ -3,7 +3,9 @@ package iso.piotrowski.marek.nyndro.DataSource;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
+import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 
 /**
  * Created by marek.piotrowski on 11/08/2017.
@@ -11,5 +13,8 @@ import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 
 public interface IDataSource {
     List<PracticeModel> fetchPractices();
-
+    HistoryModel fetchLastHistoryOfPractice(long practiceId);
+    ReminderModel fetchNextPlanedOfPractice(long practiceId);
+    void addHistoryForPractice(PracticeModel practice, int multiple);
+    void addProgressToPractice (PracticeModel practice, int multiple);
 }

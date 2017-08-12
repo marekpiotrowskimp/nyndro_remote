@@ -2,7 +2,9 @@ package iso.piotrowski.marek.nyndro.DataSource;
 
 import java.util.List;
 
+import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
+import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 
 /**
  * Created by marek.piotrowski on 11/08/2017.
@@ -23,4 +25,26 @@ public class DataSource implements IDataSource {
     public List<PracticeModel> fetchPractices() {
         return DBQuery.getPractices();
     }
+
+    @Override
+    public HistoryModel fetchLastHistoryOfPractice(long practiceId) {
+        return DBQuery.getHistoryForPractice(practiceId);
+    }
+
+    @Override
+    public ReminderModel fetchNextPlanedOfPractice(long practiceId) {
+        return null;
+    }
+
+    @Override
+    public void addHistoryForPractice(PracticeModel practice, int multiple) {
+        DBQuery.addHistoryForPractice(practice, multiple);
+    }
+
+    @Override
+    public void addProgressToPractice(PracticeModel practice, int multiple) {
+        DBQuery.addProgressToPractice(practice, multiple);
+    }
+
+
 }

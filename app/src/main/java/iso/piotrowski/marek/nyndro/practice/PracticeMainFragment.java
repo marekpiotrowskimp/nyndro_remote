@@ -3,12 +3,7 @@ package iso.piotrowski.marek.nyndro.practice;
 
 import android.app.backup.BackupManager;
 import android.media.MediaPlayer;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -23,14 +18,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import java.util.Date;
 import java.util.List;
 
-import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
+import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
-import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
@@ -41,88 +33,12 @@ import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PracticeMainFragment extends Fragment implements PracticeContract.IViewer {
+public class PracticeMainFragment extends Fragment implements PracticeContract.IViewer, PracticeAdapter.INextAndLastDateOfPractice, PracticeAdapter.ICardViewListener {
 
     private PracticeAdapter practiceAdapter;
     private RecyclerView practiceMainRecycleView;
     private boolean canceledDelete;
     private PracticeContract.IPresenter presenter;
-
-    public class ImageButtonListener implements PracticeAdapter.ImageCardViewListener {
-        @Override
-        public void onClick(View view, int position, int multiple) {
-//            if (cursorPractice.moveToPosition(position)) {
-//                int progressAdd = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID) + cursorPractice.getInt(PracticeAdapter.REPETITION_ID) * multiple;
-//                SQLHelper.updatePractice(db, cursorPractice.getInt(0), progressAdd);
-//                SQLHelper.insertHistory(db, cursorPractice.getInt(0), progressAdd, new Date().getTime(), cursorPractice.getInt(PracticeAdapter.REPETITION_ID));
-//                requestBackup();
-//                startEffect(view);
-//            }
-        }
-
-        public void startSoundEffect() {
-            MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.tweet);
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    if (mediaPlayer != null) {
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
-                }
-            });
-            mediaPlayer.start();
-        }
-
-        public void startEffect(final View view) {
-            startSoundEffect();
-            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.add_button_animation);
-            view.clearAnimation();
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    refreshPracticeRecyclerView();
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            ((View) view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.color_blinking_cardview));
-            view.startAnimation(animation);
-
-        }
-    }
-
-    public void requestBackup() {
-        if (SQLHelper.isUpdateDatabase) {
-            try {
-                SQLHelper.isUpdateDatabase = false;
-                BackupManager backupManager = new BackupManager(getActivity());
-                backupManager.dataChanged();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    private class PracticeCardViewListener implements PracticeAdapter.CardViewListener {
-        @Override
-        public void onClick(View view, int position) {
-            PracticeDetailFragment practiceDetailFragment = new PracticeDetailFragment();
-            practiceDetailFragment.setPosition(position);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.main_fragment_container, practiceDetailFragment, "visible_tag");
-            ft.addToBackStack(null);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-        }
-    }
 
     public PracticeMainFragment() {
     }
@@ -132,6 +48,7 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
                              Bundle savedInstanceState) {
         new PracticePresenter(this, DataSource.getInstance());
         practiceMainRecycleView = (RecyclerView) inflater.inflate(R.layout.fragment_practice_main, container, false);
+        ButterKnife.bind(this, practiceMainRecycleView);
         return practiceMainRecycleView;
     }
 
@@ -143,14 +60,19 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
 
     @Override
     public void setUpRecyclerView(List<PracticeModel> practices) {
-        practiceAdapter = new PracticeAdapter(practices);
-        practiceAdapter.setImageButtonListener(new ImageButtonListener());
-        practiceAdapter.setCardViewListener(new PracticeCardViewListener());
+        setUpPracticeAdapter(practices);
         practiceMainRecycleView.setAdapter(practiceAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayout.VERTICAL);
         practiceMainRecycleView.setLayoutManager(layoutManager);
         setUpItemTouchHelper();
+    }
+
+    private void setUpPracticeAdapter(List<PracticeModel> practices) {
+        practiceAdapter = new PracticeAdapter(practices);
+        practiceAdapter.setImageButtonListener(new ImageButtonListener(presenter));
+        practiceAdapter.setCardViewListener(this);
+        practiceAdapter.setNextAndLastDateOfPractice(this);
     }
 
     @Override
@@ -230,14 +152,12 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
     }
 
     public void refreshPracticeRecyclerView() {
-
+        presenter.loadPracticeData();
     }
 
     @Override
     public void refreshPracticeRecyclerView(List<PracticeModel> practices) {
-        practiceAdapter = new PracticeAdapter(practices);
-        practiceAdapter.setImageButtonListener(new ImageButtonListener());
-        practiceAdapter.setCardViewListener(new PracticeCardViewListener());
+        setUpPracticeAdapter(practices);
         practiceMainRecycleView.swapAdapter(practiceAdapter, false);
     }
 
@@ -274,5 +194,29 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
 //        }, 11000);
 
         refreshPracticeRecyclerView();
+    }
+
+
+    @Override
+    public long getNextPractice(long practiceId) {
+        ReminderModel reminder = presenter.getNextPlanedOfPractice(practiceId);
+        return reminder != null ? reminder.getPracticeDate() : -1;
+    }
+
+    @Override
+    public long getLastPractice(long practiceId) {
+        HistoryModel history = presenter.getLastHistoryOfPractice(practiceId);
+        return history !=null ? history.getPracticeData() : -1;
+    }
+
+    @Override
+    public void onClickToShowPracticeDetails(View view, int position) {
+        PracticeDetailFragment practiceDetailFragment = new PracticeDetailFragment();
+        practiceDetailFragment.setPosition(position);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_fragment_container, practiceDetailFragment, "visible_tag");
+        ft.addToBackStack(null);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
     }
 }

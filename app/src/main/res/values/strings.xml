@@ -68,6 +68,7 @@
     <string name="app_label_add_renainder">New reminder</string>
     <string name="cancel_action">CANCEL</string>
     <string name="deleted_practice_info">"Removed "</string>
+    <string name="NoDateToShow">-----------</string>
 
     //Day of week
     <string-array name="day_of_week">

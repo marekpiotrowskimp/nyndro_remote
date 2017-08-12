@@ -3,7 +3,7 @@
     package="iso.piotrowski.marek.nyndro">
 
     <application
-        android:name="com.activeandroid.app.Application"
+        android:name="iso.piotrowski.marek.nyndro.Application.NyndroApp"
         android:allowBackup="true"
         android:backupAgent="NyndroBackupAgent"
         android:icon="@mipmap/icon_nyndro1"

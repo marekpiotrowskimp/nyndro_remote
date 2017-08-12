@@ -12,11 +12,11 @@ import com.activeandroid.annotation.Table;
 public class HistoryModel extends Model {
 
     @Column(name = "PRACTICE_ID")
-    private Integer practiceId;
+    private long practiceId;
     @Column(name = "PROGRESS")
     private Integer progress;
     @Column(name = "PRACTICE_DATE")
-    private Integer practiceData;
+    private long practiceData;
     @Column(name = "REPETITION")
     private Integer repetition;
     @Column(name = "ACTIVE")
@@ -37,11 +37,11 @@ public class HistoryModel extends Model {
         this.setActive(active);
     }
 
-    public Integer getPracticeId() {
+    public long getPracticeId() {
         return practiceId;
     }
 
-    public HistoryModel setPracticeId(Integer practiceId) {
+    public HistoryModel setPracticeId(long practiceId) {
         this.practiceId = practiceId;
         return this;
     }
@@ -55,11 +55,11 @@ public class HistoryModel extends Model {
         return this;
     }
 
-    public Integer getPracticeData() {
+    public long getPracticeData() {
         return practiceData;
     }
 
-    public HistoryModel setPracticeData(Integer practiceData) {
+    public HistoryModel setPracticeData(long practiceData) {
         this.practiceData = practiceData;
         return this;
     }

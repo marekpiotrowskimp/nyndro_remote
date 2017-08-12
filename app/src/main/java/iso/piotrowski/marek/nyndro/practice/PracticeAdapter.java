@@ -1,7 +1,7 @@
 package iso.piotrowski.marek.nyndro.practice;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,10 +15,10 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 /**
  * Created by Marek on 25.07.2016.
@@ -40,44 +40,48 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
     public static final int END_TYPE = 2;
 
     private List<PracticeModel> practices;
-    private CardViewListener cardViewListener=null;
-    private ImageCardViewListener imageButtonListener=null;
+    private ICardViewListener cardViewListener = null;
+    private IImageCardViewListener imageButtonListener = null;
+    private INextAndLastDateOfPractice nextAndLastDateOfPractice = null;
 
-    public void setCardViewListener(CardViewListener cardViewListener) {
-        this.cardViewListener = cardViewListener;
+    interface INextAndLastDateOfPractice {
+        long getNextPractice (long practiceId);
+        long getLastPractice (long practiceId);
     }
 
-    public void setImageButtonListener(ImageCardViewListener imageButtonListener) {
-        this.imageButtonListener = imageButtonListener;
+    interface ICardViewListener {
+        void onClickToShowPracticeDetails (View view, int position);
     }
 
-    public interface CardViewListener {
-         void onClick (View view, int position);
+    interface IImageCardViewListener {
+        void onClick(View view, PracticeModel practice, int multiple);
     }
 
-    public interface ImageCardViewListener {
-         void onClick (View view, int position, int multiple);
-    }
-
-
-    public PracticeAdapter (List<PracticeModel> practices){
+    PracticeAdapter(List<PracticeModel> practices) {
         this.practices = practices;
     }
 
-    public static class ViewPracticeHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
+    public void setNextAndLastDateOfPractice(INextAndLastDateOfPractice nextAndLastDateOfPractice) {
+        this.nextAndLastDateOfPractice = nextAndLastDateOfPractice;
+    }
 
-        public ViewPracticeHolder (CardView cv){
-            super(cv);
-            cardView =cv;
-        }
+    void setCardViewListener(ICardViewListener cardViewListener) {
+        this.cardViewListener = cardViewListener;
+    }
 
+    void setImageButtonListener(IImageCardViewListener imageButtonListener) {
+        this.imageButtonListener = imageButtonListener;
+    }
+
+    @Override
+    public int getItemCount() {
+        return getCountWithFooter();
     }
 
     @Override
     public int getItemViewType(int position) {
         int type;
-        if (practices.size()>position) {
+        if (practices.size() > position) {
             type = STANDARD_TYPE;
         } else {
             type = END_TYPE;
@@ -103,98 +107,117 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
 
     @Override
     public void onBindViewHolder(ViewPracticeHolder holder, final int position) {
-        CardView cv = holder.cardView;
-        if (getItemViewType(position)==STANDARD_TYPE) {
-            ImageView practiceImage = (ImageView) cv.findViewById(R.id.practice_image);
-            TextView practiceName = (TextView) cv.findViewById(R.id.practice_name);
-            TextView practiceStatus = (TextView) cv.findViewById(R.id.practice_status);
-            TextView practiceRepetition = (TextView) cv.findViewById(R.id.practice_repetition);
-            final TextView practiceRepetitionMultiple = (TextView) cv.findViewById(R.id.practice_repetition_multiple);
-            TextView practiceDateLast = (TextView) cv.findViewById(R.id.practice_date_last);
-            TextView practiceDateNext = (TextView) cv.findViewById(R.id.practice_date_next);
-            TextView practiceDescription = (TextView) cv.findViewById(R.id.practice_description);
-            final SeekBar multiplePracticeSeekBar = (SeekBar) cv.findViewById(R.id.multiple_seek_bar);
-            ImageButton practiceRapetitionAdd = (ImageButton) cv.findViewById(R.id.practice_repetition_add);
-            ProgressBar practiceProgress = (ProgressBar) cv.findViewById(R.id.practice_progress);
-
-            multiplePracticeSeekBar.setProgress(1);
-            practiceRepetitionMultiple.setText(String.valueOf(multiplePracticeSeekBar.getProgress()));
-            multiplePracticeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    practiceRepetitionMultiple.setText(String.valueOf(progress));
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-            });
-
-            PracticeModel practice = practices.get(position);
-            if (practice != null) {
-                practiceImage.setContentDescription(practice.getName());
-                practiceImage.setImageDrawable(cv.getResources().getDrawable(practice.getPracticeImageId()));
-
-                String name = practice.getName();
-                name = name.replace("\n", " ");
-
-                practiceName.setText(name);
-                practiceProgress.setMax(practice.getMaxRepetition());
-                practiceProgress.setProgress(practice.getProgress());
-                practiceStatus.setText(String.valueOf(practice.getProgress()) + " / " + String.valueOf(practice.getMaxRepetition()));
-                practiceRepetition.setText(String.valueOf(practice.getRepetition()));
-                String description = practice.getDescription();
-                description = description.replace("\n", " ");
-                practiceDescription.setText(description);
-
-//                Calendar calendar = Calendar.getInstance();
-//                long lastDate = SQLHelper.lastPractice(db, cursorPractices.getInt(_ID));
-//                if (lastDate == -1) {
-//                    practiceDateLast.setText(cv.getResources().getString(R.string.last_practice_date) + " -----------");
-//                } else {
-//                    calendar.setTimeInMillis(lastDate); //cursorPractices.getLong(LAST_PRACTICE_DATE_ID));
-//                    practiceDateLast.setText(cv.getResources().getString(R.string.last_practice_date) + String.format(" %tD", calendar));
-//                }
-//                long nextDate = SQLHelper.nextPractice(db, cursorPractices.getInt(_ID));
-//                if (nextDate == -1) {
-//                    practiceDateNext.setText(cv.getResources().getString(R.string.next_practice_date) + " -----------");
-//                } else{
-//                    calendar.setTimeInMillis(nextDate);  //cursorPractices.getLong(NEXT_PRACTICE_DATE_ID));
-//                    practiceDateNext.setText(cv.getResources().getString(R.string.next_practice_date) + String.format(" %tD", calendar));
-//                }
-
-                cv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (cardViewListener != null) {
-                            cardViewListener.onClick(view, position);
-                        }
-                    }
-                });
-
-                practiceRapetitionAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (imageButtonListener != null) {
-                            imageButtonListener.onClick(view, position, multiplePracticeSeekBar.getProgress());
-                        }
-
-                    }
-                });
-
-            }
+        if (getItemViewType(position) == STANDARD_TYPE) {
+            bindPracticeViewHolderWithData(holder, position);
         }
-
     }
 
-    @Override
-    public int getItemCount() {
+    private void bindPracticeViewHolderWithData(ViewPracticeHolder holder, int position) {
+        holder.multiplePracticeSeekBar.setProgress(1);
+        holder.practiceRepetitionMultiple.setText(String.valueOf(holder.multiplePracticeSeekBar.getProgress()));
+        holder.multiplePracticeSeekBar.setOnSeekBarChangeListener(changeProgress(holder));
+        PracticeModel practice = practices.get(position);
+        if (practice != null) {
+            holder.practiceImage.setContentDescription(practice.getName());
+            holder.practiceImage.setImageDrawable(holder.cardView.getResources().getDrawable(practice.getPracticeImageId()));
+            holder.practiceName.setText(practice.getName().replace("\n", " "));
+            holder.practiceProgress.setMax(practice.getMaxRepetition());
+            holder.practiceProgress.setProgress(practice.getProgress());
+            holder.practiceStatus.setText(String.valueOf(practice.getProgress()) + " / " + String.valueOf(practice.getMaxRepetition()));
+            holder.practiceRepetition.setText(String.valueOf(practice.getRepetition()));
+            holder.practiceDescription.setText(practice.getDescription().replace("\n"," "));
+            setNextAndLastDateOfPractice(holder, practice);
+            holder.cardView.setOnClickListener(onClickToShowPracticeDetails(position));
+            holder.practiceRapetitionAdd.setOnClickListener(onClickToAddRepetition(holder, position));
+        }
+    }
+
+    private void setNextAndLastDateOfPractice(ViewPracticeHolder holder, PracticeModel practice) {
+        if (nextAndLastDateOfPractice != null) {
+            long lastDateOfPractice = nextAndLastDateOfPractice.getLastPractice(practice.getID());
+            long nextDateOfPractice = nextAndLastDateOfPractice.getNextPractice(practice.getID());
+            Calendar calendar = Calendar.getInstance();
+            if (lastDateOfPractice == -1) {
+                holder.practiceDateLast.setText(String.format("%s %s", holder.cardView.getResources().getString(R.string.last_practice_date),
+                        holder.cardView.getResources().getString(R.string.NoDateToShow)));
+            } else {
+                calendar.setTimeInMillis(lastDateOfPractice);
+                holder.practiceDateLast.setText(String.format("%s %tD", holder.cardView.getResources().getString(R.string.last_practice_date),
+                        calendar));
+            }
+            if (nextDateOfPractice == -1) {
+                holder.practiceDateNext.setText(String.format("%s %s", holder.cardView.getResources().getString(R.string.next_practice_date),
+                        holder.cardView.getResources().getString(R.string.NoDateToShow)));
+            } else{
+                calendar.setTimeInMillis(nextDateOfPractice);  //cursorPractices.getLong(NEXT_PRACTICE_DATE_ID));
+                holder.practiceDateNext.setText(String.format("%s %tD", holder.cardView.getResources().getString(R.string.next_practice_date),
+                        calendar));
+            }
+        }
+    }
+
+    @NonNull
+    private View.OnClickListener onClickToAddRepetition(final ViewPracticeHolder holder, final int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (imageButtonListener != null) {
+                    imageButtonListener.onClick(view, practices.get(position), holder.multiplePracticeSeekBar.getProgress());
+                }
+
+            }
+        };
+    }
+
+    @NonNull
+    private View.OnClickListener onClickToShowPracticeDetails(final int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cardViewListener != null) {
+                    cardViewListener.onClickToShowPracticeDetails(view, position);
+                }
+            }
+        };
+    }
+
+    @NonNull
+    private SeekBar.OnSeekBarChangeListener changeProgress(final ViewPracticeHolder holder) {
+        return new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                holder.practiceRepetitionMultiple.setText(String.valueOf(progress));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        };
+    }
+
+    private int getCountWithFooter() {
         return practices.size() + 1;
+    }
+
+    static class ViewPracticeHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
+        @BindView(R.id.practice_image) @Nullable ImageView practiceImage;
+        @BindView(R.id.practice_name) @Nullable TextView practiceName;
+        @BindView(R.id.practice_status) @Nullable TextView practiceStatus;
+        @BindView(R.id.practice_repetition) @Nullable TextView practiceRepetition;
+        @BindView(R.id.practice_repetition_multiple) @Nullable TextView practiceRepetitionMultiple;
+        @BindView(R.id.practice_date_last) @Nullable TextView practiceDateLast;
+        @BindView(R.id.practice_date_next) @Nullable TextView practiceDateNext;
+        @BindView(R.id.practice_description) @Nullable TextView practiceDescription;
+        @BindView(R.id.multiple_seek_bar) @Nullable SeekBar multiplePracticeSeekBar;
+        @BindView(R.id.practice_repetition_add) @Nullable ImageButton practiceRapetitionAdd;
+        @BindView(R.id.practice_progress) @Nullable ProgressBar practiceProgress;
+
+        ViewPracticeHolder(CardView cardView) {
+            super(cardView);
+            this.cardView = cardView;
+            ButterKnife.bind(this, this.cardView);
+        }
     }
 }
