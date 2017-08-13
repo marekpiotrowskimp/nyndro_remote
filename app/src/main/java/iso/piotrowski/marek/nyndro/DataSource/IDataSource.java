@@ -17,4 +17,6 @@ public interface IDataSource {
     ReminderModel fetchNextPlanedOfPractice(long practiceId);
     void addHistoryForPractice(PracticeModel practice, int multiple);
     void addProgressToPractice (PracticeModel practice, int multiple);
+    void markActive (PracticeModel practice, boolean active);
+    void deleteNoActive();
 }

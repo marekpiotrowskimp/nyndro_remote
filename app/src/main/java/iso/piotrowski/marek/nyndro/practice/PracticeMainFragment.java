@@ -3,6 +3,7 @@ package iso.piotrowski.marek.nyndro.practice;
 
 import android.app.backup.BackupManager;
 import android.media.MediaPlayer;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -37,7 +38,6 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
 
     private PracticeAdapter practiceAdapter;
     private RecyclerView practiceMainRecycleView;
-    private boolean canceledDelete;
     private PracticeContract.IPresenter presenter;
 
     public PracticeMainFragment() {
@@ -82,77 +82,9 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
 
 
     private void setUpItemTouchHelper() {
-
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
-                    deletePractice(viewHolder.getAdapterPosition(), viewHolder.itemView);
-                }
-
-            }
-
-            @Override
-            public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
-                    if (isCurrentlyActive) {
-                        final int margine = 10;
-                        View itemView = viewHolder.itemView;
-                        int x, y, width, height;
-                        x = itemView.getLeft() + margine;
-                        y = itemView.getTop() + margine;
-                        width = itemView.getWidth() - margine * 2;
-                        height = itemView.getHeight() - margine * 2;
-
-                        Paint paint = new Paint();
-
-                        paint.setARGB(220, 10, 10, 10);
-                        paint.setTextSize(40);
-                        String deleteText = getActivity().getString(R.string.delete_practice);
-                        c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2 + 8, paint);
-                    }
-
-                    super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                }
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
-                    if (isCurrentlyActive) {
-                        final int margine = 10;
-                        View itemView = viewHolder.itemView;
-                        int x, y, width, height;
-                        x = itemView.getLeft() + margine;
-                        y = itemView.getTop() + margine;
-                        width = itemView.getWidth() - margine * 2;
-                        height = itemView.getHeight() - margine * 2;
-
-                        Paint paint = new Paint();
-
-                        paint.setARGB(255, 255, 50, 50);
-                        c.drawRect(new Rect(x, y, x + width, y + height), paint);
-                        paint.setARGB(220, 250, 250, 255);
-                        paint.setTextSize(40);
-                        String deleteText = getActivity().getString(R.string.delete_practice);
-                        c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2 + 8, paint);
-                    }
-                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                }
-            }
-        };
-
+        ItemTouchHelper.SimpleCallback simpleCallback = new SimpleCallbackForTouches(0, ItemTouchHelper.LEFT, presenter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(practiceMainRecycleView);
-    }
-
-    public void refreshPracticeRecyclerView() {
-        presenter.loadPracticeData();
     }
 
     @Override
@@ -165,37 +97,6 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
     public void setPresenter(PracticeContract.IPresenter presenter) {
         this.presenter = presenter;
     }
-
-    void deletePractice(final int position, View view) {
-//        SQLHelper.deletePractice(db, cursorPractice, position);
-//        cursorPractice.moveToPosition(position);
-//        SQLHelper.updateHistoryInactive(db, cursorPractice.getInt(0), 0);
-//        SQLHelper.updateRemainderActive(db, cursorPractice.getInt(0));
-//        canceledDelete = false;
-//        Snackbar.make(view, getActivity().getResources().getString(R.string.deleted_practice_info) + " " + cursorPractice.getString(PracticeAdapter.NAME_ID), 10000)
-//                .setAction(R.string.cancel_action, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        canceledDelete = true;
-//                        SQLHelper.recoverPracticeHistoryRemainder(db);
-//                        refreshPracticeRecyclerView();
-//                    }
-//                }).show();
-//
-//        Handler deleteHandler = new Handler();
-//        deleteHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (!canceledDelete) {
-//                    SQLHelper.deleteAllInactive(db);
-//                    requestBackup();
-//                }
-//            }
-//        }, 11000);
-
-        refreshPracticeRecyclerView();
-    }
-
 
     @Override
     public long getNextPractice(long practiceId) {

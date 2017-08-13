@@ -112,6 +112,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         }
     }
 
+
+
     private void bindPracticeViewHolderWithData(ViewPracticeHolder holder, int position) {
         holder.multiplePracticeSeekBar.setProgress(1);
         holder.practiceRepetitionMultiple.setText(String.valueOf(holder.multiplePracticeSeekBar.getProgress()));
@@ -200,7 +202,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         return practices.size() + 1;
     }
 
-    static class ViewPracticeHolder extends RecyclerView.ViewHolder {
+    public class ViewPracticeHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         @BindView(R.id.practice_image) @Nullable ImageView practiceImage;
         @BindView(R.id.practice_name) @Nullable TextView practiceName;
@@ -218,6 +220,10 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             super(cardView);
             this.cardView = cardView;
             ButterKnife.bind(this, this.cardView);
+        }
+
+        public PracticeModel getPractice (){
+            return practices.get(getAdapterPosition());
         }
     }
 }

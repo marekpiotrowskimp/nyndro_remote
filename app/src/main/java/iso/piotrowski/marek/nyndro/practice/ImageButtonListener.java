@@ -55,7 +55,7 @@ public class ImageButtonListener implements PracticeAdapter.IImageCardViewListen
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                presenter.dataWereChanged();
+                presenter.refreshData();
             }
 
             @Override

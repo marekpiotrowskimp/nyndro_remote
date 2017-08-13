@@ -46,5 +46,15 @@ public class DataSource implements IDataSource {
         DBQuery.addProgressToPractice(practice, multiple);
     }
 
+    @Override
+    public void markActive(PracticeModel practice, boolean active) {
+        DBQuery.markActive(practice, active);
+    }
+
+    @Override
+    public void deleteNoActive() {
+        DBQuery.deleteNoActive();
+    }
+
 
 }

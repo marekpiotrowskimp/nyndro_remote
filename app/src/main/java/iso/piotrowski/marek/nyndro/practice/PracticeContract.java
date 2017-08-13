@@ -1,5 +1,7 @@
 package iso.piotrowski.marek.nyndro.practice;
 
+import android.view.View;
+
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
@@ -19,12 +21,13 @@ public class PracticeContract {
     }
 
     interface IPresenter {
-        void dataWereChanged();
+        void refreshData();
         void loadPracticeData();
         HistoryModel getLastHistoryOfPractice(long practiceId);
         ReminderModel getNextPlanedOfPractice(long practiceId);
         void requestBackup();
         void addHistoryForPractice(PracticeModel practice, int multiple);
         void addProgressToPractice (PracticeModel practice, int multiple);
+        void deletePractice (PracticeModel practice, View view);
     }
 }

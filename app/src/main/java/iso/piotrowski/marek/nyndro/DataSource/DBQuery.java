@@ -1,7 +1,10 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Model;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +20,7 @@ import iso.piotrowski.marek.nyndro.tools.Utility;
 public class DBQuery {
 
     public static List<PracticeModel> getPractices() {
-        return new Select().from(PracticeModel.class).orderBy("PROGRESS").execute();
+        return new Select().from(PracticeModel.class).orderBy("PROGRESS").where("ACTIVE = 1").execute();
     }
 
     public static PracticeModel getPractice(long id) {
@@ -25,7 +28,7 @@ public class DBQuery {
     }
 
     public static List<HistoryModel> getHistory() {
-        return new Select().from(HistoryModel.class).orderBy("PRACTICE_DATE").execute();
+        return new Select().from(HistoryModel.class).orderBy("PRACTICE_DATE").where("ACTIVE = 1").execute();
     }
 
     public static HistoryModel getHistoryForPractice(long practiceId) {
@@ -55,13 +58,37 @@ public class DBQuery {
         }
     }
 
+    public static void markActive (PracticeModel practice, boolean active){
+        updateActive(practice, active, PracticeModel.class, "_id = ?");
+        updateActive(practice, active, HistoryModel.class, "PRACTICE_ID = ?");
+        updateActive(practice, active, ReminderModel.class, "PRACTICE_ID = ?");
+    }
+
+    private static void updateActive(PracticeModel practice, boolean active, Class<? extends Model> tableClass, String whereColumn) {
+        new Update(tableClass).set("ACTIVE = ?", String.valueOf(active ? 1 : 0))
+                .where(whereColumn, practice.getID())
+                .execute();
+    }
+
+    public static void deleteNoActive(){
+        deleteNoActiveEntry(HistoryModel.class);
+        deleteNoActiveEntry(ReminderModel.class);
+        deleteNoActiveEntry(PracticeModel.class);
+    }
+
+    private static void deleteNoActiveEntry(Class<? extends Model> tableClass) {
+        new Delete().from(tableClass)
+                .where("ACTIVE = 0")
+                .execute();
+    }
+
     public static void addProgressToPractice (PracticeModel practice, int multiple) {
         practice.setProgress(practice.getProgress() + practice.getRepetition() * multiple)
                 .save();
     }
 
     public static List<ReminderModel> getReminders() {
-        return new Select().from(ReminderModel.class).execute();
+        return new Select().from(ReminderModel.class).where("ACTIVE = 0").execute();
     }
 
     public static boolean adjustDatabase() {
