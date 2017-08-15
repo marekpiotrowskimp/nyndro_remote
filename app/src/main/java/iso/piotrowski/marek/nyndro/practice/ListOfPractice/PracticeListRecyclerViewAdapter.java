@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.practice.Details;
+package iso.piotrowski.marek.nyndro.practice.ListOfPractice;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
 
@@ -52,17 +54,15 @@ public class PracticeListRecyclerViewAdapter extends RecyclerView.Adapter<Practi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final ImageView mImageView;
-        public final TextView mNameView;
-        public final TextView mDescriptionView;
+        @BindView(R.id.new_practice_image) ImageView mImageView;
+        @BindView(R.id.new_practice_name) TextView mNameView;
+        @BindView(R.id.new_practice_description) TextView mDescriptionView;
         public Practice mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mImageView = (ImageView) view.findViewById(R.id.new_practice_image);
-            mNameView = (TextView) view.findViewById(R.id.new_practice_name);
-            mDescriptionView = (TextView) view.findViewById(R.id.new_practice_description);
+            ButterKnife.bind(this, mView);
         }
 
         @Override

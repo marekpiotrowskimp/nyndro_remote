@@ -62,12 +62,12 @@ public class PracticePresenter implements PracticeContract.IPresenter {
 
     @Override
     public void addHistoryForPractice(PracticeModel practice, int multiple) {
-        dataSource.addHistoryForPractice(practice, multiple);
+        dataSource.addHistoryForPractice(practice, practice.getRepetition() * multiple);
     }
 
     @Override
     public void addProgressToPractice(PracticeModel practice, int multiple) {
-        dataSource.addProgressToPractice(practice, multiple);
+        dataSource.addProgressToPractice(practice, practice.getRepetition() * multiple);
     }
 
     @Override

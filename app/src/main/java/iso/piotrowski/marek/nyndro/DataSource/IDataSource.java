@@ -13,10 +13,12 @@ import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 
 public interface IDataSource {
     List<PracticeModel> fetchPractices();
+    PracticeModel fetchPractice(long practiceId);
     HistoryModel fetchLastHistoryOfPractice(long practiceId);
     ReminderModel fetchNextPlanedOfPractice(long practiceId);
     void addHistoryForPractice(PracticeModel practice, int multiple);
     void addProgressToPractice (PracticeModel practice, int multiple);
     void markActive (PracticeModel practice, boolean active);
     void deleteNoActive();
+    void updatePractice(PracticeModel practice);
 }

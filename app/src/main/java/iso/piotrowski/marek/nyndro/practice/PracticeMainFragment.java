@@ -111,9 +111,9 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
     }
 
     @Override
-    public void onClickToShowPracticeDetails(View view, int position) {
+    public void onClickToShowPracticeDetails(View view, PracticeModel practice) {
         PracticeDetailFragment practiceDetailFragment = new PracticeDetailFragment();
-        practiceDetailFragment.setPosition(position);
+        practiceDetailFragment.setPractice(practice);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_fragment_container, practiceDetailFragment, "visible_tag");
         ft.addToBackStack(null);

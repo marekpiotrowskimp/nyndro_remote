@@ -1,9 +1,6 @@
 package iso.piotrowski.marek.nyndro.practice.Details;
 
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,42 +13,61 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.Calendar;
-import java.util.Date;
 
-import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
-import iso.piotrowski.marek.nyndro.practice.PracticeAdapter;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PracticeDetailFragment extends Fragment {
+public class PracticeDetailFragment extends Fragment implements PracticeDetailContract.IViewer{
 
     public static final int STANDARD_VIEW = 1;
     public static final int EDIT_VIEW = 2;
+    private static String PRACTICE_ID = "practice_id";
     private int editMode = STANDARD_VIEW;
 
-    private SQLiteDatabase db;
-    private Cursor cursorPractice;
-    private int position;
+    private PracticeModel practice;
+    private PracticeDetailContract.IPresenter presenter;
+    private long practiceId;
+
+    @BindView(R.id.practice_image_detail) ImageView practiceImage;
+    @BindView(R.id.practice_name_detail) TextView practiceName;
+    @BindView(R.id.practice_status_progress_detail) TextView practiceStatusProgress;
+    @BindView(R.id.practice_status_maxrepetition_detail) TextView practiceStatusMaxRepetiton;
+    @BindView(R.id.practice_repetition_detail) TextView practiceRepetition;
+    @BindView(R.id.practice_date_last_detail) TextView practiceDateLast;
+    @BindView(R.id.practice_date_next_detail) TextView practiceDateNext;
+    @BindView(R.id.practice_description_detail) TextView practiceDescription;
+    @BindView(R.id.practice_progress_detail) BuddaProgressBar practiceProgress;
+    @BindView(R.id.practice_name_edit) EditText practiceNameEdit;
+    @BindView(R.id.practice_status_progress_edit) EditText practiceStatusProgressEdit;
+    @BindView(R.id.practice_status_maxrepetition_edit) EditText practiceStatusMaxRepetitonEdit;
+    @BindView(R.id.practice_repetition_edit) EditText practiceRepetitionEdit;
+    @BindView(R.id.practice_description_edit) EditText practiceDescriptionEdit;
+
 
     public PracticeDetailFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View layout =inflater.inflate(R.layout.fragment_practice_detail, container, false);
+        new PracticeDetailPresenter(this, DataSource.getInstance());
+        View practiceDetailView =inflater.inflate(R.layout.fragment_practice_detail, container, false);
         if (savedInstanceState!=null)
         {
-            position  = savedInstanceState.getInt("position");
+            practiceId  = savedInstanceState.getLong(PRACTICE_ID);
+            presenter.loadPracticeData(practiceId);
         }
         setHasOptionsMenu(true);
-        return layout;
+        ButterKnife.bind(this, practiceDetailView);
+        return practiceDetailView;
     }
 
     @Override
@@ -78,74 +94,45 @@ public class PracticeDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        pripareView(getView());
-    }
-
-    void pripareView (View layout){
-        try {
-            PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
-            db = practiceDatabaseHelper.getReadableDatabase();
-            cursorPractice = SQLHelper.getCursorPractice(db);
-            if (cursorPractice.moveToPosition(position)) {
-                viewPractice(getEditMode());
-            }
-        }catch (SQLiteException e){}
+        viewPractice(getEditMode());
     }
 
     private void viewPractice (int typeViewPractice)
     {
-        View mainAct = (View) getActivity().findViewById(R.id.fragment_detail_layout);
-
-        ImageView practiceImage = (ImageView)mainAct.findViewById(R.id.practice_image_detail);
-        TextView practiceName = (TextView)mainAct.findViewById(R.id.practice_name_detail);
-        TextView practiceStatusProgress = (TextView)mainAct.findViewById(R.id.practice_status_progress_detail);
-        TextView practiceStatusMaxRepetiton = (TextView)mainAct.findViewById(R.id.practice_status_maxrepetition_detail);
-        TextView practiceRepetition = (TextView)mainAct.findViewById(R.id.practice_repetition_detail);
-        TextView practiceDateLast = (TextView)mainAct.findViewById(R.id.practice_date_last_detail);
-        TextView practiceDateNext = (TextView)mainAct.findViewById(R.id.practice_date_next_detail);
-        TextView practiceDescription = (TextView)mainAct.findViewById(R.id.practice_description_detail);
-        BuddaProgressBar practiceProgress = (BuddaProgressBar)mainAct.findViewById(R.id.practice_progress_detail);
-
-        practiceImage.setContentDescription(cursorPractice.getString(PracticeAdapter.NAME_ID));
-        practiceImage.setImageDrawable(mainAct.getResources().getDrawable(cursorPractice.getInt(PracticeAdapter.PRACTICE_IMAGE_ID_ID)));
-        practiceProgress.setMaxProgress(cursorPractice.getInt(PracticeAdapter.MAX_REPETITION_ID));
-        practiceProgress.setProgress(cursorPractice.getInt(PracticeAdapter.PROGRESS_ID));
+        practiceImage.setContentDescription(practice.getName());
+        practiceImage.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(practice.getPracticeImageId()));
+        practiceProgress.setMaxProgress(practice.getMaxRepetition());
+        practiceProgress.setProgress(practice.getProgress());
 
 
         Calendar calendar = Calendar.getInstance();
-        long lastDate = SQLHelper.lastPractice(db, cursorPractice.getInt(PracticeAdapter._ID));
+        long lastDate = presenter.getLastHistoryOfPractice(practice.getID());
         if (lastDate == -1) {
-            practiceDateLast.setText(mainAct.getResources().getString(R.string.last_practice_date) + " -----------");
+            practiceDateLast.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.last_practice_date),
+                    NyndroApp.getContect().getResources().getString(R.string.NoDateToShow)));
         } else {
-            calendar.setTimeInMillis(lastDate); //cursorPractices.getLong(LAST_PRACTICE_DATE_ID));
-            practiceDateLast.setText(mainAct.getResources().getString(R.string.last_practice_date) + String.format(" %tD", calendar));
+            calendar.setTimeInMillis(lastDate);
+            practiceDateLast.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.last_practice_date),
+                    String.format(" %tD", calendar)));
         }
-        long nextDate = SQLHelper.nextPractice(db, cursorPractice.getInt(PracticeAdapter._ID));
+        long nextDate = presenter.getNextPlanedOfPractice(practice.getID());
         if (nextDate == -1) {
-            practiceDateNext.setText(mainAct.getResources().getString(R.string.next_practice_date) + " -----------");
+            practiceDateNext.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.next_practice_date),
+                    NyndroApp.getContect().getResources().getString(R.string.NoDateToShow)));
         } else{
-            calendar.setTimeInMillis(nextDate);  //cursorPractices.getLong(NEXT_PRACTICE_DATE_ID));
-            practiceDateNext.setText(mainAct.getResources().getString(R.string.next_practice_date) + String.format(" %tD", calendar));
+            calendar.setTimeInMillis(nextDate);
+            practiceDateNext.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.next_practice_date),
+                    String.format(" %tD", calendar)));
         }
 
         if (typeViewPractice==STANDARD_VIEW) {
-            practiceName.setText(mainAct.getResources().getText(R.string.name_practice) + " " + cursorPractice.getString(PracticeAdapter.NAME_ID));
-            practiceStatusProgress.setText(mainAct.getResources().getText(R.string.progress_name) + " " + String.valueOf(cursorPractice.getInt(PracticeAdapter.PROGRESS_ID)));
-            practiceStatusMaxRepetiton.setText(mainAct.getResources().getText(R.string.max_repetition_name) + " " + String.valueOf(cursorPractice.getInt(PracticeAdapter.MAX_REPETITION_ID)));
-            practiceRepetition.setText(mainAct.getResources().getText(R.string.repetiton_name) + " " + String.valueOf(cursorPractice.getInt(PracticeAdapter.REPETITION_ID)));
-            practiceDescription.setText(mainAct.getResources().getText(R.string.description_name) + " " + cursorPractice.getString(PracticeAdapter.DESCRIPTION_ID));
+            practiceName.setText(getFormatTextWithPracticeData(R.string.name_practice, practice.getName()));
+            practiceStatusProgress.setText(getFormatTextWithPracticeData(R.string.progress_name, String.valueOf(practice.getProgress())));
+            practiceStatusMaxRepetiton.setText(getFormatTextWithPracticeData(R.string.max_repetition_name, String.valueOf(practice.getMaxRepetition())));
+            practiceRepetition.setText(getFormatTextWithPracticeData(R.string.repetiton_name, String.valueOf(practice.getRepetition())));
+            practiceDescription.setText(getFormatTextWithPracticeData(R.string.description_name, practice.getDescription()));
 
-            EditText practiceNameEdit = (EditText) mainAct.findViewById(R.id.practice_name_edit);
-            EditText practiceStatusProgressEdit = (EditText) mainAct.findViewById(R.id.practice_status_progress_edit);
-            EditText practiceStatusMaxRepetitonEdit = (EditText) mainAct.findViewById(R.id.practice_status_maxrepetition_edit);
-            EditText practiceRepetitionEdit = (EditText) mainAct.findViewById(R.id.practice_repetition_edit);
-            EditText practiceDescriptionEdit = (EditText) mainAct.findViewById(R.id.practice_description_edit);
-
-            practiceNameEdit.setVisibility(View.INVISIBLE);
-            practiceStatusProgressEdit.setVisibility(View.INVISIBLE);
-            practiceStatusMaxRepetitonEdit.setVisibility(View.INVISIBLE);
-            practiceRepetitionEdit.setVisibility(View.INVISIBLE);
-            practiceDescriptionEdit.setVisibility(View.INVISIBLE);
+            setEditVisibility(View.INVISIBLE);
 
             practiceNameEdit.setText("");
             practiceStatusProgressEdit.setText("");
@@ -156,97 +143,84 @@ public class PracticeDetailFragment extends Fragment {
         }
 
         if (typeViewPractice==EDIT_VIEW) {
-            EditText practiceNameEdit = (EditText) mainAct.findViewById(R.id.practice_name_edit);
-            EditText practiceStatusProgressEdit = (EditText) mainAct.findViewById(R.id.practice_status_progress_edit);
-            EditText practiceStatusMaxRepetitonEdit = (EditText) mainAct.findViewById(R.id.practice_status_maxrepetition_edit);
-            EditText practiceRepetitionEdit = (EditText) mainAct.findViewById(R.id.practice_repetition_edit);
-            EditText practiceDescriptionEdit = (EditText) mainAct.findViewById(R.id.practice_description_edit);
+            setEditVisibility(View.VISIBLE);
 
-            practiceNameEdit.setVisibility(View.VISIBLE);
-            practiceStatusProgressEdit.setVisibility(View.VISIBLE);
-            practiceStatusMaxRepetitonEdit.setVisibility(View.VISIBLE);
-            practiceRepetitionEdit.setVisibility(View.VISIBLE);
-            practiceDescriptionEdit.setVisibility(View.VISIBLE);
+            practiceName.setText(getFormatEditFromResources(R.string.name_practice));
+            practiceNameEdit.setText(practice.getName());
 
-            practiceName.setText(mainAct.getResources().getText(R.string.name_practice) + " ");
-            practiceNameEdit.setText(cursorPractice.getString(PracticeAdapter.NAME_ID));
+            practiceStatusProgress.setText(getFormatEditFromResources(R.string.progress_name));
+            practiceStatusProgressEdit.setText(String.valueOf(practice.getProgress()));
 
-            practiceStatusProgress.setText(mainAct.getResources().getText(R.string.progress_name) + " ");
-            practiceStatusProgressEdit.setText(String.valueOf(cursorPractice.getInt(PracticeAdapter.PROGRESS_ID)));
+            practiceStatusMaxRepetiton.setText(getFormatEditFromResources(R.string.max_repetition_name));
+            practiceStatusMaxRepetitonEdit.setText(String.valueOf(practice.getMaxRepetition()));
 
-            practiceStatusMaxRepetiton.setText(mainAct.getResources().getText(R.string.max_repetition_name) + " ");
-            practiceStatusMaxRepetitonEdit.setText(String.valueOf(cursorPractice.getInt(PracticeAdapter.MAX_REPETITION_ID)));
+            practiceRepetition.setText(getFormatEditFromResources(R.string.repetiton_name));
+            practiceRepetitionEdit.setText(String.valueOf(practice.getRepetition()));
 
-            practiceRepetition.setText(mainAct.getResources().getText(R.string.repetiton_name) + " ");
-            practiceRepetitionEdit.setText(String.valueOf(cursorPractice.getInt(PracticeAdapter.REPETITION_ID)));
-
-            practiceDescription.setText(mainAct.getResources().getText(R.string.description_name) + " ");
-            practiceDescriptionEdit.setText(cursorPractice.getString(PracticeAdapter.DESCRIPTION_ID));
+            practiceDescription.setText(getFormatEditFromResources(R.string.description_name));
+            practiceDescriptionEdit.setText(practice.getDescription());
         }
     }
 
-    public int getPosition() {
-        return position;
+    private String getFormatTextWithPracticeData(int resourcesId, String practiceData) {
+        return String.format("%s%s", getFormatEditFromResources(resourcesId),
+                practiceData);
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    private void setEditVisibility(int visible) {
+        practiceNameEdit.setVisibility(visible);
+        practiceStatusProgressEdit.setVisibility(visible);
+        practiceStatusMaxRepetitonEdit.setVisibility(visible);
+        practiceRepetitionEdit.setVisibility(visible);
+        practiceDescriptionEdit.setVisibility(visible);
+    }
+
+    private String getFormatEditFromResources(int resourcesId) {
+        return String.format("%s ", NyndroApp.getContect().getResources().getText(resourcesId));
+    }
+
+    @Override
+    public void setPractice(PracticeModel practice) {
+        this.practice = practice;
+        this.practiceId = practice.getID();
+    }
+
+    @Override
+    public void showPractice() {
+        viewPractice(getEditMode());
     }
 
     public void addRepetition (boolean typeAddSubtrack)
     {
-        int progressAdd=0;
-        int repetition=0;
-        if (typeAddSubtrack) {
-            repetition = cursorPractice.getInt(PracticeAdapter.REPETITION_ID);
-        } else
-        {
-            repetition = -1* cursorPractice.getInt(PracticeAdapter.REPETITION_ID);
-        }
-        progressAdd = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID) + repetition ;
-
-        SQLHelper.updatePractice(db,cursorPractice.getInt(0),progressAdd);
-
-        SQLHelper.insertHistory(db,cursorPractice.getInt(0),progressAdd,new Date().getTime(), repetition);
-
-
-        cursorPractice =SQLHelper.getCursorPractice(db);
-        cursorPractice.moveToPosition(position);
+        int repetition = practice.getProgress() * (typeAddSubtrack ? 1 : -1);
+        presenter.addProgressToPractice(practice, repetition);
+        presenter.addHistoryForPractice(practice, repetition);
         viewPractice(getEditMode());
-
     }
 
     void editionEnd ()
     {
-        EditText practiceNameEdit = (EditText) getActivity().findViewById(R.id.practice_name_edit);
-        EditText practiceStatusProgressEdit = (EditText) getActivity().findViewById(R.id.practice_status_progress_edit);
-        EditText practiceStatusMaxRepetitonEdit = (EditText) getActivity().findViewById(R.id.practice_status_maxrepetition_edit);
-        EditText practiceRepetitionEdit = (EditText) getActivity().findViewById(R.id.practice_repetition_edit);
-        EditText practiceDescriptionEdit = (EditText) getActivity().findViewById(R.id.practice_description_edit);
+        int oldProgress = practice.getProgress();
+        presenter.updatePractice(practice.setName(practiceNameEdit.getText().toString())
+                .setDescription(practiceDescriptionEdit.getText().toString())
+                .setProgress(getIntegerValue(practiceStatusProgressEdit, practice.getProgress()))
+                .setMaxRepetition(getIntegerValue(practiceStatusMaxRepetitonEdit, practice.getMaxRepetition()))
+                .setRepetition(getIntegerValue(practiceRepetitionEdit, practice.getRepetition())));
+        int repetition = practice.getProgress() - oldProgress;
+        presenter.addHistoryForPractice(practice, repetition);
+        viewPractice(getEditMode());
+    }
 
-        SQLHelper.updatePracticeAll (db, cursorPractice.getInt(0), practiceNameEdit.getText().toString(),
-                practiceDescriptionEdit.getText().toString(), practiceStatusProgressEdit.getText().toString(),
-                practiceStatusMaxRepetitonEdit.getText().toString(), practiceRepetitionEdit.getText().toString());
-
-        String progress = practiceStatusProgressEdit.getText().toString();
-        int progressAdd = 0;
-        if (!progress.equals("")) progressAdd = Integer.parseInt(progress);
-        int progressOld = cursorPractice.getInt(PracticeAdapter.PROGRESS_ID);
-        if (progressAdd!=progressOld) {
-            int repetition = progressAdd - progressOld;
-            SQLHelper.insertHistory(db, cursorPractice.getInt(0), progressAdd, new Date().getTime(), repetition);
-        }
-        cursorPractice= SQLHelper.getCursorPractice(db);
-        cursorPractice.moveToPosition(position);
-
+    private Integer getIntegerValue(EditText fromEdit, Integer oldValue) {
+        String textValue = fromEdit.getText().toString();
+        return textValue.isEmpty() ? oldValue : Integer.valueOf(textValue);
     }
 
     public void setEdit()
     {
-        if (getEditMode() ==STANDARD_VIEW) {
+        if (getEditMode() == STANDARD_VIEW) {
             editMode = EDIT_VIEW;
-        } else
-        {
+        } else {
             editMode=STANDARD_VIEW;
             editionEnd();
         }
@@ -256,14 +230,7 @@ public class PracticeDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("position",position);
-    }
-
-    @Override
-    public void onDestroy() {
-        if (cursorPractice!=null) cursorPractice.close();
-        if (db!=null) db.close();
-        super.onDestroy();
+        outState.putLong(PRACTICE_ID, practiceId);
     }
 
     public int getEditMode() {
@@ -271,12 +238,11 @@ public class PracticeDetailFragment extends Fragment {
     }
 
     public String getPracticeName(){
-        String name="";
-        if (cursorPractice!=null)
-        {
-            cursorPractice.moveToPosition(position);
-            name = cursorPractice.getString(PracticeAdapter.NAME_ID);
-        }
-        return name;
+        return practice.getName();
+    }
+
+    @Override
+    public void setPresenter(PracticeDetailContract.IPresenter presenter) {
+        this.presenter = presenter;
     }
 }

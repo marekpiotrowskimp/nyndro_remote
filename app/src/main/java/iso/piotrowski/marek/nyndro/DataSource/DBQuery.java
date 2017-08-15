@@ -39,10 +39,10 @@ public class DBQuery {
         return new Select().from(HistoryModel.class).where("PRACTICE_DATE = ? AND PRACTICE_ID = ?", dateInSecondsFrom1970, practiceId).executeSingle();
     }
 
-    public static void addHistoryForPractice(PracticeModel practice, int multiple){
+    public static void addHistoryForPractice(PracticeModel practice, int addProgress){
         long secondsFrom1970 = Utility.removeTimeFromDate(new Date()).getTime();
         HistoryModel history = getHistoryForDate(secondsFrom1970, practice.getID());
-        int addRepetition = practice.getRepetition() * multiple;
+        int addRepetition = addProgress;
         if (history == null) {
             new HistoryModel().setActive(true)
                     .setPractice(practice)
@@ -82,13 +82,17 @@ public class DBQuery {
                 .execute();
     }
 
-    public static void addProgressToPractice (PracticeModel practice, int multiple) {
-        practice.setProgress(practice.getProgress() + practice.getRepetition() * multiple)
+    public static void addProgressToPractice (PracticeModel practice, int addProgress) {
+        practice.setProgress(practice.getProgress() + addProgress)
                 .save();
     }
 
     public static List<ReminderModel> getReminders() {
         return new Select().from(ReminderModel.class).where("ACTIVE = 0").execute();
+    }
+
+    public static void updatePractice (PracticeModel practice){
+        practice.save();
     }
 
     public static boolean adjustDatabase() {

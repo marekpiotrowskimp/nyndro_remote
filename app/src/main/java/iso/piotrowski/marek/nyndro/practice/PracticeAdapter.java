@@ -50,7 +50,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
     }
 
     interface ICardViewListener {
-        void onClickToShowPracticeDetails (View view, int position);
+        void onClickToShowPracticeDetails (View view, PracticeModel practice);
     }
 
     interface IImageCardViewListener {
@@ -177,7 +177,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             @Override
             public void onClick(View view) {
                 if (cardViewListener != null) {
-                    cardViewListener.onClickToShowPracticeDetails(view, position);
+                    cardViewListener.onClickToShowPracticeDetails(view, practices.get(position));
                 }
             }
         };

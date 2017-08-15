@@ -33,7 +33,7 @@ import iso.piotrowski.marek.nyndro.plans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.plans.PlansFragment;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
-import iso.piotrowski.marek.nyndro.practice.Details.PracticeListFragment;
+import iso.piotrowski.marek.nyndro.practice.ListOfPractice.PracticeListFragment;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
 import iso.piotrowski.marek.nyndro.statistics.StatsPagerFragment;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;

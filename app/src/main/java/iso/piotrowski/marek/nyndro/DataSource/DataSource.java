@@ -27,6 +27,11 @@ public class DataSource implements IDataSource {
     }
 
     @Override
+    public PracticeModel fetchPractice(long practiceId) {
+        return DBQuery.getPractice(practiceId);
+    }
+
+    @Override
     public HistoryModel fetchLastHistoryOfPractice(long practiceId) {
         return DBQuery.getHistoryForPractice(practiceId);
     }
@@ -37,13 +42,13 @@ public class DataSource implements IDataSource {
     }
 
     @Override
-    public void addHistoryForPractice(PracticeModel practice, int multiple) {
-        DBQuery.addHistoryForPractice(practice, multiple);
+    public void addHistoryForPractice(PracticeModel practice, int addProgress) {
+        DBQuery.addHistoryForPractice(practice, addProgress);
     }
 
     @Override
-    public void addProgressToPractice(PracticeModel practice, int multiple) {
-        DBQuery.addProgressToPractice(practice, multiple);
+    public void addProgressToPractice(PracticeModel practice, int addProgress) {
+        DBQuery.addProgressToPractice(practice, addProgress);
     }
 
     @Override
@@ -54,6 +59,11 @@ public class DataSource implements IDataSource {
     @Override
     public void deleteNoActive() {
         DBQuery.deleteNoActive();
+    }
+
+    @Override
+    public void updatePractice(PracticeModel practice) {
+        DBQuery.updatePractice(practice);
     }
 
 

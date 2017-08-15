@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.practice.Details;
+package iso.piotrowski.marek.nyndro.practice.ListOfPractice;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,12 +13,6 @@ import android.view.ViewGroup;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class PracticeListFragment extends Fragment {
 
     private int mColumnCount = 1;
@@ -37,8 +31,6 @@ public class PracticeListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.practice_fragment_item_list, container, false);
-
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
