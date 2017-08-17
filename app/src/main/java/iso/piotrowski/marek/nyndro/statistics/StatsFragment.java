@@ -66,8 +66,8 @@ public class StatsFragment extends Fragment {
 
                         if (historyAnalysises[ind].getAnalysisResult().isEmpty()) {
                             Map<String, HistoryAnalysis.Info> analysisEmpty = new HashMap<String, HistoryAnalysis.Info>();
-                            analysisEmpty.put("practice_name", new HistoryAnalysis.Info(cursorPractice.getString(PracticeAdapter.NAME_ID)));
-                            analysisEmpty.put("practice_image_id", new HistoryAnalysis.Info(cursorPractice.getInt(PracticeAdapter.PRACTICE_IMAGE_ID_ID)));
+//                            analysisEmpty.put("practice_name", new HistoryAnalysis.Info(cursorPractice.getString(PracticeAdapter.NAME_ID)));
+//                            analysisEmpty.put("practice_image_id", new HistoryAnalysis.Info(cursorPractice.getInt(PracticeAdapter.PRACTICE_IMAGE_ID_ID)));
                             historyAnalysises[ind].setAnalysisResult(analysisEmpty);
                         }
                     }

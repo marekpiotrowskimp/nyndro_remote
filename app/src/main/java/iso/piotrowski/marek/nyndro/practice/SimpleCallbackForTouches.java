@@ -30,7 +30,7 @@ public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
+        if (viewHolder.getItemViewType() == PracticeAdapter.TypeOfCardView.Standard.getValue()) {
             if (viewHolder instanceof PracticeAdapter.ViewPracticeHolder) {
                 presenter.deletePractice(((PracticeAdapter.ViewPracticeHolder) viewHolder).getPractice(), viewHolder.itemView);
             }
@@ -40,7 +40,7 @@ public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
+        if (viewHolder.getItemViewType() == PracticeAdapter.TypeOfCardView.Standard.getValue()) {
             if (isCurrentlyActive) {
                 Paint paint = new Paint();
                 paint.setARGB(200, 255, 255, 255);
@@ -52,7 +52,7 @@ public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        if (viewHolder.getItemViewType() == PracticeAdapter.STANDARD_TYPE) {
+        if (viewHolder.getItemViewType() == PracticeAdapter.TypeOfCardView.Standard.getValue()) {
             if (isCurrentlyActive) {
                 Paint paint = new Paint();
                 paint.setARGB(255, 255, 255, 255);

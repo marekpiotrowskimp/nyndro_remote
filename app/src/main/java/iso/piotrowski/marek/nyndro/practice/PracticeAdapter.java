@@ -13,12 +13,14 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.Calendar;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Utility;
+
+import static iso.piotrowski.marek.nyndro.practice.PracticeAdapter.TypeOfCardView.Standard;
 
 /**
  * Created by Marek on 25.07.2016.
@@ -27,17 +29,19 @@ import iso.piotrowski.marek.nyndro.R;
 
 public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPracticeHolder> {
 
-    public static final int _ID = 0;
-    public static final int NAME_ID = 1;
-    public static final int DESCRIPTION_ID = 2;
-    public static final int PRACTICE_IMAGE_ID_ID = 3;
-    public static final int PROGRESS_ID = 4;
-    public static final int MAX_REPETITION_ID = 5;
-    public static final int REPETITION_ID = 6;
-    public static final int ACTIVE_ID = 7;
+    public enum TypeOfCardView {
+        Standard(0),
+        End(1);
 
-    public static final int STANDARD_TYPE = 1;
-    public static final int END_TYPE = 2;
+        private final int value;
+        TypeOfCardView(int value){
+            this.value = value;
+        }
+
+        int getValue(){
+            return value;
+        }
+    }
 
     private List<PracticeModel> practices;
     private ICardViewListener cardViewListener = null;
@@ -80,23 +84,21 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
 
     @Override
     public int getItemViewType(int position) {
-        int type;
         if (practices.size() > position) {
-            type = STANDARD_TYPE;
+            return Standard.getValue();
         } else {
-            type = END_TYPE;
+            return TypeOfCardView.End.getValue();
         }
-        return type;
     }
 
     @Override
     public ViewPracticeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cv;
-        switch (viewType) {
-            case STANDARD_TYPE:
+        switch (TypeOfCardView.values()[viewType]) {
+            case Standard:
                 cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_practice, parent, false);
                 break;
-            case END_TYPE:
+            case End:
                 cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_practice_blank, parent, false);
                 break;
             default:
@@ -107,12 +109,10 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
 
     @Override
     public void onBindViewHolder(ViewPracticeHolder holder, final int position) {
-        if (getItemViewType(position) == STANDARD_TYPE) {
+        if (getItemViewType(position) == TypeOfCardView.Standard.getValue()) {
             bindPracticeViewHolderWithData(holder, position);
         }
     }
-
-
 
     private void bindPracticeViewHolderWithData(ViewPracticeHolder holder, int position) {
         holder.multiplePracticeSeekBar.setProgress(1);
@@ -138,23 +138,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         if (nextAndLastDateOfPractice != null) {
             long lastDateOfPractice = nextAndLastDateOfPractice.getLastPractice(practice.getID());
             long nextDateOfPractice = nextAndLastDateOfPractice.getNextPractice(practice.getID());
-            Calendar calendar = Calendar.getInstance();
-            if (lastDateOfPractice == -1) {
-                holder.practiceDateLast.setText(String.format("%s %s", holder.cardView.getResources().getString(R.string.last_practice_date),
-                        holder.cardView.getResources().getString(R.string.NoDateToShow)));
-            } else {
-                calendar.setTimeInMillis(lastDateOfPractice);
-                holder.practiceDateLast.setText(String.format("%s %tD", holder.cardView.getResources().getString(R.string.last_practice_date),
-                        calendar));
-            }
-            if (nextDateOfPractice == -1) {
-                holder.practiceDateNext.setText(String.format("%s %s", holder.cardView.getResources().getString(R.string.next_practice_date),
-                        holder.cardView.getResources().getString(R.string.NoDateToShow)));
-            } else{
-                calendar.setTimeInMillis(nextDateOfPractice);  //cursorPractices.getLong(NEXT_PRACTICE_DATE_ID));
-                holder.practiceDateNext.setText(String.format("%s %tD", holder.cardView.getResources().getString(R.string.next_practice_date),
-                        calendar));
-            }
+            Utility.setUpPracticeDate(holder.practiceDateLast, lastDateOfPractice);
+            Utility.setUpPracticeDate(holder.practiceDateNext, nextDateOfPractice);
         }
     }
 

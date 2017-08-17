@@ -60,8 +60,8 @@ public class AddRemainderAdapter extends RecyclerView.Adapter<AddRemainderAdapte
         TextView practiceName = (TextView) holder.cv.findViewById(R.id.add_remainder_name_practice);
         if (cursorPractice != null) {
             if (cursorPractice.moveToPosition(position)) {
-                practiceImage.setImageDrawable(holder.cv.getResources().getDrawable(cursorPractice.getInt(PracticeAdapter.PRACTICE_IMAGE_ID_ID)));
-                practiceName.setText(cursorPractice.getString(PracticeAdapter.NAME_ID));
+//                practiceImage.setImageDrawable(holder.cv.getResources().getDrawable(cursorPractice.getInt(PracticeAdapter.PRACTICE_IMAGE_ID_ID)));
+//                practiceName.setText(cursorPractice.getString(PracticeAdapter.NAME_ID));
             }
         }
 

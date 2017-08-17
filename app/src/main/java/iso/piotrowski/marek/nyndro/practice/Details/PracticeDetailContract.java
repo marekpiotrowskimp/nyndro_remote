@@ -1,8 +1,6 @@
 package iso.piotrowski.marek.nyndro.practice.Details;
 
-import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
-import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 
 /**
  * Created by marek.piotrowski on 15/08/2017.

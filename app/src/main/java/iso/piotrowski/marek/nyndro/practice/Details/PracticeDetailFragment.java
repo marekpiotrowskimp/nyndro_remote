@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.practice.Details;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,20 +19,12 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PracticeDetailFragment extends Fragment implements PracticeDetailContract.IViewer{
-
-    public static final int STANDARD_VIEW = 1;
-    public static final int EDIT_VIEW = 2;
-    private static String PRACTICE_ID = "practice_id";
-    private int editMode = STANDARD_VIEW;
-
-    private PracticeModel practice;
-    private PracticeDetailContract.IPresenter presenter;
-    private long practiceId;
 
     @BindView(R.id.practice_image_detail) ImageView practiceImage;
     @BindView(R.id.practice_name_detail) TextView practiceName;
@@ -51,6 +41,16 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
     @BindView(R.id.practice_repetition_edit) EditText practiceRepetitionEdit;
     @BindView(R.id.practice_description_edit) EditText practiceDescriptionEdit;
 
+    private static String PRACTICE_ID = "practice_id";
+    private TypeOfEditMode editMode = TypeOfEditMode.Standard;
+    private PracticeModel practice;
+    private PracticeDetailContract.IPresenter presenter;
+    private long practiceId;
+
+    public enum TypeOfEditMode {
+        Standard,
+        Edit
+    }
 
     public PracticeDetailFragment() {
     }
@@ -80,7 +80,7 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_toolbar:
-                if (getEditMode() == EDIT_VIEW) {
+                if (getEditMode() == TypeOfEditMode.Edit) {
                     getFragmentManager().popBackStack();
                 } else {
                     item.setIcon(getResources().getDrawable(R.mipmap.ic_edit_black_48dp));
@@ -94,76 +94,39 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
     @Override
     public void onStart() {
         super.onStart();
-        viewPractice(getEditMode());
+        presenter.loadPracticeData(practiceId);
     }
 
-    private void viewPractice (int typeViewPractice)
+    private void viewPractice (TypeOfEditMode typeViewPractice)
     {
         practiceImage.setContentDescription(practice.getName());
         practiceImage.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(practice.getPracticeImageId()));
         practiceProgress.setMaxProgress(practice.getMaxRepetition());
         practiceProgress.setProgress(practice.getProgress());
 
+        Utility.setUpPracticeDate(practiceDateLast, presenter.getLastHistoryOfPractice(practice.getID()));
+        Utility.setUpPracticeDate(practiceDateNext, presenter.getNextPlanedOfPractice(practice.getID()));
 
-        Calendar calendar = Calendar.getInstance();
-        long lastDate = presenter.getLastHistoryOfPractice(practice.getID());
-        if (lastDate == -1) {
-            practiceDateLast.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.last_practice_date),
-                    NyndroApp.getContect().getResources().getString(R.string.NoDateToShow)));
-        } else {
-            calendar.setTimeInMillis(lastDate);
-            practiceDateLast.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.last_practice_date),
-                    String.format(" %tD", calendar)));
-        }
-        long nextDate = presenter.getNextPlanedOfPractice(practice.getID());
-        if (nextDate == -1) {
-            practiceDateNext.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.next_practice_date),
-                    NyndroApp.getContect().getResources().getString(R.string.NoDateToShow)));
-        } else{
-            calendar.setTimeInMillis(nextDate);
-            practiceDateNext.setText(String.format("%s %s", NyndroApp.getContect().getResources().getString(R.string.next_practice_date),
-                    String.format(" %tD", calendar)));
-        }
+        setEditVisibility(typeViewPractice==TypeOfEditMode.Standard ? View.INVISIBLE : View.VISIBLE);
+        setUpPracticeTextAndEdit(practice, typeViewPractice==TypeOfEditMode.Standard);
+    }
 
-        if (typeViewPractice==STANDARD_VIEW) {
-            practiceName.setText(getFormatTextWithPracticeData(R.string.name_practice, practice.getName()));
-            practiceStatusProgress.setText(getFormatTextWithPracticeData(R.string.progress_name, String.valueOf(practice.getProgress())));
-            practiceStatusMaxRepetiton.setText(getFormatTextWithPracticeData(R.string.max_repetition_name, String.valueOf(practice.getMaxRepetition())));
-            practiceRepetition.setText(getFormatTextWithPracticeData(R.string.repetiton_name, String.valueOf(practice.getRepetition())));
-            practiceDescription.setText(getFormatTextWithPracticeData(R.string.description_name, practice.getDescription()));
+    private void setUpPracticeTextAndEdit(PracticeModel practice, boolean textOrEdit) {
+        practiceName.setText(getFormatTextWithPracticeData(R.string.name_practice, textOrEdit ? practice.getName(): " "));
+        practiceStatusProgress.setText(getFormatTextWithPracticeData(R.string.progress_name, textOrEdit ? String.valueOf(practice.getProgress()): " "));
+        practiceStatusMaxRepetiton.setText(getFormatTextWithPracticeData(R.string.max_repetition_name, textOrEdit ? String.valueOf(practice.getMaxRepetition()) : " "));
+        practiceRepetition.setText(getFormatTextWithPracticeData(R.string.repetiton_name, textOrEdit ? String.valueOf(practice.getRepetition()) : " "));
+        practiceDescription.setText(getFormatTextWithPracticeData(R.string.description_name, textOrEdit ? practice.getDescription() : " "));
 
-            setEditVisibility(View.INVISIBLE);
-
-            practiceNameEdit.setText("");
-            practiceStatusProgressEdit.setText("");
-            practiceStatusMaxRepetitonEdit.setText("");
-            practiceRepetitionEdit.setText("");
-            practiceDescriptionEdit.setText("");
-
-        }
-
-        if (typeViewPractice==EDIT_VIEW) {
-            setEditVisibility(View.VISIBLE);
-
-            practiceName.setText(getFormatEditFromResources(R.string.name_practice));
-            practiceNameEdit.setText(practice.getName());
-
-            practiceStatusProgress.setText(getFormatEditFromResources(R.string.progress_name));
-            practiceStatusProgressEdit.setText(String.valueOf(practice.getProgress()));
-
-            practiceStatusMaxRepetiton.setText(getFormatEditFromResources(R.string.max_repetition_name));
-            practiceStatusMaxRepetitonEdit.setText(String.valueOf(practice.getMaxRepetition()));
-
-            practiceRepetition.setText(getFormatEditFromResources(R.string.repetiton_name));
-            practiceRepetitionEdit.setText(String.valueOf(practice.getRepetition()));
-
-            practiceDescription.setText(getFormatEditFromResources(R.string.description_name));
-            practiceDescriptionEdit.setText(practice.getDescription());
-        }
+        practiceNameEdit.setText(textOrEdit ? "" : practice.getName());
+        practiceStatusProgressEdit.setText(textOrEdit ? "" : String.valueOf(practice.getProgress()));
+        practiceStatusMaxRepetitonEdit.setText(textOrEdit ? "" : String.valueOf(practice.getMaxRepetition()));
+        practiceRepetitionEdit.setText(textOrEdit ? "" : String.valueOf(practice.getRepetition()));
+        practiceDescriptionEdit.setText(textOrEdit ? "" : practice.getDescription());
     }
 
     private String getFormatTextWithPracticeData(int resourcesId, String practiceData) {
-        return String.format("%s%s", getFormatEditFromResources(resourcesId),
+        return String.format("%s%s", Utility.getFormatEditFromResources(resourcesId),
                 practiceData);
     }
 
@@ -173,10 +136,6 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
         practiceStatusMaxRepetitonEdit.setVisibility(visible);
         practiceRepetitionEdit.setVisibility(visible);
         practiceDescriptionEdit.setVisibility(visible);
-    }
-
-    private String getFormatEditFromResources(int resourcesId) {
-        return String.format("%s ", NyndroApp.getContect().getResources().getText(resourcesId));
     }
 
     @Override
@@ -208,7 +167,6 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
                 .setRepetition(getIntegerValue(practiceRepetitionEdit, practice.getRepetition())));
         int repetition = practice.getProgress() - oldProgress;
         presenter.addHistoryForPractice(practice, repetition);
-        viewPractice(getEditMode());
     }
 
     private Integer getIntegerValue(EditText fromEdit, Integer oldValue) {
@@ -218,13 +176,13 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
 
     public void setEdit()
     {
-        if (getEditMode() == STANDARD_VIEW) {
-            editMode = EDIT_VIEW;
+        if (getEditMode() == TypeOfEditMode.Standard) {
+            editMode = TypeOfEditMode.Edit;
         } else {
-            editMode=STANDARD_VIEW;
+            editMode=TypeOfEditMode.Standard;
             editionEnd();
         }
-        viewPractice(getEditMode());
+        presenter.loadPracticeData(practiceId);
     }
 
     @Override
@@ -233,7 +191,7 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
         outState.putLong(PRACTICE_ID, practiceId);
     }
 
-    public int getEditMode() {
+    public TypeOfEditMode getEditMode() {
         return editMode;
     }
 

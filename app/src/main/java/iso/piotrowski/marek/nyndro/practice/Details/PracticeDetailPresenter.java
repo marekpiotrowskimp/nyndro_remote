@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.practice.Details;
 
-import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
@@ -24,6 +23,7 @@ public class PracticeDetailPresenter implements PracticeDetailContract.IPresente
     @Override
     public void loadPracticeData(long practiceId) {
         viewer.setPractice(dataSource.fetchPractice(practiceId));
+        viewer.showPractice();
     }
 
     @Override
@@ -41,15 +41,22 @@ public class PracticeDetailPresenter implements PracticeDetailContract.IPresente
     @Override
     public void addHistoryForPractice(PracticeModel practice, int addProgress) {
         dataSource.addHistoryForPractice(practice, addProgress);
+        refreshData(practice);
     }
 
     @Override
     public void addProgressToPractice(PracticeModel practice, int addProgress) {
         dataSource.addProgressToPractice(practice, addProgress);
+        refreshData(practice);
     }
 
     @Override
     public void updatePractice(PracticeModel practice) {
         dataSource.updatePractice(practice);
+        refreshData(practice);
+    }
+
+    private void refreshData(PracticeModel practice){
+        loadPracticeData(practice.getID());
     }
 }
