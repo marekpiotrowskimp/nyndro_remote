@@ -27,6 +27,11 @@ public class DataSource implements IDataSource {
     }
 
     @Override
+    public List<HistoryModel> fetchHistory() {
+        return DBQuery.getHistory();
+    }
+
+    @Override
     public PracticeModel fetchPractice(long practiceId) {
         return DBQuery.getPractice(practiceId);
     }

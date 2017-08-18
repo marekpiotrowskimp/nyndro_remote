@@ -13,7 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
+import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
@@ -21,42 +27,40 @@ import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements HistoryContract.IViewer {
 
-    private RecyclerView statsRecyclerView;
-    private SQLiteDatabase db;
-    private Cursor cursorStats;
+    @BindView(R.id.history_recyclerview) RecyclerView statsRecyclerView;
+    private HistoryContract.IPresenter presenter;
 
     public HistoryFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_history, container, false);
-
-        statsRecyclerView = (RecyclerView)linearLayout.findViewById(R.id.history_recyclerview);
-
-        try {
-            PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
-            db = practiceDatabaseHelper.getWritableDatabase();
-            cursorStats = SQLHelper.getHistoryCursor(db);
-            HistoryRecyclerViewAdapter historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(cursorStats);
-            statsRecyclerView.setAdapter(historyRecyclerViewAdapter);
-        }catch (SQLiteException e){}
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        statsRecyclerView.setLayoutManager(linearLayoutManager);
-        return linearLayout;
+        new HistoryPresenter(this, DataSource.getInstance());
+        LinearLayout historicalLayout = (LinearLayout) inflater.inflate(R.layout.fragment_history, container, false);
+        ButterKnife.bind(this, historicalLayout);
+        return historicalLayout;
     }
 
     @Override
-    public void onDestroy() {
-        if (cursorStats!=null) cursorStats.close();
-        if (db!=null) db.close();
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
+        presenter.loadHistoryData();
     }
 
+    @Override
+    public void setPresenter(HistoryContract.IPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showHistory(List<HistoryModel> historyList) {
+        HistoryRecyclerViewAdapter historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(historyList);
+        statsRecyclerView.setAdapter(historyRecyclerViewAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        statsRecyclerView.setLayoutManager(linearLayoutManager);
+    }
 }
