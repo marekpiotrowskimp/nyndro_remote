@@ -15,18 +15,13 @@ import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.history.HistoryFragment;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class StatsPagerFragment extends Fragment {
 
-    ViewPager viewPagerLayout= null;
-    StatsFragmentPagerAdapter pagerAdapter =null;
-
+    private ViewPager viewPagerLayout= null;
+    private StatsFragmentPagerAdapter pagerAdapter =null;
 
     public StatsPagerFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,10 +49,10 @@ public class StatsPagerFragment extends Fragment {
             switch (position)
             {
                 case 0:
-                    title = "Statistics";
+                    title = getString(R.string.StatisticsPage);
                     break;
                 case 1:
-                    title = "History";
+                    title = getString(R.string.HistoryPage);
                     break;
             }
             return title;

@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.statistics;
 
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -13,24 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import iso.piotrowski.marek.nyndro.practice.PracticeAdapter;
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
+import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.SQLHelper;
-import iso.piotrowski.marek.nyndro.history.HistoryAnalysis;
 import iso.piotrowski.marek.nyndro.history.HistoryRecyclerViewAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class StatsFragment extends Fragment {
+public class StatsFragment extends Fragment implements StatsContract.IViewer {
     private RecyclerView statsRecyclerView;
-    private SQLiteDatabase db;
-    private Cursor cursorStats;
+    private StatsContract.IPresenter presenter;
 
     public StatsFragment() {
     }
@@ -39,58 +33,37 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        new StatsPresenter(this, DataSource.getInstance());
         statsRecyclerView= (RecyclerView) inflater.inflate(R.layout.fragment_stats, container, false);
-        doInBackround();
+        calculateStatsInBackround();
         return statsRecyclerView;
     }
 
-    private void doInBackround ()
+    private void calculateStatsInBackround ()
     {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        new Thread(){
             @Override
             public void run() {
-                try {
-                    PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
-                    db = practiceDatabaseHelper.getWritableDatabase();
-
-                    Cursor cursorPractice = SQLHelper.getCursorPractice(db);
-                    cursorPractice.moveToFirst();
-                    int count = cursorPractice.getCount();
-                    HistoryAnalysis[] historyAnalysises = new HistoryAnalysis[count];
-                    for (int ind = 0; ind < count; ind++) {
-                        cursorPractice.moveToPosition(ind);
-                        cursorStats = SQLHelper.getHistoryCursor(db, cursorPractice.getInt(HistoryRecyclerViewAdapter.STATS_ID));
-                        historyAnalysises[ind] = new HistoryAnalysis(cursorStats);
-                        cursorStats.close();
-
-                        if (historyAnalysises[ind].getAnalysisResult().isEmpty()) {
-                            Map<String, HistoryAnalysis.Info> analysisEmpty = new HashMap<String, HistoryAnalysis.Info>();
-//                            analysisEmpty.put("practice_name", new HistoryAnalysis.Info(cursorPractice.getString(PracticeAdapter.NAME_ID)));
-//                            analysisEmpty.put("practice_image_id", new HistoryAnalysis.Info(cursorPractice.getInt(PracticeAdapter.PRACTICE_IMAGE_ID_ID)));
-                            historyAnalysises[ind].setAnalysisResult(analysisEmpty);
-                        }
-                    }
-                    cursorPractice.close();
-
-                    StatsRecyclerViewAdaprer statsRecyclerViewAdaprer = new StatsRecyclerViewAdaprer();
-                    statsRecyclerViewAdaprer.setHistoryAnalysis(historyAnalysises);
-                    statsRecyclerViewAdaprer.setDays(getActivity().getResources().getStringArray(R.array.day_of_week));
-                    statsRecyclerViewAdaprer.setMonths(getActivity().getResources().getStringArray(R.array.months));
-
-                    statsRecyclerView.setAdapter(statsRecyclerViewAdaprer);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                    statsRecyclerView.setLayoutManager(linearLayoutManager);
-                }catch (SQLiteException e){}
+                presenter.doHistoryAnalysis();
             }
-        },200);
+        }.start();
     }
 
     @Override
-    public void onDestroy() {
-        if (cursorStats!=null) cursorStats.close();
-        if (db!=null) db.close();
-        super.onDestroy();
+    public void setPresenter(StatsContract.IPresenter presenter) {
+        this.presenter = presenter;
     }
 
+    @Override
+    public void showAnalysisResult(HistoryAnalysis[] historyAnalyses) {
+        StatsRecyclerViewAdaprer statsRecyclerViewAdaprer = new StatsRecyclerViewAdaprer();
+        statsRecyclerViewAdaprer.setHistoryAnalysis(historyAnalyses);
+        statsRecyclerViewAdaprer.setDays(getActivity().getResources().getStringArray(R.array.day_of_week));
+        statsRecyclerViewAdaprer.setMonths(getActivity().getResources().getStringArray(R.array.months));
+
+        statsRecyclerView.setAdapter(statsRecyclerViewAdaprer);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        statsRecyclerView.setLayoutManager(linearLayoutManager);
+
+    }
 }

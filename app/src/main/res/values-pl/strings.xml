@@ -80,6 +80,8 @@
     <string name="app_label_add_renainder">Nowe przypomnienie</string>
     <string name="cancel_action">ANULUJ</string>
     <string name="deleted_practice_info">"Usunięto "</string>
+    <string name="StatisticsPage">Statystyki</string>
+    <string name="HistoryPage">Historia</string>
 
     //Day of week
     <string-array name="day_of_week">

@@ -69,6 +69,8 @@
     <string name="cancel_action">CANCEL</string>
     <string name="deleted_practice_info">"Removed "</string>
     <string name="NoDateToShow">-----------</string>
+    <string name="StatisticsPage">Statistics</string>
+    <string name="HistoryPage">History</string>
 
     //Day of week
     <string-array name="day_of_week">

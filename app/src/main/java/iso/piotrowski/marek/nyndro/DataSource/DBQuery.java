@@ -35,6 +35,10 @@ public class DBQuery {
         return new Select().from(HistoryModel.class).where("PRACTICE_ID = ?", practiceId).orderBy("PRACTICE_DATE DESC").executeSingle();
     }
 
+    public static List<HistoryModel> getAllHistoryForPractice(long practiceId) {
+        return new Select().from(HistoryModel.class).where("PRACTICE_ID = ?", practiceId).orderBy("PRACTICE_DATE DESC").execute();
+    }
+
     public static HistoryModel getHistoryForDate(long dateInSecondsFrom1970, long practiceId) {
         return new Select().from(HistoryModel.class).where("PRACTICE_DATE = ? AND PRACTICE_ID = ?", dateInSecondsFrom1970, practiceId).executeSingle();
     }

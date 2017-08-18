@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BarChart;
-import iso.piotrowski.marek.nyndro.history.HistoryAnalysis;
 
 /**
  * Created by Marek on 05.08.2016.
@@ -89,7 +89,7 @@ public class StatsRecyclerViewAdaprer extends RecyclerView.Adapter<StatsRecycler
             BarChart practiceBarChart = (BarChart) holder.cv.findViewById(R.id.statystics_bar_chart);
             BarChart practiceBarChartMonth = (BarChart) holder.cv.findViewById(R.id.statystics_bar_chart_month);
 
-            Map<String, HistoryAnalysis.Info> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
+            Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
 
             if (!historyAnalysisResult.isEmpty()) {
                 practiceImageId.setImageDrawable(holder.cv.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
@@ -122,7 +122,7 @@ public class StatsRecyclerViewAdaprer extends RecyclerView.Adapter<StatsRecycler
         {
             ImageView practiceImageId = (ImageView) holder.cv.findViewById(R.id.statystics_practice_image_id);
             TextView practiceName = (TextView) holder.cv.findViewById(R.id.statystics_practice_name);
-            Map<String, HistoryAnalysis.Info> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
+            Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
             practiceImageId.setImageDrawable(holder.cv.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
             practiceName.setText(" "+historyAnalysisResult.get("practice_name").toString());
         }

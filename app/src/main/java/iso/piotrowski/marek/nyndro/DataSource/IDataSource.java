@@ -14,6 +14,7 @@ import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 public interface IDataSource {
     List<PracticeModel> fetchPractices();
     List<HistoryModel> fetchHistory();
+    List<HistoryModel> fetchHistoryForPractice(long practiceId);
     PracticeModel fetchPractice(long practiceId);
     HistoryModel fetchLastHistoryOfPractice(long practiceId);
     ReminderModel fetchNextPlanedOfPractice(long practiceId);
