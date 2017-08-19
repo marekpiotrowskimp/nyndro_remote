@@ -82,7 +82,16 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
 
 
     private void setUpItemTouchHelper() {
-        ItemTouchHelper.SimpleCallback simpleCallback = new SimpleCallbackForTouches(0, ItemTouchHelper.LEFT, presenter);
+        ItemTouchHelper.SimpleCallback simpleCallback = new SimpleCallbackForTouches(0, ItemTouchHelper.LEFT, new SimpleCallbackForTouches.OnSwipedListener() {
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                if (viewHolder.getItemViewType() == PracticeAdapter.TypeOfCardView.Standard.getValue()) {
+                    if (viewHolder instanceof PracticeAdapter.ViewPracticeHolder) {
+                        presenter.deletePractice(((PracticeAdapter.ViewPracticeHolder) viewHolder).getPractice(), viewHolder.itemView);
+                    }
+                }
+            }
+        });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(practiceMainRecycleView);
     }

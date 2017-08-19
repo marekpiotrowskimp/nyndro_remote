@@ -23,4 +23,7 @@ public interface IDataSource {
     void markActive (PracticeModel practice, boolean active);
     void deleteNoActive();
     void updatePractice(PracticeModel practice);
+    void deleteRemainder (long remainderId);
+    void addRemainder (long date, int repeater, PracticeModel practice);
+    void updateRemainder (ReminderModel reminder, long date, int repeater, PracticeModel practice);
 }

@@ -92,7 +92,33 @@ public class DBQuery {
     }
 
     public static List<ReminderModel> getReminders() {
-        return new Select().from(ReminderModel.class).where("ACTIVE = 0").execute();
+        return new Select().from(ReminderModel.class).where("ACTIVE = 1").execute();
+    }
+
+    public static void addReminders(long date, int repeater, PracticeModel practice) {
+        new ReminderModel().setRepetition(practice.getRepetition())
+                .setPracticeId(practice.getID())
+                .setPractice(practice)
+                .setRepeater(repeater)
+                .setPracticeDate(date)
+                .setActive(true)
+                .save();
+    }
+
+    public static void updateReminders(ReminderModel reminder, long date, int repeater, PracticeModel practice) {
+        reminder.setRepetition(practice.getRepetition())
+                .setPracticeId(practice.getID())
+                .setPractice(practice)
+                .setRepeater(repeater)
+                .setPracticeDate(date)
+                .setActive(true)
+                .save();
+    }
+
+    public static void deleteReminder(long remainderId) {
+        new Delete().from(ReminderModel.class)
+                .where("_id = ?", remainderId)
+                .execute();
     }
 
     public static void updatePractice (PracticeModel practice){

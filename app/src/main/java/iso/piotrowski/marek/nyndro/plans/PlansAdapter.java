@@ -10,93 +10,70 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 
 /**
  * Created by Marek on 10.08.2016.
  */
 public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder> {
-    public static final int REMAINDER_ID=0;
-    public static final int REMAINDER_PRACTICE_ID=1;
-    public static final int REMAINDER_DATE=2;
-    public static final int REMAINDER_REPETITON=3;
-    public static final int REMAINDER_DONE=4;
-    public static final int REMAINDER_REPEATER=5;
-    public static final int REMAINDER_PRACTICE_NAME=6;
-    public static final int REMAINDER_PRACTICE_IMAGE_ID=7;
-    public static final int REMAINDER_PRACTICE_MAX_REPETITION=8;
 
-    
-    private Cursor cursorPlans;
     private OnRemainderItemClickListener onRemainderItemClickListener;
+    private List<ReminderModel> reminderList;
+    private String[] typeOfRepeater = {"","D","W","M"};
 
     public void setOnRemainderItemClickListener(OnRemainderItemClickListener onRemainderItemClickListener) {
         this.onRemainderItemClickListener = onRemainderItemClickListener;
     }
 
-    public static interface OnRemainderItemClickListener{
-        public void OnClick(View view, int position);
+    public interface OnRemainderItemClickListener{
+        void OnClick(View view, int position);
     }
 
-    public void setCursorPlans(Cursor cursorPlans) {
-        this.cursorPlans = cursorPlans;
+    PlansAdapter(List<ReminderModel> reminderList) {
+        this.reminderList = reminderList;
     }
 
     public class PlansHolder extends RecyclerView.ViewHolder{
-        CardView cv;
-        PlansHolder (CardView cv){
-            super(cv);
-            this.cv=cv;
+        @BindView(R.id.plans_image) ImageView plansPracticeImageId;
+        @BindView(R.id.plans_practice_name) TextView plansPracticeName;
+        @BindView(R.id.plans_date) TextView plansDate;
+        @BindView(R.id.autorenew_image) ImageView repeaterImage;
+        @BindView(R.id.autorenew_text) TextView repeaterName;
+        CardView cardView;
+        PlansHolder (CardView cardView){
+            super(cardView);
+            this.cardView = cardView;
+            ButterKnife.bind(this, this.cardView);
+        }
+
+        public long getRemainderId(){
+            return reminderList.get(getAdapterPosition()).getID();
         }
     }
     
     @Override
     public PlansHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_plans_cardview,parent,false);
-        return new PlansHolder(cv);
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_plans_cardview,parent,false);
+        return new PlansHolder(cardView);
     }
-
 
     @Override
     public void onBindViewHolder(PlansHolder holder, final int position) {
-        ImageView plansPracticeImageId = (ImageView)holder.cv.findViewById(R.id.plans_image);
-        TextView plansPracticeName = (TextView) holder.cv.findViewById(R.id.plans_practice_name);
-        TextView plansDate = (TextView) holder.cv.findViewById(R.id.plans_date);
-
-        ImageView repeaterImage = (ImageView)holder.cv.findViewById(R.id.autorenew_image);
-        TextView repeaterName = (TextView) holder.cv.findViewById(R.id.autorenew_text);
-
-
-        cursorPlans.moveToPosition(position);
+        ReminderModel reminder = reminderList.get(position);
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(cursorPlans.getLong(REMAINDER_DATE));
-        plansDate.setText(String.format("Data : %tD %tT",calendar,calendar));
+        calendar.setTimeInMillis(reminder.getPracticeDate());
+        holder.plansDate.setText(String.format("Data : %tD %tT", calendar, calendar));
 
-        plansPracticeImageId.setImageDrawable(holder.cv.getResources().getDrawable(cursorPlans.getInt(REMAINDER_PRACTICE_IMAGE_ID)));
-        plansPracticeName.setText(cursorPlans.getString(REMAINDER_PRACTICE_NAME));
-
-        switch (cursorPlans.getInt(REMAINDER_REPEATER))
-        {
-            case 0:
-                repeaterImage.setVisibility(View.INVISIBLE);
-                repeaterName.setText("");
-                break;
-            case 1:
-                repeaterImage.setVisibility(View.VISIBLE);
-                repeaterName.setText("D");
-                break;
-            case 2:
-                repeaterImage.setVisibility(View.VISIBLE);
-                repeaterName.setText("W");
-                break;
-            case 3:
-                repeaterImage.setVisibility(View.VISIBLE);
-                repeaterName.setText("M");
-                break;
-        }
-
-        holder.cv.setOnClickListener(new View.OnClickListener() {
+        holder.plansPracticeImageId.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(reminder.getPractice().getPracticeImageId()));
+        holder.plansPracticeName.setText(reminder.getPractice().getName());
+        holder.repeaterName.setText(typeOfRepeater[reminder.getRepeater()]);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (onRemainderItemClickListener!=null){
@@ -108,7 +85,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
 
     @Override
     public int getItemCount() {
-        return cursorPlans.getCount();
+        return reminderList.size();
     }
 
 }

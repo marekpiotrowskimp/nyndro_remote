@@ -76,5 +76,20 @@ public class DataSource implements IDataSource {
         DBQuery.updatePractice(practice);
     }
 
+    @Override
+    public void deleteRemainder(long remainderId) {
+        DBQuery.deleteReminder(remainderId);
+    }
+
+    @Override
+    public void addRemainder(long date, int repeater, PracticeModel practice) {
+        DBQuery.addReminders(date, repeater, practice);
+    }
+
+    @Override
+    public void updateRemainder(ReminderModel reminder, long date, int repeater, PracticeModel practice) {
+        DBQuery.updateReminders(reminder, date, repeater, practice);
+    }
+
 
 }

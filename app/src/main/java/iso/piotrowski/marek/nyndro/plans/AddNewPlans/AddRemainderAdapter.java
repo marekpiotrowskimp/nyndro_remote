@@ -1,7 +1,5 @@
-package iso.piotrowski.marek.nyndro.plans;
+package iso.piotrowski.marek.nyndro.plans.AddNewPlans;
 
-import android.database.Cursor;
-import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,21 +9,23 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.practice.PracticeAdapter;
 
 /**
  * Created by Marek on 12.08.2016.
  */
 public class AddRemainderAdapter extends RecyclerView.Adapter<AddRemainderAdapter.AddRemainderHolder> {
 
-    private Cursor cursorPractice;
     private int selectedPosition = 0;
-    private boolean firstTime = true;
+    private List<PracticeModel> practiceList;
 
-    public void setCursorPractice(Cursor cursorPractice) {
-        this.cursorPractice = cursorPractice;
+    public AddRemainderAdapter (List<PracticeModel> practiceList){
+        this.practiceList = practiceList;
     }
 
     public int getSelectedPosition() {
@@ -37,11 +37,13 @@ public class AddRemainderAdapter extends RecyclerView.Adapter<AddRemainderAdapte
     }
 
     public class AddRemainderHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-
-        AddRemainderHolder(CardView cv) {
-            super(cv);
-            this.cv = cv;
+        @BindView(R.id.add_remainder_image_practice) ImageView practiceImage;
+        @BindView(R.id.add_remainder_name_practice) TextView practiceName;
+        CardView cardView;
+        AddRemainderHolder(CardView cardView) {
+            super(cardView);
+            this.cardView = cardView;
+            ButterKnife.bind(this, this.cardView);
         }
     }
 
@@ -55,24 +57,20 @@ public class AddRemainderAdapter extends RecyclerView.Adapter<AddRemainderAdapte
     }
 
     @Override
-    public void onBindViewHolder(AddRemainderHolder holder, final int position) {
-        ImageView practiceImage = (ImageView) holder.cv.findViewById(R.id.add_remainder_image_practice);
-        TextView practiceName = (TextView) holder.cv.findViewById(R.id.add_remainder_name_practice);
-        if (cursorPractice != null) {
-            if (cursorPractice.moveToPosition(position)) {
-//                practiceImage.setImageDrawable(holder.cv.getResources().getDrawable(cursorPractice.getInt(PracticeAdapter.PRACTICE_IMAGE_ID_ID)));
-//                practiceName.setText(cursorPractice.getString(PracticeAdapter.NAME_ID));
-            }
+    public void onBindViewHolder(AddRemainderHolder holder, int position) {
+        PracticeModel practice = practiceList.get(position);
+        holder.practiceImage.setImageDrawable(NyndroApp.getContect().getResources()
+                .getDrawable(practice.getPracticeImageId()));
+        holder.practiceName.setText(practice.getName());
+
+        if ((position == getSelectedPosition())) {
+            addAnimation(holder.practiceImage, position);
+//            addAnimation(holder.practiceName, position);
         }
 
-        if ((position == selectedPosition)) {
-            addAnimation(holder.cv.findViewById(R.id.add_remainder_image_practice), position);
-           // addAnimation(holder.cv.findViewById(R.id.add_remainder_name_practice), position);
-        }
+        holder.cardView.clearAnimation();
 
-        holder.cv.clearAnimation();
-
-        holder.cv.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 addAnimation(view.findViewById(R.id.add_remainder_image_practice), position);
@@ -86,29 +84,28 @@ public class AddRemainderAdapter extends RecyclerView.Adapter<AddRemainderAdapte
         Animation animation;
         animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.cardview_selected_animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
-
             @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
+            public void onAnimationStart(Animation animation) {}
             @Override
             public void onAnimationEnd(Animation animation) {
-                if ((selectedPosition == position)) {
+                if ((getSelectedPosition() == position)) {
                     view.startAnimation(animation);
                 }
             }
-
             @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
         view.clearAnimation();
         view.startAnimation(animation);
     }
 
+    public PracticeModel getPractice() {
+        if ((getSelectedPosition() < 0) || (getSelectedPosition() >= practiceList.size())) return null;
+        return practiceList.get(getSelectedPosition());
+    }
+
     @Override
     public int getItemCount() {
-        return cursorPractice.getCount();
+        return practiceList.size();
     }
 }

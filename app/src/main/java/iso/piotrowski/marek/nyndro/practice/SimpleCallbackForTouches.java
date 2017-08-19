@@ -16,11 +16,15 @@ import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 
 public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
 
-    private PracticeContract.IPresenter presenter;
+    private OnSwipedListener swipedListener;
 
-    SimpleCallbackForTouches(int dragDirs, int swipeDirs, PracticeContract.IPresenter presenter) {
+    public interface OnSwipedListener {
+        void onSwiped(RecyclerView.ViewHolder viewHolder, int direction);
+    }
+
+    public SimpleCallbackForTouches(int dragDirs, int swipeDirs, OnSwipedListener swipedListener) {
         super(dragDirs, swipeDirs);
-        this.presenter = presenter;
+        this.swipedListener = swipedListener;
     }
 
     @Override
@@ -30,12 +34,9 @@ public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        if (viewHolder.getItemViewType() == PracticeAdapter.TypeOfCardView.Standard.getValue()) {
-            if (viewHolder instanceof PracticeAdapter.ViewPracticeHolder) {
-                presenter.deletePractice(((PracticeAdapter.ViewPracticeHolder) viewHolder).getPractice(), viewHolder.itemView);
-            }
+        if (swipedListener != null) {
+            swipedListener.onSwiped(viewHolder, direction);
         }
-
     }
 
     @Override

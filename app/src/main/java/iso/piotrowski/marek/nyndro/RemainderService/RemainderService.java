@@ -17,8 +17,11 @@ import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
 import iso.piotrowski.marek.nyndro.MainPracticsActivity;
+import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.plans.PlansAdapter;
 import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
 import iso.piotrowski.marek.nyndro.R;
@@ -60,55 +63,45 @@ public class RemainderService extends IntentService {
         handlerRemaind.postDelayed(new Runnable() {
             @Override
             public void run() {
-                SQLiteDatabase db;
-                try {
-                    PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(context);
-                    db = practiceDatabaseHelper.getWritableDatabase();
-                    Cursor cursor = SQLHelper.getRemainderCursor(db, 1);
-                    cursor.moveToFirst();
+                Log.v("RemainderService", "running....");
+                List<ReminderModel> reminderList = DBQuery.getReminders();
+                for (ReminderModel reminder : reminderList) {
+//                    for (; (cursor.getCount() > 0) && (!cursor.isAfterLast()); cursor.moveToNext()) {
+                    Calendar aktualCalendar = Calendar.getInstance();
+                    aktualCalendar.setTimeInMillis(new Date().getTime());
+                    Calendar remainderCalendar = Calendar.getInstance();
+                    remainderCalendar.setTimeInMillis(reminder.getPracticeDate());
 
-                    Log.v("RemainderService", "running....");
-                    for (; (cursor.getCount() > 0) && (!cursor.isAfterLast()); cursor.moveToNext()) {
-                        Calendar aktualCalendar = Calendar.getInstance();
-                        aktualCalendar.setTimeInMillis(new Date().getTime());
-                        Calendar remainderCalendar = Calendar.getInstance();
-                        remainderCalendar.setTimeInMillis(cursor.getLong(PlansAdapter.REMAINDER_DATE));
-
-                        if (aktualCalendar.compareTo(remainderCalendar) > 0) {
-                            Log.v("RemainderService", "sending message....");
-                            StringBuilder builder = new StringBuilder();
-                            builder.append(getString(R.string.remaind_text_notificator));
-                            builder.append(cursor.getString(PlansAdapter.REMAINDER_PRACTICE_NAME));
-                            SendNotification(builder.toString(), cursor.getInt(PlansAdapter.REMAINDER_PRACTICE_ID));
+                    if (aktualCalendar.compareTo(remainderCalendar) > 0) {
+                        Log.v("RemainderService", "sending message....");
+                        StringBuilder builder = new StringBuilder();
+                        builder.append(getString(R.string.remaind_text_notificator));
+                        builder.append(reminder.getPractice().getName());
+                        SendNotification(builder.toString(), (int) reminder.getPracticeId());
 
 
-                            int repeater = cursor.getInt(PlansAdapter.REMAINDER_REPEATER);
-                            long dateRemaind = cursor.getLong(PlansAdapter.REMAINDER_DATE);
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTimeInMillis(dateRemaind);
-                            switch (repeater) {
-                                case 1:
-                                    calendar.add(Calendar.DATE, 1);
-                                    break;
-                                case 2:
-                                    calendar.add(Calendar.DATE, 7);
-                                    break;
-                                case 3:
-                                    calendar.add(Calendar.MONTH, 1);
-                                    break;
-                                default:
-                                    SQLHelper.deletePlanDone(db, cursor.getInt(PlansAdapter.REMAINDER_ID));
-                            }
-                            if (repeater > 0) {
-                                SQLHelper.updateRemainderRepeater(db, calendar.getTimeInMillis(), cursor.getInt(PlansAdapter.REMAINDER_ID));
-                            }
+                        int repeater = reminder.getRepeater();
+                        long dateRemind = reminder.getPracticeDate();
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(dateRemind);
+                        switch (repeater) {
+                            case 1:
+                                calendar.add(Calendar.DATE, 1);
+                                break;
+                            case 2:
+                                calendar.add(Calendar.DATE, 7);
+                                break;
+                            case 3:
+                                calendar.add(Calendar.MONTH, 1);
+                                break;
+                            default:
+                                DBQuery.deleteReminder(reminder.getID());
+                        }
+                        if (repeater > 0) {
+                            DBQuery.updateReminders(reminder, calendar.getTimeInMillis(), repeater, reminder.getPractice());
                         }
                     }
-                    if (cursor != null) cursor.close();
-                    if (db != null) db.close();
-                } catch (SQLiteException e) {
                 }
-
                 handlerRemaind.postDelayed(this, 10000);
             }
         }, 10000);

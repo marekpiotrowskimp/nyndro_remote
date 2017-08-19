@@ -20,14 +20,6 @@ import iso.piotrowski.marek.nyndro.R;
  */
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewStatsHolder> {
 
-    public static final int STATS_ID = 0;
-    public static final int STATS_PRACTICE_ID = 1;
-    public static final int STATS_PROGRESS = 2;
-    public static final int STATS_DATE = 3;
-    public static final int STATS_REPETITON = 4;
-    public static final int STATS_PRACTICE_NAME = 5;
-    public static final int STATS_PRACTICE_IMAGE_ID = 6;
-    public static final int STATS_PRACTICE_MAX_REPETITION = 7;
     private List<HistoryModel> historyList;
 
     public HistoryRecyclerViewAdapter(List<HistoryModel> historyList) {

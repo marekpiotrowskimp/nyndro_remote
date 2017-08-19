@@ -29,7 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
-import iso.piotrowski.marek.nyndro.plans.AddRemainderFragment;
+import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.plans.PlansFragment;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
@@ -53,22 +53,6 @@ public class MainPracticsActivity extends AppCompatActivity {
         i.setData(Uri.parse(url));
         startActivity(i);
     }
-
-//    private RemainderService remainderService;
-//    private boolean bound = false;
-//    private ServiceConnection connection = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-//            RemainderService.RemainderBinder remainderBinder = (RemainderService.RemainderBinder) iBinder;
-//            remainderService = remainderBinder.getRemainderService();
-//            bound=true;
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName componentName) {
-//            bound = false;
-//        }
-//    };
 
     private class DrawerItemListener implements ListView.OnItemClickListener {
         @Override
@@ -236,7 +220,7 @@ public class MainPracticsActivity extends AppCompatActivity {
                     ft.commit();
                 }
                 if (fragment instanceof PlansFragment) {
-                    AddRemainderFragment addRemainderFragment = new AddRemainderFragment();
+                    AddRemainderFragment addRemainderFragment = AddRemainderFragment.getInstance(null);
 
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.main_fragment_container, addRemainderFragment, "visible_tag");
@@ -370,17 +354,6 @@ public class MainPracticsActivity extends AppCompatActivity {
         }
         getSupportActionBar().setTitle(label);
         requestBackup();
-    }
-
-
-    @Override
-    protected void onDestroy() {
-//        if (bound)
-//        {
-//  //         unbindService(connection);
-//            bound=false;
-//        }
-        super.onDestroy();
     }
 
     public void requestBackup() {
