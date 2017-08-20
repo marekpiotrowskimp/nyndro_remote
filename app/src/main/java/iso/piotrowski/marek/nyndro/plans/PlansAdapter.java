@@ -73,6 +73,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
         holder.plansPracticeImageId.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(reminder.getPractice().getPracticeImageId()));
         holder.plansPracticeName.setText(reminder.getPractice().getName());
         holder.repeaterName.setText(typeOfRepeater[reminder.getRepeater()]);
+        holder.repeaterImage.setVisibility(reminder.getRepeater() > 0 ? View.VISIBLE : View.INVISIBLE);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
