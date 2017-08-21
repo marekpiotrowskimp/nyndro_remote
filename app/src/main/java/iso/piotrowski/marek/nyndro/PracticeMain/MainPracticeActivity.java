@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro;
+package iso.piotrowski.marek.nyndro.PracticeMain;
 
 import android.app.backup.BackupManager;
 import android.net.Uri;
@@ -28,6 +28,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
 import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.plans.PlansFragment;
@@ -36,22 +38,27 @@ import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
 import iso.piotrowski.marek.nyndro.practice.ListOfPractice.PracticeListFragment;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
 import iso.piotrowski.marek.nyndro.statistics.StatsPagerFragment;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 
-public class MainPracticsActivity extends AppCompatActivity {
+public class MainPracticeActivity extends AppCompatActivity implements PracticeMainContract.IViewer {
     public static Resources resourcesApp;
     private ShareActionProvider sendMeditationInfoActionProvider;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private boolean wasRunning;
     private int lastTypeOfAnimation = 2;
+    private PracticeMainContract.IPresenter presenter;
 
     public void goToWabSiteOnClick(View view) {
         String url = "http://bombydgoszcz.blogspot.com/";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
+    }
+
+    @Override
+    public void setPresenter(PracticeMainContract.IPresenter presenter) {
+        this.presenter = presenter;
     }
 
     private class DrawerItemListener implements ListView.OnItemClickListener {
@@ -88,6 +95,7 @@ public class MainPracticsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new PracticeMainPresenter(this, DataSource.getInstance());
 
         resourcesApp = getResources();
         setContentView(R.layout.activity_main_practics);
@@ -136,11 +144,8 @@ public class MainPracticsActivity extends AppCompatActivity {
 
         setFragmentManagerListener();
 
-        //Start remainder service
         Intent intent2 = new Intent(this, RemainderService.class);
         startService(intent2);
-//        Intent intent = new Intent(this, RemainderService.class);
-//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     private void setFragmentManagerListener() {
@@ -201,12 +206,9 @@ public class MainPracticsActivity extends AppCompatActivity {
                     PracticeListFragment.OnListFragmentInteractionListener onListFragmentInteractionListener = new PracticeListFragment.OnListFragmentInteractionListener() {
                         @Override
                         public void onListFragmentInteraction(Practice practice) {
-                            try {
-                                SQLHelper.insertPractice(practice, getApplicationContext());
-                                Snackbar.make(getCurrentFocus(), "Praktyka dodana: " + practice.getName(), Snackbar.LENGTH_LONG).show();
-                                getSupportFragmentManager().popBackStack();
-                            } catch (SQLiteException e) {
-                            }
+                            presenter.insertPractice(practice);
+                            Snackbar.make(getCurrentFocus(), "Praktyka dodana: " + practice.getName(), Snackbar.LENGTH_LONG).show();
+                            getSupportFragmentManager().popBackStack();
                         }
                     };
 
@@ -249,10 +251,6 @@ public class MainPracticsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.practice_menu_main, menu);
-//        MenuItem menuItem = menu.findItem(R.id.action_share);
-//        sendMeditationInfoActionProvider=(ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-//        setMassageToSend("Nyndro application"); //TODO ustawić w odpowiednich miejscach text do wysłania.
-        Log.v("onCreateOptionsMenu", "Menu created.");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -268,14 +266,6 @@ public class MainPracticsActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setMassageToSend(String text) {
-        //TODO Dostosować do aplikacji Nyndro: Wysłać konkretne statystyki do znajomych!
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        sendMeditationInfoActionProvider.setShareIntent(intent);
     }
 
     @Override
@@ -353,18 +343,6 @@ public class MainPracticsActivity extends AppCompatActivity {
             label = getResources().getString(R.string.app_label_add_renainder);
         }
         getSupportActionBar().setTitle(label);
-        requestBackup();
-    }
-
-    public void requestBackup() {
-        if (SQLHelper.isUpdateDatabase) {
-            try {
-                SQLHelper.isUpdateDatabase = false;
-                BackupManager backupManager = new BackupManager(this);
-                backupManager.dataChanged();
-            } catch (Exception e) {
-            }
-        }
     }
 
 }

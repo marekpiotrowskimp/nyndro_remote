@@ -1,10 +1,6 @@
 package iso.piotrowski.marek.nyndro.statistics;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,14 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
-import iso.piotrowski.marek.nyndro.DataSource.PracticeDatabaseHelper;
-import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
-import iso.piotrowski.marek.nyndro.history.HistoryRecyclerViewAdapter;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class StatsFragment extends Fragment implements StatsContract.IViewer {
     private RecyclerView statsRecyclerView;

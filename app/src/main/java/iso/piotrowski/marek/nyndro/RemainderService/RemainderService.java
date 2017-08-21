@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
-import iso.piotrowski.marek.nyndro.MainPracticsActivity;
+import iso.piotrowski.marek.nyndro.PracticeMain.MainPracticeActivity;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 
@@ -143,10 +143,10 @@ public class RemainderService extends IntentService {
     }
 
     private void SendNotification(String text, int notificationId) {
-        Intent intent = new Intent(this, MainPracticsActivity.class);
+        Intent intent = new Intent(this, MainPracticeActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainPracticsActivity.class);
+        stackBuilder.addParentStack(MainPracticeActivity.class);
         stackBuilder.addNextIntent(intent);
 
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

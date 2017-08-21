@@ -119,6 +119,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         holder.practiceRepetitionMultiple.setText(String.valueOf(holder.multiplePracticeSeekBar.getProgress()));
         holder.multiplePracticeSeekBar.setOnSeekBarChangeListener(changeProgress(holder));
         PracticeModel practice = practices.get(position);
+        holder.setPractice(practice);
         if (practice != null) {
             holder.practiceImage.setContentDescription(practice.getName());
             holder.practiceImage.setImageDrawable(holder.cardView.getResources().getDrawable(practice.getPracticeImageId()));
@@ -189,6 +190,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
 
     public class ViewPracticeHolder extends RecyclerView.ViewHolder {
         CardView cardView;
+        private PracticeModel practice;
         @BindView(R.id.practice_image) @Nullable ImageView practiceImage;
         @BindView(R.id.practice_name) @Nullable TextView practiceName;
         @BindView(R.id.practice_status) @Nullable TextView practiceStatus;
@@ -208,7 +210,11 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         }
 
         public PracticeModel getPractice (){
-            return practices.get(getAdapterPosition());
+            return practice;
+        }
+
+        public void setPractice(PracticeModel practice) {
+            this.practice = practice;
         }
     }
 }

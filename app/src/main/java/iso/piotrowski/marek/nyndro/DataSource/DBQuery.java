@@ -8,6 +8,8 @@ import com.activeandroid.query.Update;
 
 import java.util.Date;
 import java.util.List;
+
+import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
@@ -20,7 +22,7 @@ import iso.piotrowski.marek.nyndro.tools.Utility;
 public class DBQuery {
 
     public static List<PracticeModel> getPractices() {
-        return new Select().from(PracticeModel.class).orderBy("PROGRESS").where("ACTIVE = 1").execute();
+        return new Select().from(PracticeModel.class).orderBy("PROGRESS DESC").where("ACTIVE = 1").execute();
     }
 
     public static PracticeModel getPractice(long id) {
@@ -28,7 +30,7 @@ public class DBQuery {
     }
 
     public static List<HistoryModel> getHistory() {
-        return new Select().from(HistoryModel.class).orderBy("PRACTICE_DATE").where("ACTIVE = 1").execute();
+        return new Select().from(HistoryModel.class).orderBy("PRACTICE_DATE DESC").where("ACTIVE = 1").execute();
     }
 
     public static HistoryModel getHistoryForPractice(long practiceId) {
@@ -123,6 +125,17 @@ public class DBQuery {
 
     public static void updatePractice (PracticeModel practice){
         practice.save();
+    }
+
+    public static void insertPractice (Practice practice) {
+        new PracticeModel().setName(practice.getName())
+                .setProgress(practice.getProgress())
+                .setRepetition(practice.getRepetition())
+                .setActive(true)
+                .setDescription(practice.getDescription())
+                .setMaxRepetition(practice.getMaxRepetition())
+                .setPracticeImageId(practice.getImageResourcesId())
+                .save();
     }
 
     public static boolean adjustDatabase() {

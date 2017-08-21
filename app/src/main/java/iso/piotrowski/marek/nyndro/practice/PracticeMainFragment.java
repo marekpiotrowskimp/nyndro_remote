@@ -1,13 +1,7 @@
 package iso.piotrowski.marek.nyndro.practice;
 
 
-import android.app.backup.BackupManager;
-import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,8 +10,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import java.util.List;
@@ -29,7 +21,6 @@ import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -4,13 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
-import iso.piotrowski.marek.nyndro.history.HistoryRecyclerViewAdapter;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 /**
  * Created by marek.piotrowski on 18/08/2017.

@@ -11,7 +11,6 @@ import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
 
 /**
  * Created by marek.piotrowski on 11/08/2017.
@@ -50,14 +49,8 @@ public class PracticePresenter implements PracticeContract.IPresenter {
 
     @Override
     public void requestBackup() {
-        if (SQLHelper.isUpdateDatabase) {
-            try {
-                SQLHelper.isUpdateDatabase = false;
-                BackupManager backupManager = new BackupManager(NyndroApp.getContect());
-                backupManager.dataChanged();
-            } catch (Exception e) {
-            }
-        }
+        BackupManager backupManager = new BackupManager(NyndroApp.getContect());
+        backupManager.dataChanged();
     }
 
     @Override

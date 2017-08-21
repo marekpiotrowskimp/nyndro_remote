@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         android:id="@+id/coordinatorLayoutMain"
-        tools:context="iso.piotrowski.marek.nyndro.MainPracticsActivity">
+        tools:context="iso.piotrowski.marek.nyndro.PracticeMain.MainPracticeActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbarlayout"

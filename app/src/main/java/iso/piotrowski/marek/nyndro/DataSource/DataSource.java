@@ -2,6 +2,7 @@ package iso.piotrowski.marek.nyndro.DataSource;
 
 import java.util.List;
 
+import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
@@ -24,6 +25,11 @@ public class DataSource implements IDataSource {
     @Override
     public List<PracticeModel> fetchPractices() {
         return DBQuery.getPractices();
+    }
+
+    @Override
+    public void insertPractice(Practice practice) {
+        DBQuery.insertPractice(practice);
     }
 
     @Override

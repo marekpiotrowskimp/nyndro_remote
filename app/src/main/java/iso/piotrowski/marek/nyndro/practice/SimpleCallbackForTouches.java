@@ -70,15 +70,15 @@ public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
         int x, y, width, height;
         x = itemView.getLeft() + margin * 2;
         y = itemView.getTop() + margin * 3;
-        width = itemView.getWidth() - margin * 2;
-        height = itemView.getHeight() - margin * 2;
+        width = itemView.getWidth() - margin * 4;
+        height = itemView.getHeight() - margin * 6;
         int leftBoundary = x + width - margin;
         int middleOfChild = y + height / 2;
 
         if (withBackground) {
             Paint backgroundPaint = new Paint();
             backgroundPaint.setARGB(255, 223, 33, 33);
-            c.drawRect(new Rect(x, y, width, height), backgroundPaint);
+            c.drawRect(new Rect(x, y, x+ width, y + height), backgroundPaint);
         }
         c.drawBitmap(BitmapFactory.decodeResource(NyndroApp.getContect().getResources(),
                 android.R.drawable.ic_menu_delete), null, new Rect(leftBoundary - iconSize, middleOfChild - iconSize / 2, leftBoundary, middleOfChild + iconSize / 2), paint);
