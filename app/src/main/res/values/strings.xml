@@ -65,12 +65,14 @@
     <string name="app_label_plans">Plan - Reminder</string>
     <string name="app_label_practice">Add the practice</string>
     <string name="app_label_stats">Statistics</string>
+    <string name="app_label_history">History</string>
     <string name="app_label_add_renainder">New reminder</string>
     <string name="cancel_action">CANCEL</string>
     <string name="deleted_practice_info">"Removed "</string>
     <string name="NoDateToShow">-----------</string>
     <string name="StatisticsPage">Statistics</string>
     <string name="HistoryPage">History</string>
+    <string name="c_marek_piotrowski_c">(c) Marek Piotrowski (c)</string>
 
     //Day of week
     <string-array name="day_of_week">

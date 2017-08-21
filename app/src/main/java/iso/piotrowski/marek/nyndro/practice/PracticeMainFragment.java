@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
@@ -28,7 +29,7 @@ import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
 public class PracticeMainFragment extends Fragment implements PracticeContract.IViewer, PracticeAdapter.INextAndLastDateOfPractice, PracticeAdapter.ICardViewListener {
 
     private PracticeAdapter practiceAdapter;
-    private RecyclerView practiceMainRecycleView;
+    @BindView(R.id.practice_main_recycleView) RecyclerView practiceMainRecycleView;
     private PracticeContract.IPresenter presenter;
 
     public PracticeMainFragment() {
@@ -38,9 +39,9 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         new PracticePresenter(this, DataSource.getInstance());
-        practiceMainRecycleView = (RecyclerView) inflater.inflate(R.layout.fragment_practice_main, container, false);
-        ButterKnife.bind(this, practiceMainRecycleView);
-        return practiceMainRecycleView;
+        LinearLayout practiceMainLayout = (LinearLayout) inflater.inflate(R.layout.fragment_practice_main, container, false);
+        ButterKnife.bind(this, practiceMainLayout);
+        return practiceMainLayout;
     }
 
     @Override

@@ -16,6 +16,7 @@ public class StatsContract {
     }
 
     interface IPresenter {
-        void doHistoryAnalysis();
+        HistoryAnalysis[] doHistoryAnalysis(boolean refresh);
+        void propagateAnalysis(HistoryAnalysis[] historyAnalysises);
     }
 }

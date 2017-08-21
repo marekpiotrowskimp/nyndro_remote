@@ -21,7 +21,7 @@ import iso.piotrowski.marek.nyndro.UIComponents.BarChart;
 /**
  * Created by Marek on 05.08.2016.
  */
-public class StatsRecyclerViewAdaprer extends RecyclerView.Adapter<StatsRecyclerViewAdaprer.StatsCardViewHolder> {
+public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecyclerViewAdapter.StatsCardViewHolder> {
 
     private HistoryAnalysis[] historyAnalysis;
     private String[] days;

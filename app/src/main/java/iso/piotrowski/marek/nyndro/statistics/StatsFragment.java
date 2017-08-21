@@ -1,6 +1,7 @@
 package iso.piotrowski.marek.nyndro.statistics;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.R;
 
@@ -18,22 +20,30 @@ public class StatsFragment extends Fragment implements StatsContract.IViewer {
     public StatsFragment() {
     }
 
+    public static StatsFragment getInstance() {
+        return new StatsFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         new StatsPresenter(this, DataSource.getInstance());
-        statsRecyclerView= (RecyclerView) inflater.inflate(R.layout.fragment_stats, container, false);
-        calculateStatsInBackround();
+        statsRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_stats, container, false);
+        calculateStatsInBackground(false);
         return statsRecyclerView;
     }
 
-    private void calculateStatsInBackround ()
-    {
-        new Thread(){
+    private void calculateStatsInBackground(boolean refresh) {
+        new Thread() {
             @Override
             public void run() {
-                presenter.doHistoryAnalysis();
+                HistoryAnalysis[] historyAnalysises = presenter.doHistoryAnalysis(refresh);
+                new Handler(NyndroApp.getContect().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        presenter.propagateAnalysis(historyAnalysises);
+                    }
+                });
             }
         }.start();
     }
@@ -44,15 +54,17 @@ public class StatsFragment extends Fragment implements StatsContract.IViewer {
     }
 
     @Override
-    public void showAnalysisResult(HistoryAnalysis[] historyAnalyses) {
-        StatsRecyclerViewAdaprer statsRecyclerViewAdaprer = new StatsRecyclerViewAdaprer();
-        statsRecyclerViewAdaprer.setHistoryAnalysis(historyAnalyses);
-        statsRecyclerViewAdaprer.setDays(getActivity().getResources().getStringArray(R.array.day_of_week));
-        statsRecyclerViewAdaprer.setMonths(getActivity().getResources().getStringArray(R.array.months));
+    public void showAnalysisResult(HistoryAnalysis[] historyAnalysises) {
+        showDataOfAnalysis(historyAnalysises);
+    }
 
-        statsRecyclerView.setAdapter(statsRecyclerViewAdaprer);
+    private void showDataOfAnalysis(HistoryAnalysis[] historyAnalysises) {
+        StatsRecyclerViewAdapter statsRecyclerViewAdapter = new StatsRecyclerViewAdapter();
+        statsRecyclerViewAdapter.setHistoryAnalysis(historyAnalysises);
+        statsRecyclerViewAdapter.setDays(getActivity().getResources().getStringArray(R.array.day_of_week));
+        statsRecyclerViewAdapter.setMonths(getActivity().getResources().getStringArray(R.array.months));
+        statsRecyclerView.setAdapter(statsRecyclerViewAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         statsRecyclerView.setLayoutManager(linearLayoutManager);
-
     }
 }

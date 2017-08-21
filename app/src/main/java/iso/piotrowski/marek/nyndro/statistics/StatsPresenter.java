@@ -25,21 +25,26 @@ public class StatsPresenter implements StatsContract.IPresenter {
     }
 
     @Override
-    public void doHistoryAnalysis() {
+    public HistoryAnalysis[] doHistoryAnalysis(boolean refresh) {
         List<PracticeModel> practices = dataSource.fetchPractices();
         int count = practices.size();
-        HistoryAnalysis[] historyAnalysises = new HistoryAnalysis[count];
+        HistoryAnalysis[] historyAnalysis = new HistoryAnalysis[count];
         for (int ind = 0; ind < count; ind++) {
             PracticeModel practice = practices.get(ind);
             List<HistoryModel> historyList = dataSource.fetchHistoryForPractice(practice.getID());
-            historyAnalysises[ind] = new HistoryAnalysis(historyList);
-            if (historyAnalysises[ind].getAnalysisResult().isEmpty()) {
+            historyAnalysis[ind] = new HistoryAnalysis(historyList);
+            if (historyAnalysis[ind].getAnalysisResult().isEmpty()) {
                 Map<String, AnalysisInfo> analysisEmpty = new HashMap<String, AnalysisInfo>();
                             analysisEmpty.put("practice_name", new AnalysisInfo(practice.getName()));
                             analysisEmpty.put("practice_image_id", new AnalysisInfo(practice.getPracticeImageId()));
-                historyAnalysises[ind].setAnalysisResult(analysisEmpty);
+                historyAnalysis[ind].setAnalysisResult(analysisEmpty);
             }
         }
+        return historyAnalysis;
+    }
+
+    @Override
+    public void propagateAnalysis(HistoryAnalysis[] historyAnalysises){
         viewer.showAnalysisResult(historyAnalysises);
     }
 }

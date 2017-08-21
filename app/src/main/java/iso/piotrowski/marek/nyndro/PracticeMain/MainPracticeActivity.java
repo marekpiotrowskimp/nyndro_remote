@@ -1,53 +1,46 @@
 package iso.piotrowski.marek.nyndro.PracticeMain;
 
-import android.app.backup.BackupManager;
 import android.net.Uri;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.ShareActionProvider;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
+import iso.piotrowski.marek.nyndro.history.HistoryFragment;
 import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.plans.PlansFragment;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
 import iso.piotrowski.marek.nyndro.practice.ListOfPractice.PracticeListFragment;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
-import iso.piotrowski.marek.nyndro.statistics.StatsPagerFragment;
+import iso.piotrowski.marek.nyndro.statistics.StatsFragment;
 
 
 public class MainPracticeActivity extends AppCompatActivity implements PracticeMainContract.IViewer {
     public static Resources resourcesApp;
-    private ShareActionProvider sendMeditationInfoActionProvider;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
     private boolean wasRunning;
     private int lastTypeOfAnimation = 2;
     private PracticeMainContract.IPresenter presenter;
+    @BindView(R.id.bottom_bar_main_practice) BottomBar bottomBar;
 
     public void goToWabSiteOnClick(View view) {
         String url = "http://bombydgoszcz.blogspot.com/";
@@ -61,67 +54,18 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         this.presenter = presenter;
     }
 
-    private class DrawerItemListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            if (l == 0) {
-                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                drawerLayout.closeDrawer(findViewById(R.id.left_layout_of_drawer));
-            }
-            if (l == 1) {
-                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                StatsPagerFragment statsPagerFragment = new StatsPagerFragment();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.main_fragment_container, statsPagerFragment, "visible_tag");
-                ft.addToBackStack(null);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
-                drawerLayout.closeDrawer(findViewById(R.id.left_layout_of_drawer));
-            }
-            if (l == 2) {
-                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                PlansFragment plansFragment = new PlansFragment();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.main_fragment_container, plansFragment, "visible_tag");
-                ft.addToBackStack(null);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
-                drawerLayout.closeDrawer(findViewById(R.id.left_layout_of_drawer));
-            }
-
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new PracticeMainPresenter(this, DataSource.getInstance());
-
         resourcesApp = getResources();
         setContentView(R.layout.activity_main_practics);
-
+        ButterKnife.bind(this);
         setFabConfiguration();
-
-        //Drawer
-        ((ListView) findViewById(R.id.left_drawer_list)).setOnItemClickListener(new DrawerItemListener());
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
-        drawerLayout.setDrawerListener(drawerToggle);
+        setUpBottomBar();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             PracticeMainFragment practiceMainFragment = new PracticeMainFragment();
@@ -148,13 +92,52 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         startService(intent2);
     }
 
+    private void setUpBottomBar() {
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                if (tabId == R.id.tab_practice) {
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                if (tabId == R.id.tab_statistic) {
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    StatsFragment statsFragment = StatsFragment.getInstance();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.main_fragment_container, statsFragment, "visible_tag");
+                    ft.addToBackStack(null);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.commit();
+                }
+                if (tabId == R.id.tab_history) {
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    HistoryFragment historyFragment = new HistoryFragment();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.main_fragment_container, historyFragment, "visible_tag");
+                    ft.addToBackStack(null);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.commit();
+                }
+                if (tabId == R.id.tab_plans) {
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    PlansFragment plansFragment = new PlansFragment();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.main_fragment_container, plansFragment, "visible_tag");
+                    ft.addToBackStack(null);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.commit();
+                }
+
+            }
+        });
+    }
+
     private void setFragmentManagerListener() {
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 Fragment fragment = fragmentManager.findFragmentByTag("visible_tag");
-                if ((fragment instanceof PracticeDetailFragment) || (fragment instanceof PracticeMainFragment) || (fragment instanceof PlansFragment)) {
+                if ((fragment instanceof PracticeMainFragment) || (fragment instanceof PlansFragment)) {
                     if (lastTypeOfAnimation == 1) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -164,7 +147,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
                         }, 250);
                     }
                 }
-                if ((fragment instanceof PracticeListFragment) || (fragment instanceof StatsPagerFragment) || (fragment instanceof AddRemainderFragment)) {
+                if ((fragment instanceof PracticeListFragment) || (fragment instanceof PracticeDetailFragment) || (fragment instanceof HistoryFragment) || (fragment instanceof StatsFragment) || (fragment instanceof AddRemainderFragment)) {
                     if (lastTypeOfAnimation == 2) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -186,20 +169,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
             public void onClick(View view) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 Fragment fragment = fragmentManager.findFragmentByTag("visible_tag");
-                if (fragment instanceof PracticeDetailFragment) {
-                    Snackbar.make(view, R.string.add_fab_snackbar, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.action_snackbar, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    FragmentManager fragmentManager = getSupportFragmentManager();
-                                    Fragment fragment = fragmentManager.findFragmentByTag("visible_tag");
-                                    if (fragment instanceof PracticeDetailFragment) {
-                                        ((PracticeDetailFragment) fragment).addRepetition(false);
-                                    }
-                                }
-                            }).show();
-                    ((PracticeDetailFragment) fragment).addRepetition(true);
-                }
 
                 if (fragment instanceof PracticeMainFragment) {
 
@@ -236,19 +205,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     }
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.practice_menu_main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -257,10 +213,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
         switch (item.getItemId()) {
             case R.id.settings:
                 break;
@@ -336,8 +288,11 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         if (fragment instanceof PracticeListFragment) {
             label = getResources().getString(R.string.app_label_practice);
         }
-        if (fragment instanceof StatsPagerFragment) {
+        if (fragment instanceof StatsFragment) {
             label = getResources().getString(R.string.app_label_stats);
+        }
+        if (fragment instanceof HistoryFragment) {
+            label = getResources().getString(R.string.app_label_history);
         }
         if (fragment instanceof AddRemainderFragment) {
             label = getResources().getString(R.string.app_label_add_renainder);

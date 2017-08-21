@@ -7,4 +7,5 @@
     <dimen name="text_size_detail">18sp</dimen>
     <dimen name="text_margin">16sp</dimen>
     <dimen name="text_cardview_stats">20sp</dimen>
+    <dimen name="author_name_text_size">8sp</dimen>
 </resources>
