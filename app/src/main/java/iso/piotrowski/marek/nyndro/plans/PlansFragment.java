@@ -16,13 +16,19 @@ import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.practice.SimpleCallbackForTouches;
+import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 
-public class PlansFragment extends Fragment implements PlansContract.IViewer{
+public class PlansFragment extends Fragment implements PlansContract.IViewer, IFragmentParams {
 
     private RecyclerView plansRecyclerView;
     private PlansContract.IPresenter presenter;
 
     public PlansFragment() {
+    }
+
+    public static PlansFragment getInstance(){
+        return new PlansFragment();
     }
 
     @Override
@@ -77,6 +83,21 @@ public class PlansFragment extends Fragment implements PlansContract.IViewer{
         });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(plansRecyclerView);
+    }
+
+    @Override
+    public String getFragmentName() {
+        return getResources().getString(R.string.app_label_plans);
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.Plans;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return true;
     }
 
     private class MyOnRemainderItemClickListener implements PlansAdapter.OnRemainderItemClickListener {

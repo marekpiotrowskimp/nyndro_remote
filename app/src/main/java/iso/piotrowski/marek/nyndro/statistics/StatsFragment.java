@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 
-public class StatsFragment extends Fragment implements StatsContract.IViewer {
+public class StatsFragment extends Fragment implements StatsContract.IViewer, IFragmentParams {
     private RecyclerView statsRecyclerView;
     private StatsContract.IPresenter presenter;
 
@@ -66,5 +68,20 @@ public class StatsFragment extends Fragment implements StatsContract.IViewer {
         statsRecyclerView.setAdapter(statsRecyclerViewAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         statsRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public String getFragmentName() {
+        return getResources().getString(R.string.app_label_stats);
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.Stats;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return false;
     }
 }

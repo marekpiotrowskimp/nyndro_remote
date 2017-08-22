@@ -23,8 +23,10 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 
-public class AddRemainderFragment extends Fragment implements AddRemainderContract.IViewer {
+public class AddRemainderFragment extends Fragment implements AddRemainderContract.IViewer, IFragmentParams {
 
     @BindView(R.id.plans_date_picker) DatePicker datePicker;
     @BindView(R.id.plans_time_picker) TimePicker timePicker;
@@ -121,5 +123,20 @@ public class AddRemainderFragment extends Fragment implements AddRemainderContra
 
     public void setReminder(ReminderModel reminder) {
         this.reminder = reminder;
+    }
+
+    @Override
+    public String getFragmentName() {
+        return getResources().getString(R.string.app_label_add_renainder);
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.AddRemainder;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return false;
     }
 }

@@ -3,7 +3,6 @@ package iso.piotrowski.marek.nyndro.practice.ListOfPractice;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,14 +11,18 @@ import android.view.ViewGroup;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 
-public class PracticeListFragment extends Fragment {
+public class PracticeListFragment extends Fragment implements IFragmentParams {
 
-    private int mColumnCount = 1;
-
-    private OnListFragmentInteractionListener mListener=null;
+    private OnListFragmentInteractionListener listener =null;
 
     public PracticeListFragment() {
+    }
+
+    public static PracticeListFragment getInstance(OnListFragmentInteractionListener listener){
+        return new PracticeListFragment().setListener(listener);
     }
 
     @Override
@@ -34,12 +37,8 @@ public class PracticeListFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new PracticeListRecyclerViewAdapter(Practice.practices, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new PracticeListRecyclerViewAdapter(Practice.practices, listener));
         }
         return view;
     }
@@ -56,12 +55,28 @@ public class PracticeListFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        setmListener(null);
+        setListener(null);
         super.onDetach();
     }
 
-    public void setmListener(OnListFragmentInteractionListener mListener) {
-        this.mListener = mListener;
+    public PracticeListFragment setListener(OnListFragmentInteractionListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    @Override
+    public String getFragmentName() {
+        return getResources().getString(R.string.app_label_practice);
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.PracticeList;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return false;
     }
 
     public interface OnListFragmentInteractionListener {

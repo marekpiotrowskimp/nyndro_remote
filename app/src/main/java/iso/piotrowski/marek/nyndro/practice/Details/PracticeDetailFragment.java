@@ -19,12 +19,14 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
+import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PracticeDetailFragment extends Fragment implements PracticeDetailContract.IViewer{
+public class PracticeDetailFragment extends Fragment implements PracticeDetailContract.IViewer, IFragmentParams {
 
     @BindView(R.id.practice_image_detail) ImageView practiceImage;
     @BindView(R.id.practice_name_detail) TextView practiceName;
@@ -47,12 +49,33 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
     private PracticeDetailContract.IPresenter presenter;
     private long practiceId;
 
+    @Override
+    public String getFragmentName() {
+        return practice.getName();
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.PracticeDetail;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return false;
+    }
+
     public enum TypeOfEditMode {
         Standard,
         Edit
     }
 
     public PracticeDetailFragment() {
+    }
+
+    public static PracticeDetailFragment getInstance(PracticeModel practice){
+        PracticeDetailFragment practiceDetailFragment = new PracticeDetailFragment();
+        practiceDetailFragment.setPractice(practice);
+        return practiceDetailFragment;
     }
 
     @Override

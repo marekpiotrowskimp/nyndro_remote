@@ -22,17 +22,24 @@ import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
+import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PracticeMainFragment extends Fragment implements PracticeContract.IViewer, PracticeAdapter.INextAndLastDateOfPractice, PracticeAdapter.ICardViewListener {
+public class PracticeMainFragment extends Fragment implements PracticeContract.IViewer,
+        PracticeAdapter.INextAndLastDateOfPractice, PracticeAdapter.ICardViewListener, IFragmentParams {
 
     private PracticeAdapter practiceAdapter;
     @BindView(R.id.practice_main_recycleView) RecyclerView practiceMainRecycleView;
     private PracticeContract.IPresenter presenter;
 
     public PracticeMainFragment() {
+    }
+
+    public static PracticeMainFragment getInstance(){
+        return new PracticeMainFragment();
     }
 
     @Override
@@ -113,12 +120,26 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
 
     @Override
     public void onClickToShowPracticeDetails(View view, PracticeModel practice) {
-        PracticeDetailFragment practiceDetailFragment = new PracticeDetailFragment();
-        practiceDetailFragment.setPractice(practice);
+        PracticeDetailFragment practiceDetailFragment = PracticeDetailFragment.getInstance(practice);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_fragment_container, practiceDetailFragment, "visible_tag");
         ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+    }
+
+    @Override
+    public String getFragmentName() {
+        return getResources().getString(R.string.app_name);
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.Main;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return true;
     }
 }

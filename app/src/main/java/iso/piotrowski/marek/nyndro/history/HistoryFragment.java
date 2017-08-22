@@ -17,12 +17,14 @@ import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment implements HistoryContract.IViewer {
+public class HistoryFragment extends Fragment implements HistoryContract.IViewer, IFragmentParams {
 
     @BindView(R.id.history_recyclerview) RecyclerView statsRecyclerView;
     private HistoryContract.IPresenter presenter;
@@ -30,6 +32,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.IViewer
     public HistoryFragment() {
     }
 
+    public static HistoryFragment getInstance(){
+        return new HistoryFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,5 +62,20 @@ public class HistoryFragment extends Fragment implements HistoryContract.IViewer
         statsRecyclerView.setAdapter(historyRecyclerViewAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         statsRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public String getFragmentName() {
+        return getResources().getString(R.string.app_label_history);
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.History;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return false;
     }
 }
