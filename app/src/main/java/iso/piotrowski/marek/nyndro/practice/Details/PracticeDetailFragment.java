@@ -21,6 +21,7 @@ import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
+import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
@@ -104,7 +105,7 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
         switch (item.getItemId()) {
             case R.id.edit_toolbar:
                 if (getEditMode() == TypeOfEditMode.Edit) {
-                    getFragmentManager().popBackStack();
+                    Navigator.getInstance().goBack();
                 } else {
                     item.setIcon(getResources().getDrawable(R.mipmap.ic_edit_black_48dp));
                 }

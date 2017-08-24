@@ -1,7 +1,5 @@
 package iso.piotrowski.marek.nyndro.practice;
 
-
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +14,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
@@ -24,6 +23,7 @@ import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
+import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -120,17 +120,12 @@ public class PracticeMainFragment extends Fragment implements PracticeContract.I
 
     @Override
     public void onClickToShowPracticeDetails(View view, PracticeModel practice) {
-        PracticeDetailFragment practiceDetailFragment = PracticeDetailFragment.getInstance(practice);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.main_fragment_container, practiceDetailFragment, "visible_tag");
-        ft.addToBackStack(null);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
+        Navigator.getInstance().changeFragmentInContainer(PracticeDetailFragment.getInstance(practice), true);
     }
 
     @Override
     public String getFragmentName() {
-        return getResources().getString(R.string.app_name);
+        return NyndroApp.getContect().getResources().getString(R.string.app_name);
     }
 
     @Override

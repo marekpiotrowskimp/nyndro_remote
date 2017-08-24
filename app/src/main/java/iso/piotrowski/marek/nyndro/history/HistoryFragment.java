@@ -14,6 +14,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
@@ -66,7 +67,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.IViewer
 
     @Override
     public String getFragmentName() {
-        return getResources().getString(R.string.app_label_history);
+        return NyndroApp.getContect().getResources().getString(R.string.app_label_history);
     }
 
     @Override

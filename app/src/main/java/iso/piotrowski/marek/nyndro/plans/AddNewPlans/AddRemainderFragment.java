@@ -19,12 +19,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
+import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 
 public class AddRemainderFragment extends Fragment implements AddRemainderContract.IViewer, IFragmentParams {
 
@@ -104,7 +106,7 @@ public class AddRemainderFragment extends Fragment implements AddRemainderContra
         } else {
             presenter.updateReminder(reminder, calendar.getTime().getTime(),repeater, addRemainderAdapter.getPractice());
         }
-        getFragmentManager().popBackStack();
+        Navigator.getInstance().goBack();
     }
 
     @Override
@@ -127,7 +129,7 @@ public class AddRemainderFragment extends Fragment implements AddRemainderContra
 
     @Override
     public String getFragmentName() {
-        return getResources().getString(R.string.app_label_add_renainder);
+        return NyndroApp.getContect().getResources().getString(R.string.app_label_add_renainder);
     }
 
     @Override

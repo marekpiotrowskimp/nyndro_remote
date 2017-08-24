@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
+
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
@@ -18,6 +20,7 @@ import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.practice.SimpleCallbackForTouches;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
+import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 
 public class PlansFragment extends Fragment implements PlansContract.IViewer, IFragmentParams {
 
@@ -87,7 +90,7 @@ public class PlansFragment extends Fragment implements PlansContract.IViewer, IF
 
     @Override
     public String getFragmentName() {
-        return getResources().getString(R.string.app_label_plans);
+        return NyndroApp.getContect().getResources().getString(R.string.app_label_plans);
     }
 
     @Override
@@ -110,12 +113,7 @@ public class PlansFragment extends Fragment implements PlansContract.IViewer, IF
         @Override
         public void OnClick(View view, int position) {
             ReminderModel reminder = reminderList.get(position);
-            Fragment fragment = AddRemainderFragment.getInstance(reminder);
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_fragment_container, fragment,"visible_tag");
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            fragmentTransaction.commit();
+            Navigator.getInstance().changeFragmentInContainer(AddRemainderFragment.getInstance(reminder), true);
         }
     }
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
@@ -66,7 +67,7 @@ public class PracticeListFragment extends Fragment implements IFragmentParams {
 
     @Override
     public String getFragmentName() {
-        return getResources().getString(R.string.app_label_practice);
+        return NyndroApp.getContect().getResources().getString(R.string.app_label_practice);
     }
 
     @Override

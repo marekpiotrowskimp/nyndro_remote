@@ -72,7 +72,7 @@ public class StatsFragment extends Fragment implements StatsContract.IViewer, IF
 
     @Override
     public String getFragmentName() {
-        return getResources().getString(R.string.app_label_stats);
+        return NyndroApp.getContect().getResources().getString(R.string.app_label_stats);
     }
 
     @Override
