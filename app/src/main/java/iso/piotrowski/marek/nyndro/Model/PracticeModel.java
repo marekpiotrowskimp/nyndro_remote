@@ -64,6 +64,9 @@ public class PracticeModel extends Model {
     public Integer getPracticeImageId() {
         return DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[practiceImageId]);
     }
+    public Integer getRawPracticeImageId() {
+        return practiceImageId;
+    }
 
     public PracticeModel setPracticeImageId(Integer practiceImageId) {
         this.practiceImageId = practiceImageId;

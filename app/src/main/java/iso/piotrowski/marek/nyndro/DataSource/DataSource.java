@@ -19,6 +19,7 @@ public class DataSource implements IDataSource {
     }
 
     public static DataSource getInstance(){
+        DBQuery.adjustDatabase();
         return instance == null ? instance = new DataSource() : instance;
     }
 

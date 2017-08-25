@@ -201,4 +201,5 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         }
         setApplicationLabel(currentFragment);
     }
+    
 }

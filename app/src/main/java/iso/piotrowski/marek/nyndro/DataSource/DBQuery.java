@@ -1,5 +1,8 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
@@ -9,6 +12,7 @@ import com.activeandroid.query.Update;
 import java.util.Date;
 import java.util.List;
 
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
@@ -20,6 +24,9 @@ import iso.piotrowski.marek.nyndro.tools.Utility;
  */
 
 public class DBQuery {
+    private static String NYNDRO_PREFERENCES = "NyndroPreferences";
+    private static String DB_VERSION_2 = "NyndroPreferences";
+
 
     public static List<PracticeModel> getPractices() {
         return new Select().from(PracticeModel.class).orderBy("PROGRESS DESC").where("ACTIVE = 1").execute();
@@ -139,28 +146,62 @@ public class DBQuery {
     }
 
     public static boolean adjustDatabase() {
-        if (ActiveAndroid.getDatabase().getVersion() == 2) {
-            List<PracticeModel> practices = getPractices();
-            List<HistoryModel> histories = getHistory();
-            List<ReminderModel> remainders = getReminders();
-            if (isNotEmpty(practices, histories, remainders)) {
-                for (ReminderModel remainder : remainders) {
-                    if (remainder.getPractice() == null) {
-                        remainder.setPractice(getPractice(remainder.getID()));
-                        remainder.save();
+        SharedPreferences preferences = NyndroApp.getContect().getSharedPreferences(NYNDRO_PREFERENCES, Context.MODE_PRIVATE);
+        if (!preferences.getBoolean(DB_VERSION_2, false)) {
+            if (ActiveAndroid.getDatabase().getVersion() == 2) {
+                List<PracticeModel> practices = getPractices();
+                List<HistoryModel> histories = getHistory();
+                List<ReminderModel> remainders = getReminders();
+                if (isNotEmpty(practices, histories, remainders)) {
+                    for (ReminderModel remainder : remainders) {
+                        if (remainder.getPractice() == null) {
+                            remainder.setPractice(getPractice(remainder.getPracticeId()));
+                            remainder.save();
+                        }
+                    }
+                    for (HistoryModel history : histories) {
+                        if (history.getPractice() == null) {
+                            history.setPractice(getPractice(history.getPracticeId()));
+                            history.save();
+                        }
                     }
                 }
-                for (HistoryModel history : histories) {
-                    if (history.getPractice() == null) {
-                        history.setPractice(getPractice(history.getID()));
-                        history.save();
-                    }
+                for (PracticeModel practice : practices) {
+                    practice.setPracticeImageId(checkIsOldVersionId(practice.getRawPracticeImageId()));
+                    practice.save();
                 }
-            }
 
+            }
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(DB_VERSION_2, true);
+            editor.apply();
+            editor.commit();
         }
         return true;
     }
+
+    private static int checkIsOldVersionId(int value) {
+        switch (value) {
+            case 2130837588:
+                return 0;
+            case 2130837587:
+                return 1;
+            case 2130837590:
+                return 2;
+            case 2130837580:
+                return 3;
+            case 2130837586:
+                return 4;
+            case 2130837584:
+                return 5;
+            case 2130837591:
+                return 6;
+            case 2130837585:
+                return 7;
+        }
+        return value;
+    }
+
 
     private static boolean isNotEmpty(List<PracticeModel> practices, List<HistoryModel> histories, List<ReminderModel> remainders) {
         return practices.size() + histories.size() + remainders.size() > 0;

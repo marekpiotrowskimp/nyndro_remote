@@ -19,11 +19,12 @@ public class DrawableMapper {
         mahakala(7);
 
         private int value;
-        TypeOfImage(int value){
+
+        TypeOfImage(int value) {
             this.value = value;
         }
 
-        public int getValue(){
+        public int getValue() {
             return this.value;
         }
     }
@@ -38,7 +39,7 @@ public class DrawableMapper {
             R.drawable.z_chenrizg,
             R.drawable.mahakala};
 
-    public static int getDrawableId(TypeOfImage typeOfImage){
+    public static int getDrawableId(TypeOfImage typeOfImage) {
         return drawable[typeOfImage.getValue()];
     }
 }
