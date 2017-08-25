@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
 
 
 public class PracticeListRecyclerViewAdapter extends RecyclerView.Adapter<PracticeListRecyclerViewAdapter.ViewHolder> {
@@ -35,7 +36,8 @@ public class PracticeListRecyclerViewAdapter extends RecyclerView.Adapter<Practi
         holder.mItem = mPractices[position];
         holder.mNameView.setText(mPractices[position].getName());
         holder.mDescriptionView.setText(mPractices[position].getDescription());
-        holder.mImageView.setImageDrawable(holder.mView.getResources().getDrawable(mPractices[position].getImageResourcesId()));
+        holder.mImageView.setImageDrawable(holder.mView.getResources().getDrawable(
+                DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[mPractices[position].getImageResourcesId()])));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

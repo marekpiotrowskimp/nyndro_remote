@@ -4,6 +4,8 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
+
 /**
  * Created by marek.piotrowski on 06/08/2017.
  */
@@ -60,7 +62,7 @@ public class PracticeModel extends Model {
     }
 
     public Integer getPracticeImageId() {
-        return practiceImageId;
+        return DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[practiceImageId]);
     }
 
     public PracticeModel setPracticeImageId(Integer practiceImageId) {
