@@ -29,7 +29,7 @@ public class DrawableMapper {
         }
     }
 
-    private static int drawable[] = {
+    private static int drawablePractice[] = {
             R.drawable.s_refuge,
             R.drawable.refuge,
             R.drawable.vajrasattva,
@@ -39,7 +39,21 @@ public class DrawableMapper {
             R.drawable.z_chenrizg,
             R.drawable.mahakala};
 
+    private static int drawablePracticeLarge[] = {
+            R.drawable.s_refuge_large,
+            R.drawable.refuge_large,
+            R.drawable.vajrasattva_large,
+            R.drawable.amitabha_large,
+            R.drawable.mandala_large,
+            R.drawable.guru_yoga_large,
+            R.drawable.z_chenrizg_large,
+            R.drawable.mahakala_large};
+
     public static int getDrawableId(TypeOfImage typeOfImage) {
-        return drawable[typeOfImage.getValue()];
+        return drawablePractice[typeOfImage.getValue()];
+    }
+
+    public static int getDrawableLargeId(TypeOfImage typeOfImage) {
+        return drawablePracticeLarge[typeOfImage.getValue()];
     }
 }

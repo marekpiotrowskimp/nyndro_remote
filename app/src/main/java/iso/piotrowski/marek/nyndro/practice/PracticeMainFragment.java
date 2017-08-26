@@ -24,12 +24,13 @@ import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PracticeMainFragment extends Fragment implements PracticeContract.IViewer,
-        PracticeAdapter.INextAndLastDateOfPractice, PracticeAdapter.ICardViewListener, IFragmentParams {
+public class PracticeMainFragment extends NyndroFragment implements PracticeContract.IViewer,
+        PracticeAdapter.INextAndLastDateOfPractice, PracticeAdapter.ICardViewListener {
 
     private PracticeAdapter practiceAdapter;
     @BindView(R.id.practice_main_recycleView) RecyclerView practiceMainRecycleView;

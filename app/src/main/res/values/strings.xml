@@ -73,6 +73,8 @@
     <string name="StatisticsPage">Statistics</string>
     <string name="HistoryPage">History</string>
     <string name="c_marek_piotrowski_c">(c) Marek Piotrowski (c)</string>
+    <string name="default_fragment_name">Default Name</string>
+    <string name="tap_counter_name">Tap Counter</string>
 
     //Day of week
     <string-array name="day_of_week">

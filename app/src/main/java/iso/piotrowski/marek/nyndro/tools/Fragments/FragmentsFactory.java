@@ -3,6 +3,7 @@ package iso.piotrowski.marek.nyndro.tools.Fragments;
 import android.support.v4.app.Fragment;
 
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.TabCounter.TabCounterFragment;
 import iso.piotrowski.marek.nyndro.history.HistoryFragment;
 import iso.piotrowski.marek.nyndro.plans.PlansFragment;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
@@ -61,7 +62,7 @@ public class FragmentsFactory {
             case Plans:
                 return PlansFragment.getInstance();
             case TapCounter:
-                return PracticeMainFragment.getInstance();
+                return TabCounterFragment.getInstance();
         }
         return null;
     }

@@ -14,8 +14,9 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
-public class StatsFragment extends Fragment implements StatsContract.IViewer, IFragmentParams {
+public class StatsFragment extends NyndroFragment implements StatsContract.IViewer {
     private RecyclerView statsRecyclerView;
     private StatsContract.IPresenter presenter;
 

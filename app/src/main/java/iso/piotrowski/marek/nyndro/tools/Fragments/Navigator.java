@@ -53,10 +53,12 @@ public class Navigator implements INavigator {
     }
 
     @Override
-    public void goBack() {
+    public boolean goBack() {
         if (fragmentStack.size()>0) {
             changeFragmentInContainer(fragmentStack.pop(), false, true);
+            return true;
         }
+        return false;
     }
 
     @Override

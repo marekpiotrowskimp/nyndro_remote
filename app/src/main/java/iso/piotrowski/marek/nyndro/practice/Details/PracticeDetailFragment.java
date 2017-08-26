@@ -19,15 +19,17 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
+import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PracticeDetailFragment extends Fragment implements PracticeDetailContract.IViewer, IFragmentParams {
+public class PracticeDetailFragment extends NyndroFragment implements PracticeDetailContract.IViewer {
 
     @BindView(R.id.practice_image_detail) ImageView practiceImage;
     @BindView(R.id.practice_name_detail) TextView practiceName;
@@ -124,7 +126,8 @@ public class PracticeDetailFragment extends Fragment implements PracticeDetailCo
     private void viewPractice (TypeOfEditMode typeViewPractice)
     {
         practiceImage.setContentDescription(practice.getName());
-        practiceImage.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(practice.getPracticeImageId()));
+        practiceImage.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(
+                DrawableMapper.getDrawableLargeId(DrawableMapper.TypeOfImage.values()[practice.getRawPracticeImageId()])));
         practiceProgress.setMaxProgress(practice.getMaxRepetition());
         practiceProgress.setProgress(practice.getProgress());
 

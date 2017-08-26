@@ -9,6 +9,6 @@ import android.support.v4.app.Fragment;
 public interface INavigator {
     void changeFragmentInContainer(Fragment newFragment);
     void changeFragmentInContainer(Fragment newFragment, boolean addToBackStack);
-    void goBack();
+    boolean goBack();
     Fragment getCurrentFragment();
 }

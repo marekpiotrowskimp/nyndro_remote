@@ -27,8 +27,9 @@ import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
-public class AddRemainderFragment extends Fragment implements AddRemainderContract.IViewer, IFragmentParams {
+public class AddRemainderFragment extends NyndroFragment implements AddRemainderContract.IViewer {
 
     @BindView(R.id.plans_date_picker) DatePicker datePicker;
     @BindView(R.id.plans_time_picker) TimePicker timePicker;

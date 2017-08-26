@@ -20,12 +20,13 @@ import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment implements HistoryContract.IViewer, IFragmentParams {
+public class HistoryFragment extends NyndroFragment implements HistoryContract.IViewer {
 
     @BindView(R.id.history_recyclerview) RecyclerView statsRecyclerView;
     private HistoryContract.IPresenter presenter;

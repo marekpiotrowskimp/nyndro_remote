@@ -40,7 +40,6 @@ import iso.piotrowski.marek.nyndro.tools.UITool;
 
 public class MainPracticeActivity extends AppCompatActivity implements PracticeMainContract.IViewer, IActivityDelegate {
 
-    public static Resources resourcesApp;
     private boolean wasRunning;
     private PracticeMainContract.IPresenter presenter;
     private UITool.TypeOfButtonAnimation buttonAnimation = UITool.TypeOfButtonAnimation.Emerge;
@@ -61,7 +60,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         new PracticeMainPresenter(this, DataSource.getInstance());
         Navigator.initialization(new WeakReference<>(this));
         navigator = Navigator.getInstance();
-        resourcesApp = getResources(); //todo
         setContentView(R.layout.activity_main_practics);
         ButterKnife.bind(this);
         setFabConfiguration();
@@ -170,8 +168,11 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
 
     @Override
     public void onBackPressed() {
+        if (navigator.goBack()) {
+            setBottomBar((IFragmentParams) navigator.getCurrentFragment());
+            return;
+        }
         super.onBackPressed();
-//        setBottomBar((IFragmentParams) getFragmentFromManager()); // todo
     }
 
     private void setBottomBar (IFragmentParams fragmentParams){

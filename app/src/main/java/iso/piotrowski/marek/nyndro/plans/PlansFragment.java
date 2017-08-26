@@ -21,8 +21,9 @@ import iso.piotrowski.marek.nyndro.practice.SimpleCallbackForTouches;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
-public class PlansFragment extends Fragment implements PlansContract.IViewer, IFragmentParams {
+public class PlansFragment extends NyndroFragment implements PlansContract.IViewer {
 
     private RecyclerView plansRecyclerView;
     private PlansContract.IPresenter presenter;

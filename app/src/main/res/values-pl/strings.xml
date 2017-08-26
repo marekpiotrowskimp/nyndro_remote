@@ -83,6 +83,8 @@
     <string name="deleted_practice_info">"Usunięto "</string>
     <string name="StatisticsPage">Statystyki</string>
     <string name="HistoryPage">Historia</string>
+    <string name="default_fragment_name">Domyślna Nazwa</string>
+    <string name="tap_counter_name">Licznik praktyk</string>
 
     //Day of week
     <string-array name="day_of_week">
