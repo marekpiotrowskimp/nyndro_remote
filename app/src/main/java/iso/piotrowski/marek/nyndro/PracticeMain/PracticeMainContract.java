@@ -1,6 +1,7 @@
 package iso.piotrowski.marek.nyndro.PracticeMain;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
 
 /**
  * Created by marek.piotrowski on 21/08/2017.

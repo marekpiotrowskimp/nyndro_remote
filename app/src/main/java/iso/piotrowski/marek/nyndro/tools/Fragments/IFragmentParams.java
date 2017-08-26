@@ -8,4 +8,5 @@ public interface IFragmentParams {
     String getFragmentName();
     FragmentsFactory.TypeOfFragment getTypeOf();
     boolean isButtonVisible();
+    void refreshData();
 }

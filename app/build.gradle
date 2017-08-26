@@ -53,4 +53,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //Bottom bar
     compile 'com.roughike:bottom-bar:2.3.1'
+    //Boom Menu
+    compile 'com.nightonke:boommenu:2.1.0'
 }

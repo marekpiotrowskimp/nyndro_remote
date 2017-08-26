@@ -32,4 +32,14 @@ public class PlanPresenter implements PlansContract.IPresenter {
     public void removeRemainder(long remainderId) {
         dataSource.deleteRemainder(remainderId);
     }
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    public void refreshData() {
+
+    }
 }

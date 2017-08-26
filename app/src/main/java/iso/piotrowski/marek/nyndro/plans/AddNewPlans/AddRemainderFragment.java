@@ -40,7 +40,6 @@ public class AddRemainderFragment extends NyndroFragment implements AddRemainder
     @BindView(R.id.rb_monthly) RadioButton rbMonthly;
     @BindView(R.id.remainder_practice_recicler_view) RecyclerView recyclerViewRemainder;
     private AddRemainderAdapter addRemainderAdapter;
-    private AddRemainderContract.IPresenter presenter;
     private ReminderModel reminder;
 
     public AddRemainderFragment (){
@@ -50,6 +49,10 @@ public class AddRemainderFragment extends NyndroFragment implements AddRemainder
         AddRemainderFragment addRemainderFragment = new AddRemainderFragment();
         addRemainderFragment.setReminder(reminder);
         return addRemainderFragment;
+    }
+
+    private AddRemainderContract.IPresenter getPresenter(){
+        return (AddRemainderContract.IPresenter) presenter;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class AddRemainderFragment extends NyndroFragment implements AddRemainder
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenter.loadPracticeData();
+        getPresenter().loadPracticeData();
         setUpAddRemainderView();
     }
 
@@ -103,9 +106,9 @@ public class AddRemainderFragment extends NyndroFragment implements AddRemainder
         }
 
         if (reminder == null) {
-            presenter.addReminder(calendar.getTime().getTime(),repeater, addRemainderAdapter.getPractice());
+            getPresenter().addReminder(calendar.getTime().getTime(),repeater, addRemainderAdapter.getPractice());
         } else {
-            presenter.updateReminder(reminder, calendar.getTime().getTime(),repeater, addRemainderAdapter.getPractice());
+            getPresenter().updateReminder(reminder, calendar.getTime().getTime(),repeater, addRemainderAdapter.getPractice());
         }
         Navigator.getInstance().goBack();
     }

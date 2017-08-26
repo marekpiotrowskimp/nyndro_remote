@@ -1,9 +1,7 @@
 package iso.piotrowski.marek.nyndro.plans;
 
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -19,16 +17,18 @@ import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.practice.SimpleCallbackForTouches;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 public class PlansFragment extends NyndroFragment implements PlansContract.IViewer {
 
     private RecyclerView plansRecyclerView;
-    private PlansContract.IPresenter presenter;
 
     public PlansFragment() {
+    }
+
+    private PlansContract.IPresenter getPresenter(){
+        return (PlansContract.IPresenter)presenter;
     }
 
     public static PlansFragment getInstance(){
@@ -72,7 +72,7 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setItemTouchHelper();
-        presenter.loadPlansData();
+        getPresenter().loadPlansData();
     }
 
     private void setItemTouchHelper() {
@@ -80,9 +80,9 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 if (viewHolder instanceof PlansAdapter.PlansHolder) {
-                    presenter.removeRemainder(((PlansAdapter.PlansHolder) viewHolder).getRemainderId());
+                    getPresenter().removeRemainder(((PlansAdapter.PlansHolder) viewHolder).getRemainderId());
                 }
-                presenter.refreshPlansData();
+                getPresenter().refreshPlansData();
             }
         });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);

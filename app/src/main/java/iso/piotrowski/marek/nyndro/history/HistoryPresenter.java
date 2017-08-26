@@ -21,4 +21,14 @@ public class HistoryPresenter implements HistoryContract.IPresenter {
     public void loadHistoryData() {
         viewer.showHistory(dataSource.fetchHistory());
     }
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    public void refreshData() {
+
+    }
 }

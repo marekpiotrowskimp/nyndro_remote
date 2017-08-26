@@ -33,4 +33,14 @@ public class AddRemainderPresenter implements AddRemainderContract.IPresenter {
     public void updateReminder(ReminderModel reminder, long date, int repeater, PracticeModel practice) {
         dataSource.updateRemainder(reminder, date, repeater, practice);;
     }
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    public void refreshData() {
+
+    }
 }

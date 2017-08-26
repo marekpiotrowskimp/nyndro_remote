@@ -14,6 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.nightonke.boommenu.BoomButtons.BoomButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
+import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -29,11 +34,13 @@ import iso.piotrowski.marek.nyndro.plans.PlansFragment;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.practice.ListOfPractice.PracticeListFragment;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
+import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IActivityDelegate;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.INavigator;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 import iso.piotrowski.marek.nyndro.tools.UITool;
 
 
@@ -43,8 +50,8 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     private INavigator navigator;
 
     @BindView(R.id.bottom_bar_main_practice) BottomBar bottomBar;
-    @BindView(R.id.fab_add_new_practice) FloatingActionButton floatingActionButton;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.boom_menu_button) BoomMenuButton boomButton;
 
     @Override
     public void setPresenter(PracticeMainContract.IPresenter presenter) {
@@ -59,11 +66,35 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         navigator = Navigator.getInstance();
         setContentView(R.layout.activity_main_practics);
         ButterKnife.bind(this);
-        setFabConfiguration();
+        setBoomButton();
         setUpBottomBar();
         setSupportActionBar(toolbar);
         restoreApplicationInstance(savedInstanceState);
         startRemainderService();
+    }
+
+    private void setBoomButton() {
+        Practice practices[] = Practice.practices;
+        for (int i = 0; i < boomButton.getButtonPlaceEnum().buttonNumber(); i++) {
+            TextOutsideCircleButton.Builder builder = new TextOutsideCircleButton.Builder()
+                    .normalImageRes(DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[practices[i].getImageResourcesId()]))
+                    .normalText(practices[i].getName()).rotateImage(true).rotateText(true).shadowEffect(true).shadowOffsetX(30).shadowOffsetY(30)
+                    .listener(new OnBMClickListener() {
+                        @Override
+                        public void onBoomButtonClick(int index) {
+                            NyndroFragment currentFragment = navigator.getCurrentFragment();
+                            if (currentFragment instanceof PracticeMainFragment) {
+                                presenter.insertPractice(practices[index]);
+                                currentFragment.refreshData();
+                                Snackbar.make(bottomBar, "Praktyka dodana: " + practices[index].getName(), Snackbar.LENGTH_LONG).show();
+                            }
+                            if (currentFragment instanceof PlansFragment) {
+                                navigator.changeFragmentInContainer(AddRemainderFragment.getInstance(null), true);
+                            }
+                        }
+                    });
+            boomButton.addBuilder(builder);
+        }
     }
 
     private void restoreApplicationInstance(Bundle savedInstanceState) {
@@ -92,34 +123,10 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
             @Override
             public void run() {
                 if (UITool.lastTypeOfAnimation != typeOfAnimation) {
-                    UITool.animateButton(floatingActionButton, typeOfAnimation);
+                    UITool.animateButton(boomButton, typeOfAnimation);
                 }
             }
         }, 250);
-    }
-
-    private void setFabConfiguration() {
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = navigator.getCurrentFragment();
-                if (fragment instanceof PracticeMainFragment) {
-                    PracticeListFragment.OnListFragmentInteractionListener onListFragmentInteractionListener = new PracticeListFragment.OnListFragmentInteractionListener() {
-                        @Override
-                        public void onListFragmentInteraction(Practice practice) {
-                            presenter.insertPractice(practice);
-                            Snackbar.make(view, "Praktyka dodana: " + practice.getName(), Snackbar.LENGTH_LONG).show();
-                            navigator.goBack();
-                        }
-                    };
-                    navigator.changeFragmentInContainer(PracticeListFragment.getInstance(onListFragmentInteractionListener), true);
-                }
-                if (fragment instanceof PlansFragment) {
-                    navigator.changeFragmentInContainer(AddRemainderFragment.getInstance(null), true);
-                }
-            }
-        });
-
     }
 
     @Override
@@ -142,7 +149,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("fab_visible", floatingActionButton.getVisibility() == View.INVISIBLE);
+        outState.putBoolean("fab_visible", boomButton.getVisibility() == View.INVISIBLE);
     }
 
     private void setApplicationLabel(Fragment currentFragment) {

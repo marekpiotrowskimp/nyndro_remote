@@ -49,8 +49,11 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
     private static String PRACTICE_ID = "practice_id";
     private TypeOfEditMode editMode = TypeOfEditMode.Standard;
     private PracticeModel practice;
-    private PracticeDetailContract.IPresenter presenter;
     private long practiceId;
+
+    private PracticeDetailContract.IPresenter getPresenter(){
+        return (PracticeDetailContract.IPresenter) presenter;
+    }
 
     @Override
     public String getFragmentName() {
@@ -89,7 +92,7 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
         if (savedInstanceState!=null)
         {
             practiceId  = savedInstanceState.getLong(PRACTICE_ID);
-            presenter.loadPracticeData(practiceId);
+            getPresenter().loadPracticeData(practiceId);
         }
         setHasOptionsMenu(true);
         ButterKnife.bind(this, practiceDetailView);
@@ -120,7 +123,7 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
     @Override
     public void onStart() {
         super.onStart();
-        presenter.loadPracticeData(practiceId);
+        getPresenter().loadPracticeData(practiceId);
     }
 
     private void viewPractice (TypeOfEditMode typeViewPractice)
@@ -131,8 +134,8 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
         practiceProgress.setMaxProgress(practice.getMaxRepetition());
         practiceProgress.setProgress(practice.getProgress());
 
-        Utility.setUpPracticeDate(practiceDateLast, presenter.getLastHistoryOfPractice(practice.getID()));
-        Utility.setUpPracticeDate(practiceDateNext, presenter.getNextPlanedOfPractice(practice.getID()));
+        Utility.setUpPracticeDate(practiceDateLast, getPresenter().getLastHistoryOfPractice(practice.getID()));
+        Utility.setUpPracticeDate(practiceDateNext, getPresenter().getNextPlanedOfPractice(practice.getID()));
 
         setEditVisibility(typeViewPractice==TypeOfEditMode.Standard ? View.INVISIBLE : View.VISIBLE);
         setUpPracticeTextAndEdit(practice, typeViewPractice==TypeOfEditMode.Standard);
@@ -179,21 +182,21 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
     public void addRepetition (boolean typeAddSubtrack)
     {
         int repetition = practice.getProgress() * (typeAddSubtrack ? 1 : -1);
-        presenter.addProgressToPractice(practice, repetition);
-        presenter.addHistoryForPractice(practice, repetition);
+        getPresenter().addProgressToPractice(practice, repetition);
+        getPresenter().addHistoryForPractice(practice, repetition);
         viewPractice(getEditMode());
     }
 
     void editionEnd ()
     {
         int oldProgress = practice.getProgress();
-        presenter.updatePractice(practice.setName(practiceNameEdit.getText().toString())
+        getPresenter().updatePractice(practice.setName(practiceNameEdit.getText().toString())
                 .setDescription(practiceDescriptionEdit.getText().toString())
                 .setProgress(getIntegerValue(practiceStatusProgressEdit, practice.getProgress()))
                 .setMaxRepetition(getIntegerValue(practiceStatusMaxRepetitonEdit, practice.getMaxRepetition()))
                 .setRepetition(getIntegerValue(practiceRepetitionEdit, practice.getRepetition())));
         int repetition = practice.getProgress() - oldProgress;
-        presenter.addHistoryForPractice(practice, repetition);
+        getPresenter().addHistoryForPractice(practice, repetition);
     }
 
     private Integer getIntegerValue(EditText fromEdit, Integer oldValue) {
@@ -209,7 +212,7 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
             editMode=TypeOfEditMode.Standard;
             editionEnd();
         }
-        presenter.loadPracticeData(practiceId);
+        getPresenter().loadPracticeData(practiceId);
     }
 
     @Override

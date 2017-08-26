@@ -47,4 +47,14 @@ public class StatsPresenter implements StatsContract.IPresenter {
     public void propagateAnalysis(HistoryAnalysis[] historyAnalysises){
         viewer.showAnalysisResult(historyAnalysises);
     }
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    public void refreshData() {
+
+    }
 }

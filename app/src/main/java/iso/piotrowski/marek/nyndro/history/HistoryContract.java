@@ -8,6 +8,8 @@ import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.practice.PracticeContract;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IBaseViewer;
 
 /**
  * Created by marek.piotrowski on 18/08/2017.
@@ -15,12 +17,12 @@ import iso.piotrowski.marek.nyndro.practice.PracticeContract;
 
 public class HistoryContract {
 
-    interface IViewer {
+    interface IViewer extends IBaseViewer {
         void setPresenter(IPresenter presenter);
         void showHistory(List<HistoryModel> historyList);
     }
 
-    interface IPresenter {
+    interface IPresenter extends IBasePresenter {
         void loadHistoryData();
     }
 }

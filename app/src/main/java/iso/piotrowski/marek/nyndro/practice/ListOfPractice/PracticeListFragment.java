@@ -14,8 +14,9 @@ import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
-public class PracticeListFragment extends Fragment implements IFragmentParams {
+public class PracticeListFragment extends NyndroFragment {
 
     private OnListFragmentInteractionListener listener =null;
 

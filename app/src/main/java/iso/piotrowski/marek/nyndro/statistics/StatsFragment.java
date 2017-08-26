@@ -18,13 +18,16 @@ import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 public class StatsFragment extends NyndroFragment implements StatsContract.IViewer {
     private RecyclerView statsRecyclerView;
-    private StatsContract.IPresenter presenter;
 
     public StatsFragment() {
     }
 
     public static StatsFragment getInstance() {
         return new StatsFragment();
+    }
+
+    private StatsContract.IPresenter getPresenter(){
+        return (StatsContract.IPresenter) presenter;
     }
 
     @Override
@@ -40,11 +43,11 @@ public class StatsFragment extends NyndroFragment implements StatsContract.IView
         new Thread() {
             @Override
             public void run() {
-                HistoryAnalysis[] historyAnalysises = presenter.doHistoryAnalysis(refresh);
+                HistoryAnalysis[] historyAnalysises = getPresenter().doHistoryAnalysis(refresh);
                 new Handler(NyndroApp.getContect().getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        presenter.propagateAnalysis(historyAnalysises);
+                        getPresenter().propagateAnalysis(historyAnalysises);
                     }
                 });
             }

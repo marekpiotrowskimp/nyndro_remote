@@ -59,4 +59,14 @@ public class PracticeDetailPresenter implements PracticeDetailContract.IPresente
     private void refreshData(PracticeModel practice){
         loadPracticeData(practice.getID());
     }
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    public void refreshData() {
+
+    }
 }

@@ -51,7 +51,7 @@ public class FragmentsFactory {
         return 0;
     }
 
-    public static Fragment getFragment(TypeOfFragment typeOfFragment){
+    public static NyndroFragment getFragment(TypeOfFragment typeOfFragment){
         switch (typeOfFragment){
             case Main:
                 return PracticeMainFragment.getInstance();

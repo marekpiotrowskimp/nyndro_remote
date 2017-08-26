@@ -28,6 +28,11 @@ public class PracticePresenter implements PracticeContract.IPresenter {
     }
 
     @Override
+    public void loadData() {
+
+    }
+
+    @Override
     public void refreshData() {
         viewer.refreshPracticeRecyclerView(dataSource.fetchPractices());
     }

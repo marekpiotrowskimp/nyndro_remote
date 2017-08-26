@@ -34,13 +34,16 @@ public class PracticeMainFragment extends NyndroFragment implements PracticeCont
 
     private PracticeAdapter practiceAdapter;
     @BindView(R.id.practice_main_recycleView) RecyclerView practiceMainRecycleView;
-    private PracticeContract.IPresenter presenter;
 
     public PracticeMainFragment() {
     }
 
     public static PracticeMainFragment getInstance(){
         return new PracticeMainFragment();
+    }
+
+    private PracticeContract.IPresenter getPresenter(){
+        return (PracticeContract.IPresenter) presenter;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class PracticeMainFragment extends NyndroFragment implements PracticeCont
     @Override
     public void onStart() {
         super.onStart();
-        presenter.loadPracticeData();
+        getPresenter().loadPracticeData();
     }
 
     @Override
@@ -70,7 +73,7 @@ public class PracticeMainFragment extends NyndroFragment implements PracticeCont
 
     private void setUpPracticeAdapter(List<PracticeModel> practices) {
         practiceAdapter = new PracticeAdapter(practices);
-        practiceAdapter.setImageButtonListener(new ImageButtonListener(presenter));
+        practiceAdapter.setImageButtonListener(new ImageButtonListener(getPresenter()));
         practiceAdapter.setCardViewListener(this);
         practiceAdapter.setNextAndLastDateOfPractice(this);
     }
@@ -87,7 +90,7 @@ public class PracticeMainFragment extends NyndroFragment implements PracticeCont
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 if (viewHolder.getItemViewType() == PracticeAdapter.TypeOfCardView.Standard.getValue()) {
                     if (viewHolder instanceof PracticeAdapter.ViewPracticeHolder) {
-                        presenter.deletePractice(((PracticeAdapter.ViewPracticeHolder) viewHolder).getPractice(), viewHolder.itemView);
+                        getPresenter().deletePractice(((PracticeAdapter.ViewPracticeHolder) viewHolder).getPractice(), viewHolder.itemView);
                     }
                 }
             }
@@ -109,13 +112,13 @@ public class PracticeMainFragment extends NyndroFragment implements PracticeCont
 
     @Override
     public long getNextPractice(long practiceId) {
-        ReminderModel reminder = presenter.getNextPlanedOfPractice(practiceId);
+        ReminderModel reminder = getPresenter().getNextPlanedOfPractice(practiceId);
         return reminder != null ? reminder.getPracticeDate() : -1;
     }
 
     @Override
     public long getLastPractice(long practiceId) {
-        HistoryModel history = presenter.getLastHistoryOfPractice(practiceId);
+        HistoryModel history = getPresenter().getLastHistoryOfPractice(practiceId);
         return history !=null ? history.getPracticeData() : -1;
     }
 

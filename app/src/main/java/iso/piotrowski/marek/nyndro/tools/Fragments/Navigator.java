@@ -11,8 +11,8 @@ import java.util.Stack;
  */
 
 public class Navigator implements INavigator {
-    private Fragment currentFragment;
-    private Stack<Fragment> fragmentStack;
+    private NyndroFragment currentFragment;
+    private Stack<NyndroFragment> fragmentStack;
     private WeakReference<IActivityDelegate> activityDelegate;
     private static Navigator instance;
 
@@ -30,16 +30,16 @@ public class Navigator implements INavigator {
     }
 
     @Override
-    public void changeFragmentInContainer(Fragment newFragment) {
+    public void changeFragmentInContainer(NyndroFragment newFragment) {
         changeFragmentInContainer(newFragment, false);
     }
 
     @Override
-    public void changeFragmentInContainer(Fragment newFragment, boolean addToBackStack){
+    public void changeFragmentInContainer(NyndroFragment newFragment, boolean addToBackStack){
         changeFragmentInContainer(newFragment, addToBackStack, false);
     }
 
-    public void changeFragmentInContainer(Fragment newFragment, boolean addToBackStack, boolean goBack) {
+    public void changeFragmentInContainer(NyndroFragment newFragment, boolean addToBackStack, boolean goBack) {
         if ((activityDelegate != null)&&(activityDelegate.get()!=null)) {
             if (addToBackStack) {
                 fragmentStack.push(currentFragment);
@@ -62,7 +62,7 @@ public class Navigator implements INavigator {
     }
 
     @Override
-    public Fragment getCurrentFragment() {
+    public NyndroFragment getCurrentFragment() {
         return currentFragment;
     }
 

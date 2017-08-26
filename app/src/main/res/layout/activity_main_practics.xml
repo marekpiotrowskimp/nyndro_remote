@@ -35,14 +35,16 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_bar_main_practice" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_new_practice"
+        <com.nightonke.boommenu.BoomMenuButton
+            android:id="@+id/boom_menu_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/bottom_bar_main_practice"
             android:layout_alignRight="@+id/bottom_bar_main_practice"
-            android:src="@android:drawable/ic_input_add"
-            app:rippleColor="@color/colorPrimaryDark" />
+            app:bmb_buttonEnum="textOutsideCircle"
+            app:bmb_piecePlaceEnum="piecePlace_dot_8_1"
+            app:bmb_buttonPlaceEnum="buttonPlace_sc_8_1"
+            />
 
         <com.roughike.bottombar.BottomBar
             android:id="@+id/bottom_bar_main_practice"

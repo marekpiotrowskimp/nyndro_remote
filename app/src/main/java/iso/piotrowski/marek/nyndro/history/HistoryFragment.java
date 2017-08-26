@@ -19,6 +19,7 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
@@ -29,7 +30,6 @@ import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 public class HistoryFragment extends NyndroFragment implements HistoryContract.IViewer {
 
     @BindView(R.id.history_recyclerview) RecyclerView statsRecyclerView;
-    private HistoryContract.IPresenter presenter;
 
     public HistoryFragment() {
     }
@@ -50,7 +50,11 @@ public class HistoryFragment extends NyndroFragment implements HistoryContract.I
     @Override
     public void onStart() {
         super.onStart();
-        presenter.loadHistoryData();
+        getPresenter().loadHistoryData();
+    }
+
+    private HistoryContract.IPresenter getPresenter(){
+        return (HistoryContract.IPresenter) presenter;
     }
 
     @Override

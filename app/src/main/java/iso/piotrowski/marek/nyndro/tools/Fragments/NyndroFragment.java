@@ -9,8 +9,9 @@ import iso.piotrowski.marek.nyndro.R;
  * Created by marek.piotrowski on 26/08/2017.
  */
 
-public class NyndroFragment extends Fragment implements IFragmentParams {
+public class NyndroFragment extends Fragment implements IFragmentParams, IBaseViewer {
 
+    protected IBasePresenter presenter;
 
     @Override
     public String getFragmentName() {
@@ -25,5 +26,15 @@ public class NyndroFragment extends Fragment implements IFragmentParams {
     @Override
     public boolean isButtonVisible() {
         return false;
+    }
+
+    @Override
+    public void refreshData() {
+        presenter.refreshData();
+    }
+
+    @Override
+    public IBasePresenter getBasePresenter() {
+        return presenter;
     }
 }
