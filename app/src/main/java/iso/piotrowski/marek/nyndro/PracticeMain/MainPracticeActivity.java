@@ -3,7 +3,6 @@ package iso.piotrowski.marek.nyndro.PracticeMain;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -40,9 +39,7 @@ import iso.piotrowski.marek.nyndro.tools.UITool;
 
 public class MainPracticeActivity extends AppCompatActivity implements PracticeMainContract.IViewer, IActivityDelegate {
 
-    private boolean wasRunning;
     private PracticeMainContract.IPresenter presenter;
-    private UITool.TypeOfButtonAnimation buttonAnimation = UITool.TypeOfButtonAnimation.Emerge;
     private INavigator navigator;
 
     @BindView(R.id.bottom_bar_main_practice) BottomBar bottomBar;
@@ -74,7 +71,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
             navigator.changeFragmentInContainer(PracticeMainFragment.getInstance());
         }
 
-        if ((savedInstanceState != null) && (savedInstanceState.getBoolean("was_running"))) {
+        if (savedInstanceState != null) {
             if (savedInstanceState.getBoolean("fab_visible")) {
                 startAnimationForFloatingButton(UITool.TypeOfButtonAnimation.Emerge);
             }
@@ -94,8 +91,8 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (UITool.lastTypeOfAnimation != buttonAnimation) {
-                    UITool.animateButton(floatingActionButton, buttonAnimation);
+                if (UITool.lastTypeOfAnimation != typeOfAnimation) {
+                    UITool.animateButton(floatingActionButton, typeOfAnimation);
                 }
             }
         }, 250);
@@ -125,11 +122,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
 
     }
 
-//    private Fragment getFragmentFromManager() { //todo
-////        FragmentManager fragmentManager = getSupportFragmentManager();
-////        return fragmentManager.findFragmentByTag("visible_tag");
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.practice_menu_main, menu);
@@ -140,7 +132,8 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.settings:
+            case android.R.id.home:
+                navigator.goBack();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -149,8 +142,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        wasRunning = true;
-        outState.putBoolean("was_running", wasRunning);
         outState.putBoolean("fab_visible", floatingActionButton.getVisibility() == View.INVISIBLE);
     }
 
@@ -193,14 +184,11 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     public void onFragmentChange(Fragment currentFragment) {
         IFragmentParams fragmentParams = (IFragmentParams) currentFragment;
         if (fragmentParams != null) {
-            if (fragmentParams.isButtonVisible()) {
-                buttonAnimation = UITool.TypeOfButtonAnimation.Emerge;
-            } else {
-                buttonAnimation = UITool.TypeOfButtonAnimation.Disappear;
-            }
-            startAnimationForFloatingButton(UITool.TypeOfButtonAnimation.Disappear);
+            startAnimationForFloatingButton(fragmentParams.isButtonVisible() ? UITool.TypeOfButtonAnimation.Emerge : UITool.TypeOfButtonAnimation.Disappear);
         }
         setApplicationLabel(currentFragment);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) supportActionBar.setDisplayHomeAsUpEnabled(navigator.countOfFragments() > 0);
     }
     
 }

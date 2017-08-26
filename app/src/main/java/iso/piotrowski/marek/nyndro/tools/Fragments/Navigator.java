@@ -66,4 +66,9 @@ public class Navigator implements INavigator {
         return currentFragment;
     }
 
+    @Override
+    public int countOfFragments() {
+        return fragmentStack.size();
+    }
+
 }

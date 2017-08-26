@@ -11,4 +11,5 @@ public interface INavigator {
     void changeFragmentInContainer(Fragment newFragment, boolean addToBackStack);
     boolean goBack();
     Fragment getCurrentFragment();
+    int countOfFragments();
 }
