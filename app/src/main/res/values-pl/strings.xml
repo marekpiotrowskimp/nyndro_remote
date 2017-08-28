@@ -21,8 +21,8 @@
     <string name="max_repetition_name">Wymagana ilość  : </string>
     <string name="description_name">Opis            : </string>
     <string name="repetiton_name">Ilość powtórzeń : </string>
-    <string name="last_practice_date">O: </string>
-    <string name="next_practice_date">N: </string>
+    <string name="last_practice_date">Data ostatniej praktyki: </string>
+    <string name="next_practice_date">Data następnej praktyki: </string>
 
     <!--Practice class default values-->
     <string name="chenrizg">Kochające Oczy</string>

@@ -128,7 +128,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             holder.practiceProgress.setProgress(practice.getProgress());
             holder.practiceStatus.setText(String.valueOf(practice.getProgress()) + " / " + String.valueOf(practice.getMaxRepetition()));
             holder.practiceRepetition.setText(String.valueOf(practice.getRepetition()));
-            holder.practiceDescription.setText(practice.getDescription().replace("\n"," "));
+            float percentage = ((float) practice.getProgress()) / ((float) practice.getMaxRepetition())*100;
+            holder.progressPercentage.setText(String.format("%.2f%%", percentage));
             setNextAndLastDateOfPractice(holder, practice);
             holder.cardView.setOnClickListener(onClickToShowPracticeDetails(position));
             holder.practiceRapetitionAdd.setOnClickListener(onClickToAddRepetition(holder, position));
@@ -139,8 +140,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         if (nextAndLastDateOfPractice != null) {
             long lastDateOfPractice = nextAndLastDateOfPractice.getLastPractice(practice.getID());
             long nextDateOfPractice = nextAndLastDateOfPractice.getNextPractice(practice.getID());
-            Utility.setUpPracticeDate(holder.practiceDateLast, lastDateOfPractice);
-            Utility.setUpPracticeDate(holder.practiceDateNext, nextDateOfPractice);
+            Utility.setUpPracticeDate(holder.practiceDateLast, lastDateOfPractice, R.string.last_practice_date);
+            Utility.setUpPracticeDate(holder.practiceDateNext, nextDateOfPractice, R.string.next_practice_date);
         }
     }
 
@@ -198,7 +199,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         @BindView(R.id.practice_repetition_multiple) @Nullable TextView practiceRepetitionMultiple;
         @BindView(R.id.practice_date_last) @Nullable TextView practiceDateLast;
         @BindView(R.id.practice_date_next) @Nullable TextView practiceDateNext;
-        @BindView(R.id.practice_description) @Nullable TextView practiceDescription;
+        @BindView(R.id.practice_status_percent) @Nullable TextView progressPercentage;
         @BindView(R.id.multiple_seek_bar) @Nullable SeekBar multiplePracticeSeekBar;
         @BindView(R.id.practice_repetition_add) @Nullable ImageButton practiceRapetitionAdd;
         @BindView(R.id.practice_progress) @Nullable ProgressBar practiceProgress;

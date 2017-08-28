@@ -21,7 +21,6 @@ import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
 import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 import iso.piotrowski.marek.nyndro.tools.Utility;
@@ -134,8 +133,8 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
         practiceProgress.setMaxProgress(practice.getMaxRepetition());
         practiceProgress.setProgress(practice.getProgress());
 
-        Utility.setUpPracticeDate(practiceDateLast, getPresenter().getLastHistoryOfPractice(practice.getID()));
-        Utility.setUpPracticeDate(practiceDateNext, getPresenter().getNextPlanedOfPractice(practice.getID()));
+        Utility.setUpPracticeDate(practiceDateLast, getPresenter().getLastHistoryOfPractice(practice.getID()), R.string.last_practice_date);
+        Utility.setUpPracticeDate(practiceDateNext, getPresenter().getNextPlanedOfPractice(practice.getID()), R.string.last_practice_date);
 
         setEditVisibility(typeViewPractice==TypeOfEditMode.Standard ? View.INVISIBLE : View.VISIBLE);
         setUpPracticeTextAndEdit(practice, typeViewPractice==TypeOfEditMode.Standard);

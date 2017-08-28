@@ -2,6 +2,7 @@ package iso.piotrowski.marek.nyndro.practice;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
@@ -77,7 +78,7 @@ public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
 
         if (withBackground) {
             Paint backgroundPaint = new Paint();
-            backgroundPaint.setARGB(255, 223, 33, 33);
+            backgroundPaint.setColor(Color.parseColor("#b53f51"));
             c.drawRect(new Rect(x, y, x+ width, y + height), backgroundPaint);
         }
         c.drawBitmap(BitmapFactory.decodeResource(NyndroApp.getContect().getResources(),

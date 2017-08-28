@@ -21,8 +21,8 @@
     <string name="max_repetition_name">Required repetition : </string>
     <string name="description_name">Description : </string>
     <string name="repetiton_name">The number of repetitions : </string>
-    <string name="last_practice_date">L: </string>
-    <string name="next_practice_date">N: </string>
+    <string name="last_practice_date">Last practice date: </string>
+    <string name="next_practice_date">Next practice date: </string>
 
     <!--Practice class default values-->
     <string name="chenrizg">Chenrizg</string>

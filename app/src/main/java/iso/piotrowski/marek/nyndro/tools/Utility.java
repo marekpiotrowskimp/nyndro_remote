@@ -27,10 +27,10 @@ public class Utility {
         return calendar.getTime();
     }
 
-    public static void setUpPracticeDate(TextView practiceDateView, long date) {
+    public static void setUpPracticeDate(TextView practiceDateView, long date, int practiceDateResId) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);
-        practiceDateView.setText(String.format("%s %s", getFormatEditFromResources(R.string.last_practice_date),
+        practiceDateView.setText(String.format("%s %s", getFormatEditFromResources(practiceDateResId),
                 date == -1 ? getFormatEditFromResources(R.string.NoDateToShow) : String.format(" %tD", calendar)));
     }
 
