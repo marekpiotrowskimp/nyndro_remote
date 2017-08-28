@@ -8,12 +8,13 @@ import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
 
 /**
  * Created by marek.piotrowski on 18/08/2017.
  */
 
-public class StatsPresenter implements StatsContract.IPresenter {
+public class StatsPresenter extends NyndroPresenter implements StatsContract.IPresenter {
 
     private StatsContract.IViewer viewer;
     private IDataSource dataSource;
@@ -46,15 +47,5 @@ public class StatsPresenter implements StatsContract.IPresenter {
     @Override
     public void propagateAnalysis(HistoryAnalysis[] historyAnalysises){
         viewer.showAnalysisResult(historyAnalysises);
-    }
-
-    @Override
-    public void loadData() {
-
-    }
-
-    @Override
-    public void refreshData() {
-
     }
 }

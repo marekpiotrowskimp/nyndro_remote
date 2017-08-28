@@ -1,6 +1,7 @@
 package iso.piotrowski.marek.nyndro.practice;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -140,5 +141,12 @@ public class PracticeMainFragment extends NyndroFragment implements PracticeCont
     @Override
     public boolean isButtonVisible() {
         return true;
+    }
+
+    @Override
+    public void showMessage(String message) {
+        super.showMessage(message);
+        View view = getView();
+        if (view != null) Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
 }

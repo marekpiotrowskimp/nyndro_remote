@@ -37,4 +37,8 @@ public class NyndroFragment extends Fragment implements IFragmentParams, IBaseVi
     public IBasePresenter getBasePresenter() {
         return presenter;
     }
+
+    @Override
+    public void showMessage(String message) {
+    }
 }

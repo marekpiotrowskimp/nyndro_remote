@@ -83,14 +83,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
                         @Override
                         public void onBoomButtonClick(int index) {
                             NyndroFragment currentFragment = navigator.getCurrentFragment();
-                            if (currentFragment instanceof PracticeMainFragment) {
-                                presenter.insertPractice(practices[index]);
-                                currentFragment.refreshData();
-                                Snackbar.make(bottomBar, "Praktyka dodana: " + practices[index].getName(), Snackbar.LENGTH_LONG).show();
-                            }
-                            if (currentFragment instanceof PlansFragment) {
-                                navigator.changeFragmentInContainer(AddRemainderFragment.getInstance(null), true);
-                            }
+                            currentFragment.getBasePresenter().selectedPractice(practices[index]);
                         }
                     });
             boomButton.addBuilder(builder);

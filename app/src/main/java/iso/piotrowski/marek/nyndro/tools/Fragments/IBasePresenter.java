@@ -1,5 +1,7 @@
 package iso.piotrowski.marek.nyndro.tools.Fragments;
 
+import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+
 /**
  * Created by marek.piotrowski on 26/08/2017.
  */
@@ -7,4 +9,5 @@ package iso.piotrowski.marek.nyndro.tools.Fragments;
 public interface IBasePresenter {
     void loadData();
     void refreshData();
+    void selectedPractice (Practice practice);
 }

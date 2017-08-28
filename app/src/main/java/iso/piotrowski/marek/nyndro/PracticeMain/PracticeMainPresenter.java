@@ -2,12 +2,13 @@ package iso.piotrowski.marek.nyndro.PracticeMain;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
 
 /**
  * Created by marek.piotrowski on 21/08/2017.
  */
 
-public class PracticeMainPresenter implements PracticeMainContract.IPresenter {
+public class PracticeMainPresenter extends NyndroPresenter implements PracticeMainContract.IPresenter {
 
     private PracticeMainContract.IViewer viewer;
     private IDataSource dataSource;

@@ -6,4 +6,5 @@ package iso.piotrowski.marek.nyndro.tools.Fragments;
 
 public interface IBaseViewer {
     IBasePresenter getBasePresenter();
+    void showMessage(String message);
 }

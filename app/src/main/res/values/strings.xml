@@ -75,6 +75,7 @@
     <string name="c_marek_piotrowski_c">(c) Marek Piotrowski (c)</string>
     <string name="default_fragment_name">Default Name</string>
     <string name="tap_counter_name">Tap Counter</string>
+    <string name="add_practice">Practice was added: %s</string>
 
     //Day of week
     <string-array name="day_of_week">

@@ -4,12 +4,13 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
+import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
 
 /**
  * Created by marek.piotrowski on 15/08/2017.
  */
 
-public class PracticeDetailPresenter implements PracticeDetailContract.IPresenter {
+public class PracticeDetailPresenter extends NyndroPresenter implements PracticeDetailContract.IPresenter {
 
     private DataSource dataSource;
     private PracticeDetailContract.IViewer viewer;
@@ -60,13 +61,4 @@ public class PracticeDetailPresenter implements PracticeDetailContract.IPresente
         loadPracticeData(practice.getID());
     }
 
-    @Override
-    public void loadData() {
-
-    }
-
-    @Override
-    public void refreshData() {
-
-    }
 }
