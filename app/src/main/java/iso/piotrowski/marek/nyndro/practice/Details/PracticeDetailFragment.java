@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -30,6 +31,8 @@ import iso.piotrowski.marek.nyndro.tools.Utility;
  */
 public class PracticeDetailFragment extends NyndroFragment implements PracticeDetailContract.IViewer {
 
+    @BindView(R.id.practice_name_group_layout) LinearLayout practiceNameGroupLayout;
+    @BindView(R.id.practice_name_featured) TextView practiceNameFeatured;
     @BindView(R.id.practice_image_detail) ImageView practiceImage;
     @BindView(R.id.practice_name_detail) TextView practiceName;
     @BindView(R.id.practice_status_progress_detail) TextView practiceStatusProgress;
@@ -108,11 +111,7 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_toolbar:
-                if (getEditMode() == TypeOfEditMode.Edit) {
-                    Navigator.getInstance().goBack();
-                } else {
-                    item.setIcon(getResources().getDrawable(R.mipmap.ic_edit_black_48dp));
-                }
+                item.setIcon(getResources().getDrawable(getEditMode() != TypeOfEditMode.Edit ? R.mipmap.ic_edit_black_48dp : R.mipmap.ic_edit_white_48pt));
                 setEdit();
                 break;
         }
@@ -127,7 +126,6 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
 
     private void viewPractice (TypeOfEditMode typeViewPractice)
     {
-        practiceImage.setContentDescription(practice.getName());
         practiceImage.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(
                 DrawableMapper.getDrawableLargeId(DrawableMapper.TypeOfImage.values()[practice.getRawPracticeImageId()])));
         practiceProgress.setMaxProgress(practice.getMaxRepetition());
@@ -136,11 +134,12 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
         Utility.setUpPracticeDate(practiceDateLast, getPresenter().getLastHistoryOfPractice(practice.getID()), R.string.last_practice_date);
         Utility.setUpPracticeDate(practiceDateNext, getPresenter().getNextPlanedOfPractice(practice.getID()), R.string.last_practice_date);
 
-        setEditVisibility(typeViewPractice==TypeOfEditMode.Standard ? View.INVISIBLE : View.VISIBLE);
+        setEditVisibility(typeViewPractice==TypeOfEditMode.Standard ? View.GONE : View.VISIBLE);
         setUpPracticeTextAndEdit(practice, typeViewPractice==TypeOfEditMode.Standard);
     }
 
     private void setUpPracticeTextAndEdit(PracticeModel practice, boolean textOrEdit) {
+        practiceNameFeatured.setText(practice.getName());
         practiceName.setText(getFormatTextWithPracticeData(R.string.name_practice, textOrEdit ? practice.getName(): " "));
         practiceStatusProgress.setText(getFormatTextWithPracticeData(R.string.progress_name, textOrEdit ? String.valueOf(practice.getProgress()): " "));
         practiceStatusMaxRepetiton.setText(getFormatTextWithPracticeData(R.string.max_repetition_name, textOrEdit ? String.valueOf(practice.getMaxRepetition()) : " "));
@@ -160,6 +159,10 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
     }
 
     private void setEditVisibility(int visible) {
+        ViewGroup.LayoutParams params = practiceNameGroupLayout.getLayoutParams();
+        params.height = visible == View.VISIBLE ? LinearLayout.LayoutParams.MATCH_PARENT : 0;
+        practiceNameGroupLayout.setLayoutParams(params);
+        practiceName.setVisibility(visible);
         practiceNameEdit.setVisibility(visible);
         practiceStatusProgressEdit.setVisibility(visible);
         practiceStatusMaxRepetitonEdit.setVisibility(visible);
@@ -175,14 +178,6 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
 
     @Override
     public void showPractice() {
-        viewPractice(getEditMode());
-    }
-
-    public void addRepetition (boolean typeAddSubtrack)
-    {
-        int repetition = practice.getProgress() * (typeAddSubtrack ? 1 : -1);
-        getPresenter().addProgressToPractice(practice, repetition);
-        getPresenter().addHistoryForPractice(practice, repetition);
         viewPractice(getEditMode());
     }
 

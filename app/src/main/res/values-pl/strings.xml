@@ -86,6 +86,7 @@
     <string name="default_fragment_name">Domyślna Nazwa</string>
     <string name="tap_counter_name">Licznik praktyk</string>
     <string name="add_practice">Praktyka dodana: %s</string>
+    <string name="practice_detail_progress_name">Postęp</string>
 
     //Day of week
     <string-array name="day_of_week">

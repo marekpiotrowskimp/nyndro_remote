@@ -76,6 +76,7 @@
     <string name="default_fragment_name">Default Name</string>
     <string name="tap_counter_name">Tap Counter</string>
     <string name="add_practice">Practice was added: %s</string>
+    <string name="practice_detail_progress_name">Progress</string>
 
     //Day of week
     <string-array name="day_of_week">
