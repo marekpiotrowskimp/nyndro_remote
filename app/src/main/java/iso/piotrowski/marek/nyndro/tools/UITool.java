@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.tools;
 
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,10 +22,10 @@ public class UITool {
         Animation animation = null;
         switch (typeOfAnimation) {
             case Disappear:
-                animation = AnimationUtils.loadAnimation(NyndroApp.getContect(), R.anim.floating_button_disappear);
+                animation = AnimationUtils.loadAnimation(NyndroApp.getContext(), R.anim.floating_button_disappear);
                 break;
             case Emerge:
-                animation = AnimationUtils.loadAnimation(NyndroApp.getContect(), R.anim.floating_button_emerge);
+                animation = AnimationUtils.loadAnimation(NyndroApp.getContext(), R.anim.floating_button_emerge);
                 break;
         }
         lastTypeOfAnimation = typeOfAnimation;

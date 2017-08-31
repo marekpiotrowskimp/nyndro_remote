@@ -30,7 +30,7 @@ public class ImageButtonListener implements PracticeAdapter.IImageCardViewListen
     }
 
     public void startSoundEffect() {
-        MediaPlayer mediaPlayer = MediaPlayer.create(NyndroApp.getContect(), R.raw.tweet);
+        MediaPlayer mediaPlayer = MediaPlayer.create(NyndroApp.getContext(), R.raw.tweet);
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -45,7 +45,7 @@ public class ImageButtonListener implements PracticeAdapter.IImageCardViewListen
 
     public void startEffect(final View view) {
         startSoundEffect();
-        Animation animation = AnimationUtils.loadAnimation(NyndroApp.getContect(), R.anim.add_button_animation);
+        Animation animation = AnimationUtils.loadAnimation(NyndroApp.getContext(), R.anim.add_button_animation);
         view.clearAnimation();
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -63,7 +63,7 @@ public class ImageButtonListener implements PracticeAdapter.IImageCardViewListen
 
             }
         });
-        ((View) view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(NyndroApp.getContect(), R.anim.color_blinking_cardview));
+        ((View) view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(NyndroApp.getContext(), R.anim.color_blinking_cardview));
         view.startAnimation(animation);
 
     }

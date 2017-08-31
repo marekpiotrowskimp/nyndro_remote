@@ -2,7 +2,6 @@ package iso.piotrowski.marek.nyndro.statistics;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 public class StatsFragment extends NyndroFragment implements StatsContract.IViewer {
@@ -44,7 +42,7 @@ public class StatsFragment extends NyndroFragment implements StatsContract.IView
             @Override
             public void run() {
                 HistoryAnalysis[] historyAnalysises = getPresenter().doHistoryAnalysis(refresh);
-                new Handler(NyndroApp.getContect().getMainLooper()).post(new Runnable() {
+                new Handler(NyndroApp.getContext().getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         getPresenter().propagateAnalysis(historyAnalysises);
@@ -76,7 +74,7 @@ public class StatsFragment extends NyndroFragment implements StatsContract.IView
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContect().getResources().getString(R.string.app_label_stats);
+        return NyndroApp.getContext().getResources().getString(R.string.app_label_stats);
     }
 
     @Override

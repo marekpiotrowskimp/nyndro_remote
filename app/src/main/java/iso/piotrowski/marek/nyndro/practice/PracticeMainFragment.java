@@ -23,7 +23,6 @@ import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.practice.Details.PracticeDetailFragment;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
@@ -130,7 +129,7 @@ public class PracticeMainFragment extends NyndroFragment implements PracticeCont
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContect().getResources().getString(R.string.app_name);
+        return NyndroApp.getContext().getResources().getString(R.string.app_name);
     }
 
     @Override

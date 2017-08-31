@@ -36,6 +36,7 @@ android {
 repositories {
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -55,4 +56,6 @@ dependencies {
     compile 'com.roughike:bottom-bar:2.3.1'
     //Boom Menu
     compile 'com.nightonke:boommenu:2.1.0'
+    //MP Android chart
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 }

@@ -2,10 +2,7 @@ package iso.piotrowski.marek.nyndro.DataSource.ConstantsData;
 
 import android.support.annotation.NonNull;
 
-import java.util.Date;
-
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
-import iso.piotrowski.marek.nyndro.PracticeMain.MainPracticeActivity;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
 
@@ -42,7 +39,7 @@ public class Practice {
 
     @NonNull
     private static String getResourcesString(int s_refuge) {
-        return NyndroApp.getContect().getResources().getString(s_refuge);
+        return NyndroApp.getContext().getResources().getString(s_refuge);
     }
 
     Practice (String name, int imageResourcesId, int maxRepetition){

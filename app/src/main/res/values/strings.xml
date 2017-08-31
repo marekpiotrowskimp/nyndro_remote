@@ -54,7 +54,7 @@
     <string name="day_of_practice_stats">days</string>
     <string name="no_state">No statistics</string>
     <string name="number_of_practices_in_months">Number of practices by months</string>
-    <string name="number_of_practices_in_days">Number of practices by weeks</string>
+    <string name="number_of_practices_in_days">Number of practices by days</string>
     <string name="average_weeks">Weekly average:</string>
     <string name="average_months">Monthly average:</string>
     <string name="average_days">Daily average:</string>
@@ -83,7 +83,7 @@
         <item> Sunday </item>
         <item>Monday</item>
         <item>Tuesday</item>
-        <item>Tuesday</item>
+        <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>

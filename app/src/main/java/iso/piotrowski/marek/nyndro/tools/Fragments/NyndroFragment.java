@@ -15,7 +15,7 @@ public class NyndroFragment extends Fragment implements IFragmentParams, IBaseVi
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContect().getResources().getString(R.string.default_fragment_name);
+        return NyndroApp.getContext().getResources().getString(R.string.default_fragment_name);
     }
 
     @Override

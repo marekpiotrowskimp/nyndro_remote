@@ -2,7 +2,6 @@ package iso.piotrowski.marek.nyndro.practice.ListOfPractice;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 public class PracticeListFragment extends NyndroFragment {
@@ -68,7 +66,7 @@ public class PracticeListFragment extends NyndroFragment {
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContect().getResources().getString(R.string.app_label_practice);
+        return NyndroApp.getContext().getResources().getString(R.string.app_label_practice);
     }
 
     @Override

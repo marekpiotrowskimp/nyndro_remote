@@ -91,7 +91,7 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContect().getResources().getString(R.string.app_label_plans);
+        return NyndroApp.getContext().getResources().getString(R.string.app_label_plans);
     }
 
     @Override

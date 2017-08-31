@@ -146,7 +146,7 @@ public class DBQuery {
     }
 
     public static boolean adjustDatabase() {
-        SharedPreferences preferences = NyndroApp.getContect().getSharedPreferences(NYNDRO_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences preferences = NyndroApp.getContext().getSharedPreferences(NYNDRO_PREFERENCES, Context.MODE_PRIVATE);
         if (!preferences.getBoolean(DB_VERSION_2, false)) {
             if (ActiveAndroid.getDatabase().getVersion() == 2) {
                 List<PracticeModel> practices = getPractices();

@@ -59,7 +59,7 @@ public class AddRemainderAdapter extends RecyclerView.Adapter<AddRemainderAdapte
     @Override
     public void onBindViewHolder(AddRemainderHolder holder, int position) {
         PracticeModel practice = practiceList.get(position);
-        holder.practiceImage.setImageDrawable(NyndroApp.getContect().getResources()
+        holder.practiceImage.setImageDrawable(NyndroApp.getContext().getResources()
                 .getDrawable(practice.getPracticeImageId()));
         holder.practiceName.setText(practice.getName());
 

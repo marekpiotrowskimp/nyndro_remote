@@ -51,7 +51,7 @@ public class PracticePresenter extends NyndroPresenter implements PracticeContra
 
     @Override
     public void requestBackup() {
-        BackupManager backupManager = new BackupManager(NyndroApp.getContect());
+        BackupManager backupManager = new BackupManager(NyndroApp.getContext());
         backupManager.dataChanged();
     }
 
@@ -70,7 +70,7 @@ public class PracticePresenter extends NyndroPresenter implements PracticeContra
         dataSource.markActive(practice, false);
         canceledDelete = false;
         refreshData();
-        Snackbar.make(view, NyndroApp.getContect().getResources().getString(R.string.deleted_practice_info)
+        Snackbar.make(view, NyndroApp.getContext().getResources().getString(R.string.deleted_practice_info)
                 + " " + practice.getName(), 10000)
                 .setAction(R.string.cancel_action, new View.OnClickListener() {
                     @Override
@@ -98,6 +98,6 @@ public class PracticePresenter extends NyndroPresenter implements PracticeContra
         super.selectedPractice(practice);
         dataSource.insertPractice(practice);
         refreshData();
-        viewer.showMessage(String.format(NyndroApp.getContect().getResources().getString(R.string.add_practice), practice.getName()));
+        viewer.showMessage(String.format(NyndroApp.getContext().getResources().getString(R.string.add_practice), practice.getName()));
     }
 }

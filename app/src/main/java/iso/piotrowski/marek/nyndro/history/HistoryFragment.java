@@ -19,8 +19,6 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 
@@ -72,7 +70,7 @@ public class HistoryFragment extends NyndroFragment implements HistoryContract.I
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContect().getResources().getString(R.string.app_label_history);
+        return NyndroApp.getContext().getResources().getString(R.string.app_label_history);
     }
 
     @Override

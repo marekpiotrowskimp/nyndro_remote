@@ -65,7 +65,7 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContect().getResources().getString(R.string.tap_counter_name);
+        return NyndroApp.getContext().getResources().getString(R.string.tap_counter_name);
     }
 
     @Override

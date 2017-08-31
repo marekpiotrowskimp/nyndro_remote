@@ -35,6 +35,6 @@ public class Utility {
     }
 
     public static String getFormatEditFromResources(int resourcesId) {
-        return String.format("%s", NyndroApp.getContect().getResources().getText(resourcesId));
+        return String.format("%s", NyndroApp.getContext().getResources().getText(resourcesId));
     }
 }

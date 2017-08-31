@@ -81,7 +81,7 @@ public class SimpleCallbackForTouches extends ItemTouchHelper.SimpleCallback {
             backgroundPaint.setColor(Color.parseColor("#b53f51"));
             c.drawRect(new Rect(x, y, x+ width, y + height), backgroundPaint);
         }
-        c.drawBitmap(BitmapFactory.decodeResource(NyndroApp.getContect().getResources(),
+        c.drawBitmap(BitmapFactory.decodeResource(NyndroApp.getContext().getResources(),
                 android.R.drawable.ic_menu_delete), null, new Rect(leftBoundary - iconSize, middleOfChild - iconSize / 2, leftBoundary, middleOfChild + iconSize / 2), paint);
     }
 }

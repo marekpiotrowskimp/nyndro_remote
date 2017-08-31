@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.plans;
 
-import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -70,7 +69,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
         calendar.setTimeInMillis(reminder.getPracticeDate());
         holder.plansDate.setText(String.format("Data : %tD %tT", calendar, calendar));
 
-        holder.plansPracticeImageId.setImageDrawable(NyndroApp.getContect().getResources().getDrawable(reminder.getPractice().getPracticeImageId()));
+        holder.plansPracticeImageId.setImageDrawable(NyndroApp.getContext().getResources().getDrawable(reminder.getPractice().getPracticeImageId()));
         holder.plansPracticeName.setText(reminder.getPractice().getName());
         holder.repeaterName.setText(typeOfRepeater[reminder.getRepeater()]);
         holder.repeaterImage.setVisibility(reminder.getRepeater() > 0 ? View.VISIBLE : View.INVISIBLE);
