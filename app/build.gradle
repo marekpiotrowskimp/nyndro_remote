@@ -58,4 +58,6 @@ dependencies {
     compile 'com.nightonke:boommenu:2.1.0'
     //MP Android chart
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    //Calendar
+    compile 'com.github.vatsaldesai92:MyDynamicCalendarLibrary:1.0.1'
 }

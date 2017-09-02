@@ -37,7 +37,7 @@ public class DBQuery {
     }
 
     public static List<HistoryModel> getHistory() {
-        return new Select().from(HistoryModel.class).orderBy("PRACTICE_DATE DESC").where("ACTIVE = 1").execute();
+        return new Select().from(HistoryModel.class).orderBy("PRACTICE_ID, PRACTICE_DATE DESC").where("ACTIVE = 1").execute();
     }
 
     public static HistoryModel getHistoryForPractice(long practiceId) {

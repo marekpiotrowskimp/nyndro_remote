@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.github.mikephil.charting.data.PieEntry;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -17,6 +19,7 @@ import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
+import iso.piotrowski.marek.nyndro.Model.parsers.Parser;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
@@ -62,7 +65,8 @@ public class HistoryFragment extends NyndroFragment implements HistoryContract.I
 
     @Override
     public void showHistory(List<HistoryModel> historyList) {
-        HistoryRecyclerViewAdapter historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(historyList);
+        HistoryRecyclerViewAdapter historyRecyclerViewAdapter =
+                new HistoryRecyclerViewAdapter(Parser.convertHistoryModelToSectioned(historyList));
         statsRecyclerView.setAdapter(historyRecyclerViewAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         statsRecyclerView.setLayoutManager(linearLayoutManager);
