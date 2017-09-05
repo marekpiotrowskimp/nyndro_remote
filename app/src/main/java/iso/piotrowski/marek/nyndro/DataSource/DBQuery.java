@@ -32,6 +32,10 @@ public class DBQuery {
         return new Select().from(PracticeModel.class).orderBy("PROGRESS DESC").where("ACTIVE = 1").execute();
     }
 
+    public static List<PracticeModel> getUnfinishedPractices() {
+        return new Select().from(PracticeModel.class).orderBy("PROGRESS DESC").where("ACTIVE = 1 AND PROGRESS < MAX_REPETITION").execute();
+    }
+
     public static PracticeModel getPractice(long id) {
         return new Select().from(PracticeModel.class).where("_id = ?", id).executeSingle();
     }
@@ -102,6 +106,14 @@ public class DBQuery {
 
     public static List<ReminderModel> getReminders() {
         return new Select().from(ReminderModel.class).where("ACTIVE = 1").execute();
+    }
+
+    public static List<ReminderModel> getRemindersForDate(Date date) {
+        Date dateWithoutHours = Utility.removeTimeFromDate(date);
+        Date nextDay = Utility.addDayToDate(dateWithoutHours);
+        return new Select().from(ReminderModel.class)
+                .where("ACTIVE = 1 AND PRACTICE_DATE > ? AND PRACTICE_DATE < ?", dateWithoutHours.getTime(), nextDay.getTime())
+                .execute();
     }
 
     public static void addReminders(long date, int repeater, PracticeModel practice) {
@@ -206,5 +218,4 @@ public class DBQuery {
     private static boolean isNotEmpty(List<PracticeModel> practices, List<HistoryModel> histories, List<ReminderModel> remainders) {
         return practices.size() + histories.size() + remainders.size() > 0;
     }
-
 }

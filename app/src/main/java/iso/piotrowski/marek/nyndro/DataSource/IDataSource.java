@@ -1,5 +1,6 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
+import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
@@ -13,12 +14,16 @@ import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 
 public interface IDataSource {
     List<PracticeModel> fetchPractices();
+    List<PracticeModel> fetchUnfinishedPractices();
     void insertPractice (Practice practice);
     List<HistoryModel> fetchHistory();
     List<HistoryModel> fetchHistoryForPractice(long practiceId);
     PracticeModel fetchPractice(long practiceId);
     HistoryModel fetchLastHistoryOfPractice(long practiceId);
     ReminderModel fetchNextPlanedOfPractice(long practiceId);
+    List<ReminderModel> fetchRemainders();
+    List<ReminderModel> fetchRemaindersForDate(Date date);
+
     void addHistoryForPractice(PracticeModel practice, int multiple);
     void addProgressToPractice (PracticeModel practice, int multiple);
     void markActive (PracticeModel practice, boolean active);

@@ -19,7 +19,8 @@ public class NyndroPresenter implements IBasePresenter {
     }
 
     @Override
-    public void selectedPractice(Practice practice) {
+    public void selectedPractice(int position) {
 
     }
+
 }

@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +53,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         CardView cardView = null;
         switch (DataSection.TypeOfData.values()[viewType]) {
             case Section:
-                cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_history_section_cardview, parent, false);
+                cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_section_cardview, parent, false);
                 break;
             case Data:
                 cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_history_cardview, parent, false);

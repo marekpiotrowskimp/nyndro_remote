@@ -1,5 +1,6 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
+import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
@@ -26,6 +27,11 @@ public class DataSource implements IDataSource {
     @Override
     public List<PracticeModel> fetchPractices() {
         return DBQuery.getPractices();
+    }
+
+    @Override
+    public List<PracticeModel> fetchUnfinishedPractices() {
+        return DBQuery.getUnfinishedPractices();
     }
 
     @Override
@@ -56,6 +62,16 @@ public class DataSource implements IDataSource {
     @Override
     public ReminderModel fetchNextPlanedOfPractice(long practiceId) {
         return null;
+    }
+
+    @Override
+    public List<ReminderModel> fetchRemainders() {
+        return DBQuery.getReminders();
+    }
+
+    @Override
+    public List<ReminderModel> fetchRemaindersForDate(Date date) {
+        return DBQuery.getRemindersForDate(date);
     }
 
     @Override

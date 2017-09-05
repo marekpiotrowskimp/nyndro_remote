@@ -42,7 +42,7 @@
             android:layout_toRightOf="@+id/history_practice_image"
             android:layout_toLeftOf="@+id/history_expand_section_button"
             android:gravity="center_horizontal"
-            android:lines="1"
+            android:lines="2"
             android:textColor="@color/colorLightCoffee"
             android:textSize="20sp" />
     </RelativeLayout>

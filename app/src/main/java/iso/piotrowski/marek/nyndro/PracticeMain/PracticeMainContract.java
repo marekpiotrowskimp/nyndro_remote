@@ -1,6 +1,7 @@
 package iso.piotrowski.marek.nyndro.PracticeMain;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.IBoomButtonAdapter;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
 
 /**
@@ -9,12 +10,17 @@ import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
 
 public class PracticeMainContract {
 
+    public enum TypeOfBoomButton {
+        BasicPractice, AddedPractice
+    }
+
     interface IViewer {
         void setPresenter(IPresenter presenter);
+        void setUpBoomButton (IBoomButtonAdapter buttonAdapter);
     }
 
     interface IPresenter {
-        void insertPractice (Practice practice);
+        void adjustBoomButton(TypeOfBoomButton typeOfBoomButton);
     }
 
 }

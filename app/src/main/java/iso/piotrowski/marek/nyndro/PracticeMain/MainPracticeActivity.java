@@ -15,10 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.nightonke.boommenu.BoomButtons.BoomButton;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
 import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -27,6 +29,9 @@ import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.BoomButtonFactory;
+import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.IBoomButtonAdapter;
+import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.PracticeBoomButtonAdapter;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
 import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
@@ -66,24 +71,27 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         navigator = Navigator.getInstance();
         setContentView(R.layout.activity_main_practics);
         ButterKnife.bind(this);
-        setBoomButton();
         setUpBottomBar();
         setSupportActionBar(toolbar);
         restoreApplicationInstance(savedInstanceState);
         startRemainderService();
     }
 
-    private void setBoomButton() {
-        Practice practices[] = Practice.practices;
+
+    @Override
+    public void setUpBoomButton(IBoomButtonAdapter buttonAdapter) {
+        boomButton.clearBuilders();
+        boomButton.setPiecePlaceEnum(BoomButtonFactory.getPlaceEnum(buttonAdapter.getSize()));
+        boomButton.setButtonPlaceEnum(BoomButtonFactory.getButtonPlaceEnum(buttonAdapter.getSize()));
         for (int i = 0; i < boomButton.getButtonPlaceEnum().buttonNumber(); i++) {
             TextOutsideCircleButton.Builder builder = new TextOutsideCircleButton.Builder()
-                    .normalImageRes(DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[practices[i].getImageResourcesId()]))
-                    .normalText(practices[i].getName()).rotateImage(true).rotateText(true).shadowEffect(true).shadowOffsetX(30).shadowOffsetY(30)
+                    .normalImageRes(buttonAdapter.getIconResourcesId(i))
+                    .normalText(buttonAdapter.getName(i)).rotateImage(true).rotateText(true).shadowEffect(true).shadowOffsetX(30).shadowOffsetY(30)
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
                             NyndroFragment currentFragment = navigator.getCurrentFragment();
-                            currentFragment.getBasePresenter().selectedPractice(practices[index]);
+                            currentFragment.getBasePresenter().selectedPractice(index);
                         }
                     });
             boomButton.addBuilder(builder);
@@ -184,6 +192,9 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     public void onFragmentChange(Fragment currentFragment) {
         IFragmentParams fragmentParams = (IFragmentParams) currentFragment;
         if (fragmentParams != null) {
+            if (fragmentParams.isButtonVisible()) {
+                presenter.adjustBoomButton(fragmentParams.getTypeOfBoomButton());
+            }
             startAnimationForFloatingButton(fragmentParams.isButtonVisible() ? UITool.TypeOfButtonAnimation.Emerge : UITool.TypeOfButtonAnimation.Disappear);
         }
         setApplicationLabel(currentFragment);

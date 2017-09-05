@@ -1,7 +1,6 @@
 package iso.piotrowski.marek.nyndro.plans;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
-import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
 import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
@@ -24,12 +23,12 @@ public class PlanPresenter extends NyndroPresenter implements PlansContract.IPre
 
     @Override
     public void loadPlansData() {
-        viewer.showPlans(DBQuery.getReminders());
+        viewer.showPlans(dataSource.fetchRemainders());
     }
 
     @Override
     public void refreshPlansData() {
-        viewer.refreshPlans(DBQuery.getReminders());
+        viewer.refreshPlans(dataSource.fetchRemainders());
     }
 
     @Override
@@ -37,9 +36,4 @@ public class PlanPresenter extends NyndroPresenter implements PlansContract.IPre
         dataSource.deleteRemainder(remainderId);
     }
 
-    @Override
-    public void selectedPractice(Practice practice) {
-        super.selectedPractice(practice);
-        Navigator.getInstance().changeFragmentInContainer(AddRemainderFragment.getInstance(null), true);
-    }
 }

@@ -27,6 +27,17 @@ public class Utility {
         return calendar.getTime();
     }
 
+    public static Date addDayToDate(Date date) {
+
+        if (date == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+    }
+
     public static void setUpPracticeDate(TextView practiceDateView, long date, int practiceDateResId) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);

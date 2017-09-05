@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.plans;
+package iso.piotrowski.marek.nyndro.plans.PlansList;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -24,14 +24,14 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
 
     private OnRemainderItemClickListener onRemainderItemClickListener;
     private List<ReminderModel> reminderList;
-    private String[] typeOfRepeater = {"","D","W","M"};
+    private String[] typeOfRepeater = {"","Daily","Weekly","Monthly"};
 
     public void setOnRemainderItemClickListener(OnRemainderItemClickListener onRemainderItemClickListener) {
         this.onRemainderItemClickListener = onRemainderItemClickListener;
     }
 
     public interface OnRemainderItemClickListener{
-        void OnClick(View view, int position);
+        void OnClick(View view, int position, ReminderModel reminder);
     }
 
     PlansAdapter(List<ReminderModel> reminderList) {
@@ -55,7 +55,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
             return reminderList.get(getAdapterPosition()).getID();
         }
     }
-    
+
     @Override
     public PlansHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_plans_cardview,parent,false);
@@ -67,7 +67,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
         ReminderModel reminder = reminderList.get(position);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(reminder.getPracticeDate());
-        holder.plansDate.setText(String.format("Data : %tD %tT", calendar, calendar));
+        holder.plansDate.setText(String.format("Time: %tT", calendar));
 
         holder.plansPracticeImageId.setImageDrawable(NyndroApp.getContext().getResources().getDrawable(reminder.getPractice().getPracticeImageId()));
         holder.plansPracticeName.setText(reminder.getPractice().getName());
@@ -77,7 +77,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
             @Override
             public void onClick(View view) {
                 if (onRemainderItemClickListener!=null){
-                    onRemainderItemClickListener.OnClick(view,position);
+                    onRemainderItemClickListener.OnClick(view, position, reminder);
                 }
             }
         });

@@ -9,5 +9,5 @@ import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 public interface IBasePresenter {
     void loadData();
     void refreshData();
-    void selectedPractice (Practice practice);
+    void selectedPractice (int position);
 }

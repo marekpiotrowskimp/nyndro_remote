@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#9F303F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhiteTransparent">#22FFFFFF</color>
+    <color name="colorGray">#EEEEEE</color>
 <!--Drawer colors-->
     <color name="colorDrawer">#EE6F303F</color>
     <color name="colorTextDrawer">#FFFFFF</color>

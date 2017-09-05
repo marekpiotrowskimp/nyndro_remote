@@ -2,6 +2,8 @@ package iso.piotrowski.marek.nyndro.PracticeMain;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
+import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.BoomButtonFactory;
+import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.PracticeBoomButtonAdapter;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
 
 /**
@@ -20,7 +22,7 @@ public class PracticeMainPresenter extends NyndroPresenter implements PracticeMa
     }
 
     @Override
-    public void insertPractice(Practice practice) {
-        dataSource.insertPractice(practice);
+    public void adjustBoomButton(PracticeMainContract.TypeOfBoomButton typeOfBoomButton) {
+        viewer.setUpBoomButton(BoomButtonFactory.getBoomButtonAdapter(typeOfBoomButton, dataSource));
     }
 }

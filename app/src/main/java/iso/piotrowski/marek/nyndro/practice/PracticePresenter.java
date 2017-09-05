@@ -94,8 +94,9 @@ public class PracticePresenter extends NyndroPresenter implements PracticeContra
     }
 
     @Override
-    public void selectedPractice(Practice practice) {
-        super.selectedPractice(practice);
+    public void selectedPractice(int position) {
+        super.selectedPractice(position);
+        Practice practice = Practice.practices[position];
         dataSource.insertPractice(practice);
         refreshData();
         viewer.showMessage(String.format(NyndroApp.getContext().getResources().getString(R.string.add_practice), practice.getName()));

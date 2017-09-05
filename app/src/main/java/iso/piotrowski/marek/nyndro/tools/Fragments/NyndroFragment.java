@@ -3,6 +3,7 @@ package iso.piotrowski.marek.nyndro.tools.Fragments;
 import android.support.v4.app.Fragment;
 
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.PracticeMain.PracticeMainContract;
 import iso.piotrowski.marek.nyndro.R;
 
 /**
@@ -26,6 +27,11 @@ public class NyndroFragment extends Fragment implements IFragmentParams, IBaseVi
     @Override
     public boolean isButtonVisible() {
         return false;
+    }
+
+    @Override
+    public PracticeMainContract.TypeOfBoomButton getTypeOfBoomButton() {
+        return PracticeMainContract.TypeOfBoomButton.BasicPractice;
     }
 
     @Override
