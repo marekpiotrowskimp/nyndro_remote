@@ -2,24 +2,14 @@ package iso.piotrowski.marek.nyndro.plans;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.desai.vatsal.mydynamiccalendar.EventModel;
-import com.desai.vatsal.mydynamiccalendar.GetEventListListener;
 import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
 import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
-import com.desai.vatsal.mydynamiccalendar.OnEventClickListener;
-import com.desai.vatsal.mydynamiccalendar.OnWeekDayViewClickListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,9 +20,7 @@ import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
 import iso.piotrowski.marek.nyndro.plans.PlansList.PlansListFragment;
-import iso.piotrowski.marek.nyndro.practice.SimpleCallbackForTouches;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
@@ -112,10 +100,6 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
         myCalendar.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onClick(Date date) {
-//                setCurrentDate(dynamicCalendar, date);
-//                dynamicCalendar.showDayView();
-//                dynamicCalendar.refreshCalendar();
-//                presenter.refreshData();
             }
 
             @Override
@@ -123,21 +107,11 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
                 Navigator.getInstance().changeFragmentInContainer(PlansListFragment.getInstance(date), true);
             }
         });
-        myCalendar.getEventList(new GetEventListListener() {
-            @Override
-            public void eventList(ArrayList<EventModel> eventList) {
-                Toast.makeText(getActivity(), String.valueOf(eventList.size()), Toast.LENGTH_SHORT).show();
-                for (EventModel event : eventList){
-
-                }
-            }
-        });
     }
 
     private void addCalendarEvent(Date date, String practiceName) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-//        Snackbar.make(getView(), String.format("%td-%tm-%tY %tR", calendar, calendar, calendar, calendar), Snackbar.LENGTH_LONG).show();
         String startHour = String.format("%tR", calendar);
         calendar.add(Calendar.HOUR, 1);
         String stopHour = String.format("%tR", calendar);
@@ -145,12 +119,6 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
                 startHour,
                 stopHour,
                 practiceName, R.mipmap.ic_buddha_24);
-    }
-
-    private void setCurrentDate(MyDynamicCalendar myCalendar, Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        myCalendar.setCalendarDate(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
     }
 
     private int getColor(int colorId) {

@@ -2,6 +2,8 @@ package iso.piotrowski.marek.nyndro.plans.PlansList;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -20,9 +22,8 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.PracticeMain.PracticeMainContract;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
+import iso.piotrowski.marek.nyndro.plans.RepeaterDialog.RepeaterDialogFragment;
 import iso.piotrowski.marek.nyndro.practice.SimpleCallbackForTouches;
-import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
 
 /**
@@ -100,6 +101,21 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
     }
 
     @Override
+    public void getRepeaterToggle(RepeaterDialogFragment.OnRemainderDetailsListener remainderDetailsListener) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog_toggle");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        RepeaterDialogFragment.newInstance(remainderDetailsListener).show(getActivity().getFragmentManager(), "dialog_toggle");
+    }
+
+    @Override
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    @Override
     public PracticeMainContract.TypeOfBoomButton getTypeOfBoomButton() {
         return PracticeMainContract.TypeOfBoomButton.AddedPractice;
     }
@@ -120,7 +136,7 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
 
     @Override
     public void OnClick(View view, int position, ReminderModel reminder) {
-        Navigator.getInstance().changeFragmentInContainer(AddRemainderFragment.getInstance(reminder), true);
+//        Navigator.getInstance().changeFragmentInContainer(AddRemainderFragment.getInstance(reminder), true);
     }
 
 }

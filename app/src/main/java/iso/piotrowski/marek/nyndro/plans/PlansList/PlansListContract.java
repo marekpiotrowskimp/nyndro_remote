@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
+import iso.piotrowski.marek.nyndro.plans.RepeaterDialog.RepeaterDialogFragment;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
 import iso.piotrowski.marek.nyndro.tools.Fragments.IBaseViewer;
 
@@ -17,7 +18,8 @@ public class PlansListContract {
         void setPresenter (IPresenter presenter);
         void showPlansList (List<ReminderModel> reminderList);
         void refreshPlansList (List<ReminderModel> reminderList);
-
+        void getRepeaterToggle(RepeaterDialogFragment.OnRemainderDetailsListener toggleSwitchListener);
+        Date getSelectedDate();
     }
 
     interface IPresenter extends IBasePresenter {

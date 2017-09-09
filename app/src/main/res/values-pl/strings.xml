@@ -88,6 +88,16 @@
     <string name="add_practice">Praktyka dodana: %s</string>
     <string name="practice_detail_progress_name">Postęp</string>
     <string name="plans_list_name">Edycja planów</string>
+    <string name="done">Zakończ</string>
+    <string name="repeater_title">Powtórzenia</string>
+
+    //Frequents
+    <string-array name="frequents">
+        <item>Jednorazowe</item>
+        <item>Codzienne</item>
+        <item>Tygodniowe</item>
+        <item>Miesięczne</item>
+    </string-array>
 
     //Day of week
     <string-array name="day_of_week">

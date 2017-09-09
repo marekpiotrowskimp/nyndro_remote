@@ -37,4 +37,15 @@
         <item name="android:textSize">16dp</item>
         <item name="android:background">@color/colorLightCoffeeDarker</item>
     </style>
+
+
+    <style name="MyDialog" parent="Base.Theme.AppCompat.Light.Dialog.MinWidth">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <!--<item name="android:gravity">center</item>-->
+        <item name="android:colorBackground">@color/colorLightCoffeeDarker</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
 </resources>

@@ -1,9 +1,6 @@
 package iso.piotrowski.marek.nyndro.plans;
 
-import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
-import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
-import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
 
 /**

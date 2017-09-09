@@ -37,6 +37,7 @@ repositories {
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://jitpack.io" }
+    maven { url 'http://raw.github.com/wada811/Android-DialogFragments/master/repository/' }
 }
 
 dependencies {
@@ -60,4 +61,6 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     //Calendar
     compile 'com.github.vatsaldesai92:MyDynamicCalendarLibrary:1.0.1'
+    //Toggle
+    compile 'us.belka:androidtoggleswitch:1.2.2'
 }

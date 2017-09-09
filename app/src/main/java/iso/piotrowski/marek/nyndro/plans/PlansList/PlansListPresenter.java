@@ -1,10 +1,13 @@
 package iso.piotrowski.marek.nyndro.plans.PlansList;
 
+import android.os.Handler;
+
+import java.util.Calendar;
 import java.util.Date;
 
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
-import iso.piotrowski.marek.nyndro.plans.AddNewPlans.AddRemainderFragment;
-import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
+import iso.piotrowski.marek.nyndro.Model.PracticeModel;
+import iso.piotrowski.marek.nyndro.plans.RepeaterDialog.RepeaterDialogFragment;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
 
 /**
@@ -50,7 +53,32 @@ public class PlansListPresenter extends NyndroPresenter implements PlansListCont
     @Override
     public void selectedPractice(int position) {
         super.selectedPractice(position);
-//        dataSource.fetchUnfinishedPractices().get(position);
-        Navigator.getInstance().changeFragmentInContainer(AddRemainderFragment.getInstance(null), true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                addNewRemainder(position);
+            }
+        }, 750);
+    }
+
+    private void addNewRemainder(final int position) {
+        viewer.getRepeaterToggle(new RepeaterDialogFragment.OnRemainderDetailsListener() {
+            @Override
+            public void onRemainderDetailsDone(int hourOfDay, int minute, int togglePosition) {
+                saveRemainder(hourOfDay, minute, position, togglePosition);
+            }
+        });
+    }
+
+    private void saveRemainder(int hourOfDay, int minute, int position, int togglePosition) {
+        Date date = viewer.getSelectedDate();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        PracticeModel practice = dataSource.fetchUnfinishedPractices().get(position);
+        dataSource.addRemainder(calendar.getTimeInMillis(), togglePosition, practice);
+        refreshPlansForDate(date);
     }
 }

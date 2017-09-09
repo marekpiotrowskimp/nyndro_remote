@@ -24,7 +24,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
 
     private OnRemainderItemClickListener onRemainderItemClickListener;
     private List<ReminderModel> reminderList;
-    private String[] typeOfRepeater = {"","Daily","Weekly","Monthly"};
+    private String[] typeOfRepeater = NyndroApp.getContext().getResources().getStringArray(R.array.frequents);
 
     public void setOnRemainderItemClickListener(OnRemainderItemClickListener onRemainderItemClickListener) {
         this.onRemainderItemClickListener = onRemainderItemClickListener;
