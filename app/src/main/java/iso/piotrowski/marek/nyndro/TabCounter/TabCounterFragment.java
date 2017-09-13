@@ -5,24 +5,31 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.PracticeMain.PracticeMainContract;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * Created by marek.piotrowski on 26/08/2017.
  */
 
-public class TabCounterFragment extends NyndroFragment implements View.OnClickListener {
+public class TabCounterFragment extends NyndroFragment implements View.OnClickListener, TabCounterContract.IViewer {
 
-    private int count = 0;
     private TextView counter;
+    private boolean soundOn;
 
     public static TabCounterFragment getInstance(){
         return new TabCounterFragment();
@@ -32,6 +39,9 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LinearLayout layout = getLayout(getActivity());
+        setHasOptionsMenu(true);
+        new TapCounterPresenter(this, DataSource.getInstance());
+        soundOn = getPresenter().getSoundPreference();
         return layout;
     }
 
@@ -46,7 +56,7 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
         linearLayout.setOnClickListener(this);
 
         counter = new TextView(context);
-        counter.setText(getCount(count));
+        counter.setText(getCount(0));
         counter.setTextSize(120);
         counter.setAlpha(1f);
         counter.setGravity(Gravity.CENTER);
@@ -55,7 +65,33 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
     }
 
     private String getCount(int count) {
-        return String.format("%04d",count);
+        return String.format("%04d", count);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.tap_counter_menu, menu);
+        setSoundIcon(menu.findItem(R.id.sound_repeat));
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.sound_repeat:
+                soundOn = !soundOn;
+                getPresenter().setSoundPreference(soundOn);
+                setSoundIcon(item);
+                break;
+            case R.id.reset_repeats:
+                getPresenter().setCounter(0);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setSoundIcon(MenuItem item) {
+        item.setIcon(soundOn ? R.mipmap.ic_sound_on : R.mipmap.ic_sound_off);
     }
 
     @Override
@@ -70,6 +106,31 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        counter.setText(getCount(++count));
+        getPresenter().setCounter(getPresenter().getCounter() + 1);
+    }
+
+    private TabCounterContract.IPresenter getPresenter(){
+        return (TabCounterContract.IPresenter) presenter;
+    }
+
+    @Override
+    public void setPresenter(TabCounterContract.IPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void refreshCounter(int counter) {
+        this.counter.setText(getCount(counter));
+        if (soundOn) Utility.getFormatEditFromResources(R.raw.tap);
+    }
+
+    @Override
+    public boolean isButtonToolBarVisible() {
+        return true;
+    }
+
+    @Override
+    public PracticeMainContract.TypeOfBoomButton getTypeOfBoomButton() {
+        return PracticeMainContract.TypeOfBoomButton.AddedPractice;
     }
 }

@@ -1,5 +1,6 @@
 package iso.piotrowski.marek.nyndro.tools;
 
+import android.media.MediaPlayer;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -47,5 +48,19 @@ public class Utility {
 
     public static String getFormatEditFromResources(int resourcesId) {
         return String.format("%s", NyndroApp.getContext().getResources().getText(resourcesId));
+    }
+
+    public static void startSoundEffect(int resourcesRawId) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(NyndroApp.getContext(), resourcesRawId);
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+            }
+        });
+        mediaPlayer.start();
     }
 }

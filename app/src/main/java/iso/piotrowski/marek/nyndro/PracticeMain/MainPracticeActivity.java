@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton;
@@ -44,7 +45,9 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
 
     @BindView(R.id.bottom_bar_main_practice) BottomBar bottomBar;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.application_title_tool_bar) TextView title;
     @BindView(R.id.boom_menu_button) BoomMenuButton boomButton;
+    @BindView(R.id.ham_boom_menu_button) BoomMenuButton boomButtonToolBar;
 
     @Override
     public void setPresenter(PracticeMainContract.IPresenter presenter) {
@@ -63,14 +66,25 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         setSupportActionBar(toolbar);
         restoreApplicationInstance(savedInstanceState);
         startRemainderService();
+        presenter.adjustBoomButtonToolBar(PracticeMainContract.TypeOfBoomButton.AddedPractice);
     }
-
 
     @Override
     public void setUpBoomButton(IBoomButtonAdapter buttonAdapter) {
+        setUpBoomButton(buttonAdapter, boomButton, false);
+    }
+
+    @Override
+    public void setUpBoomButtonToolBar(IBoomButtonAdapter buttonAdapter) {
+        setUpBoomButton(buttonAdapter, boomButtonToolBar, true);
+    }
+
+    public void setUpBoomButton(IBoomButtonAdapter buttonAdapter, BoomMenuButton boomButton, boolean boomButtonPieceColorWhite) {
         boomButton.clearBuilders();
         boomButton.setPiecePlaceEnum(BoomButtonFactory.getPlaceEnum(buttonAdapter.getSize()));
         boomButton.setButtonPlaceEnum(BoomButtonFactory.getButtonPlaceEnum(buttonAdapter.getSize()));
+        boomButton.setEnabled(buttonAdapter.getSize() > 0);
+
         for (int i = 0; i < boomButton.getButtonPlaceEnum().buttonNumber(); i++) {
             TextOutsideCircleButton.Builder builder = new TextOutsideCircleButton.Builder()
                     .normalImageRes(buttonAdapter.getIconResourcesId(i))
@@ -82,6 +96,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
                             currentFragment.getBasePresenter().selectedPractice(index);
                         }
                     });
+            if (boomButtonPieceColorWhite) builder.pieceColorRes(R.color.white);
             boomButton.addBuilder(builder);
         }
     }
@@ -143,8 +158,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
 
     private void setApplicationLabel(Fragment currentFragment) {
         IFragmentParams fragmentName = (IFragmentParams)currentFragment;
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) supportActionBar.setTitle(fragmentName != null ? fragmentName.getFragmentName() : getResources().getString(R.string.app_name));
+        title.setText(fragmentName != null ? fragmentName.getFragmentName() : getResources().getString(R.string.app_name));
     }
 
     private void startRemainderService() {
@@ -182,6 +196,10 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         if (fragmentParams != null) {
             if (fragmentParams.isButtonVisible()) {
                 presenter.adjustBoomButton(fragmentParams.getTypeOfBoomButton());
+            }
+            boomButtonToolBar.setVisibility(fragmentParams.isButtonToolBarVisible() ? View.VISIBLE : View.INVISIBLE);
+            if (fragmentParams.isButtonToolBarVisible()) {
+                presenter.adjustBoomButtonToolBar(fragmentParams.getTypeOfBoomButton());
             }
             startAnimationForFloatingButton(fragmentParams.isButtonVisible() ? UITool.TypeOfButtonAnimation.Emerge : UITool.TypeOfButtonAnimation.Disappear);
         }

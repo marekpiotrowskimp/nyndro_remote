@@ -30,6 +30,11 @@ public class NyndroFragment extends Fragment implements IFragmentParams, IBaseVi
     }
 
     @Override
+    public boolean isButtonToolBarVisible() {
+        return false;
+    }
+
+    @Override
     public PracticeMainContract.TypeOfBoomButton getTypeOfBoomButton() {
         return PracticeMainContract.TypeOfBoomButton.BasicPractice;
     }

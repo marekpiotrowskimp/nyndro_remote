@@ -10,6 +10,7 @@ public interface IFragmentParams {
     String getFragmentName();
     FragmentsFactory.TypeOfFragment getTypeOf();
     boolean isButtonVisible();
+    boolean isButtonToolBarVisible();
     PracticeMainContract.TypeOfBoomButton getTypeOfBoomButton();
     void refreshData();
 }
