@@ -121,7 +121,7 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
     @Override
     public void refreshCounter(int counter) {
         this.counter.setText(getCount(counter));
-        if (soundOn) Utility.getFormatEditFromResources(R.raw.tap);
+        if (soundOn) Utility.startSoundEffect(R.raw.tap);
     }
 
     @Override

@@ -42,7 +42,7 @@
             android:layout_below="@id/statystics_practice_name"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginRight="12dp"
             android:layout_marginTop="4dp"
             android:layout_toRightOf="@id/statystics_practice_image_id"
             android:background="@drawable/rounded_layout"
