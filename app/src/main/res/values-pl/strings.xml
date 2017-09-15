@@ -70,7 +70,7 @@
     <string name="average_weeks">Średnia tygodniowa:</string>
     <string name="average_months">Średnia miesięczna:</string>
     <string name="average_days">Średnia dzienna:</string>
-    <string name="expected_day">Przewidywany koniec:</string>
+    <string name="expected_day">Zakończenie:</string>
     <string name="add_remainder_button">DODAJ PRZYPOMNIENIE</string>
     <string name="modify_remainder_button">MODYFIKUJ PRZYPOMNIENIE</string>
     <string name="remaind_text_notificator">"Przypomnienie: "</string>
@@ -90,6 +90,10 @@
     <string name="plans_list_name">Edycja planów</string>
     <string name="done">Zakończ</string>
     <string name="repeater_title">Powtórzenia</string>
+    <string name="days_name">dni</string>
+    <string name="infinity">nieskończoność</string>
+    <string name="undefined">niezdefiniowany</string>
+
 
     //Frequents
     <string-array name="frequents">

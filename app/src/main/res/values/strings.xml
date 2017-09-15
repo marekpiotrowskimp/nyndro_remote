@@ -58,7 +58,7 @@
     <string name="average_weeks">Weekly average:</string>
     <string name="average_months">Monthly average:</string>
     <string name="average_days">Daily average:</string>
-    <string name="expected_day">Expected end of practice:</string>
+    <string name="expected_day">Expected end:</string>
     <string name="add_remainder_button">ADD REMINDER</string>
     <string name="modify_remainder_button">UPDATE REMINDER</string>
     <string name="remaind_text_notificator">"Reminder: "</string>
@@ -80,6 +80,9 @@
     <string name="plans_list_name">Plans Editor</string>
     <string name="done">Done</string>
     <string name="repeater_title">Repeater</string>
+    <string name="days_name">days</string>
+    <string name="infinity">infinity</string>
+    <string name="undefined">undefined</string>
 
     //Frequents
     <string-array name="frequents">

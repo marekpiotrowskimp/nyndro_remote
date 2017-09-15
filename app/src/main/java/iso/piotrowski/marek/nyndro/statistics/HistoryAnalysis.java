@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
+import iso.piotrowski.marek.nyndro.R;
 
 /**
  * Created by Marek on 05.08.2016.
@@ -48,12 +50,14 @@ public class HistoryAnalysis {
             calendar.setTimeInMillis(sec);
             int progress = history.getRepetition();
             if (progress < 10000) {
-                if (week != calendar.get(Calendar.WEEK_OF_YEAR)) {
-                    week = calendar.get(Calendar.WEEK_OF_YEAR);
+                int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+                if (week != weekOfYear) {
+                    week = weekOfYear;
                     countWeeks++;
                 }
-                if (month != calendar.get(Calendar.WEEK_OF_YEAR)) {
-                    month = calendar.get(Calendar.WEEK_OF_YEAR);
+                int monthOfYear = calendar.get(Calendar.MONTH);
+                if (month != monthOfYear) {
+                    month = monthOfYear;
                     countMonth++;
                 }
                 sum += progress;
@@ -61,8 +65,8 @@ public class HistoryAnalysis {
         }
 
         long firstDate = historyList.get(0).getPracticeData();
-        long lastDate = historyList.get(historyList.size()-1).getPracticeData();
-        int days = (int) TimeUnit.MILLISECONDS.toDays(lastDate - firstDate);
+        long lastDate = historyList.get(historyList.size() - 1).getPracticeData();
+        int days = (int) TimeUnit.MILLISECONDS.toDays(firstDate - lastDate);
         int max_repetition = historyList.get(0).getPractice().getMaxRepetition();
         int progress = historyList.get(0).getPractice().getProgress();
 
@@ -70,14 +74,16 @@ public class HistoryAnalysis {
         analysisResult.put("average_month", new AnalysisInfo(countMonth > 0 ? sum / countMonth : 0));
         int averageDays = days > 0 ? sum / days : 0;
         analysisResult.put("average_days", new AnalysisInfo(averageDays));
-        int daysToEnd = averageDays > 0 ? (max_repetition - progress) / averageDays : 0;
+        int daysToEnd = (averageDays > 0) && (max_repetition > progress) ? (max_repetition - progress) / averageDays : 0;
         analysisResult.put("finish_practice", new AnalysisInfo(daysToEnd));
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.SECOND, (int) (daysToEnd * 3600 * 24));
-
-        analysisResult.put("finish_practice_date", new AnalysisInfo(String.format(" %tD", calendar)));
+        calendar.add(Calendar.SECOND, daysToEnd * 3600 * 24);
+        String calculatedEnd = String.format(" %tD", calendar);
+        String dateOfEndText = daysToEnd > 1026 ?
+                NyndroApp.getContext().getString(R.string.infinity) : calculatedEnd;
+        analysisResult.put("finish_practice_date", new AnalysisInfo(daysToEnd == 0 ? NyndroApp.getContext().getString(R.string.undefined) : dateOfEndText));
         return analysisResult;
     }
 
@@ -89,12 +95,11 @@ public class HistoryAnalysis {
         return analysisResult;
     }
 
-    private Map<String, AnalysisInfo>  getMonthsOfPractice(List<HistoryModel> historyList, Map<String, AnalysisInfo> analysisResult) {
+    private Map<String, AnalysisInfo> getMonthsOfPractice(List<HistoryModel> historyList, Map<String, AnalysisInfo> analysisResult) {
         int[] practiceMonths = new int[12];
+        Calendar calendar = Calendar.getInstance();
         for (HistoryModel history : historyList) {
-            long sec = history.getPracticeData();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(sec);
+            calendar.setTimeInMillis(history.getPracticeData());
             practiceMonths[calendar.get(Calendar.MONTH)]++;
         }
         for (int ind = 0; ind < 12; ind++) {

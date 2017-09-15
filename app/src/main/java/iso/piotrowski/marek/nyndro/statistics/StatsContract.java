@@ -18,7 +18,7 @@ public class StatsContract {
     }
 
     interface IPresenter extends IBasePresenter {
-        HistoryAnalysis[] doHistoryAnalysis(boolean refresh);
+        HistoryAnalysis[] doHistoryAnalysis();
         void propagateAnalysis(HistoryAnalysis[] historyAnalysises);
     }
 }

@@ -26,7 +26,7 @@ public class StatsPresenter extends NyndroPresenter implements StatsContract.IPr
     }
 
     @Override
-    public HistoryAnalysis[] doHistoryAnalysis(boolean refresh) {
+    public HistoryAnalysis[] doHistoryAnalysis() {
         List<PracticeModel> practices = dataSource.fetchPractices();
         int count = practices.size();
         HistoryAnalysis[] historyAnalysis = new HistoryAnalysis[count];

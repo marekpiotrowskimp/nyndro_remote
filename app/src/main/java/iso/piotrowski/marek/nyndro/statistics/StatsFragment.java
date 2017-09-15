@@ -33,15 +33,15 @@ public class StatsFragment extends NyndroFragment implements StatsContract.IView
                              Bundle savedInstanceState) {
         new StatsPresenter(this, DataSource.getInstance());
         statsRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_stats, container, false);
-        calculateStatsInBackground(false);
+        calculateStatsInBackground();
         return statsRecyclerView;
     }
 
-    private void calculateStatsInBackground(boolean refresh) {
+    private void calculateStatsInBackground() {
         new Thread() {
             @Override
             public void run() {
-                HistoryAnalysis[] historyAnalysises = getPresenter().doHistoryAnalysis(refresh);
+                HistoryAnalysis[] historyAnalysises = getPresenter().doHistoryAnalysis();
                 new Handler(NyndroApp.getContext().getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -58,13 +58,9 @@ public class StatsFragment extends NyndroFragment implements StatsContract.IView
     }
 
     @Override
-    public void showAnalysisResult(HistoryAnalysis[] historyAnalysises) {
-        showDataOfAnalysis(historyAnalysises);
-    }
-
-    private void showDataOfAnalysis(HistoryAnalysis[] historyAnalysises) {
+    public void showAnalysisResult(HistoryAnalysis[] historyAnalysis) {
         StatsRecyclerViewAdapter statsRecyclerViewAdapter = new StatsRecyclerViewAdapter();
-        statsRecyclerViewAdapter.setHistoryAnalysis(historyAnalysises);
+        statsRecyclerViewAdapter.setHistoryAnalysis(historyAnalysis);
         statsRecyclerViewAdapter.setDays(getActivity().getResources().getStringArray(R.array.day_of_week));
         statsRecyclerViewAdapter.setMonths(getActivity().getResources().getStringArray(R.array.months));
         statsRecyclerView.setAdapter(statsRecyclerViewAdapter);

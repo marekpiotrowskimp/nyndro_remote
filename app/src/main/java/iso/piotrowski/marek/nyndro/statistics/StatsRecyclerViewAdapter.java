@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * Created by Marek on 05.08.2016.
@@ -148,7 +149,8 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
                 if (holder.practiceAverageDays != null)
                     holder.practiceAverageDays.setText(String.format(" %s", historyAnalysisResult.get("average_days").toString()));
                 if (holder.practiceExpectedDay != null)
-                    holder.practiceExpectedDay.setText(String.format(" %s dni\n%s", historyAnalysisResult.get("finish_practice").toString(),
+                    holder.practiceExpectedDay.setText(String.format(" %s %s\n%s", historyAnalysisResult.get("finish_practice").toString(),
+                            NyndroApp.getContext().getResources().getString(R.string.days_name),
                             historyAnalysisResult.get("finish_practice_date").toString()));
 
                 setUpPieChart(holder.pieChartDays, historyAnalysisResult);
@@ -254,7 +256,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         for (int i = 0; i < 12; i++) {
             String key = "month_" + Integer.toString(i);
             int number = historyAnalysisResult.get(key).getNumber();
-            entries.add(new RadarEntry((float) (number / max * 100)));
+            entries.add(new RadarEntry(((float)number / (float)max) * (float)100));
         }
         return entries;
     }
