@@ -21,8 +21,8 @@
     <string name="max_repetition_name">Required repetition : </string>
     <string name="description_name">Description : </string>
     <string name="repetiton_name">The number of repetitions : </string>
-    <string name="last_practice_date">L: </string>
-    <string name="next_practice_date">N: </string>
+    <string name="last_practice_date">Last practice date: </string>
+    <string name="next_practice_date">Next practice date: </string>
 
     <!--Practice class default values-->
     <string name="chenrizg">Chenrizg</string>
@@ -54,28 +54,50 @@
     <string name="day_of_practice_stats">days</string>
     <string name="no_state">No statistics</string>
     <string name="number_of_practices_in_months">Number of practices by months</string>
-    <string name="number_of_practices_in_days">Number of practices by weeks</string>
+    <string name="number_of_practices_in_days">Number of practices by days</string>
     <string name="average_weeks">Weekly average:</string>
     <string name="average_months">Monthly average:</string>
     <string name="average_days">Daily average:</string>
-    <string name="expected_day">Expected end of practice:</string>
+    <string name="expected_day">Expected end:</string>
     <string name="add_remainder_button">ADD REMINDER</string>
     <string name="modify_remainder_button">UPDATE REMINDER</string>
     <string name="remaind_text_notificator">"Reminder: "</string>
     <string name="app_label_plans">Plan - Reminder</string>
     <string name="app_label_practice">Add the practice</string>
     <string name="app_label_stats">Statistics</string>
+    <string name="app_label_history">History</string>
     <string name="app_label_add_renainder">New reminder</string>
     <string name="cancel_action">CANCEL</string>
     <string name="deleted_practice_info">"Removed "</string>
     <string name="NoDateToShow">-----------</string>
+    <string name="StatisticsPage">Statistics</string>
+    <string name="HistoryPage">History</string>
+    <string name="c_marek_piotrowski_c">(c) Marek Piotrowski (c)</string>
+    <string name="default_fragment_name">Default Name</string>
+    <string name="tap_counter_name">Tap Counter</string>
+    <string name="add_practice">Practice was added: %s</string>
+    <string name="practice_detail_progress_name">Progress</string>
+    <string name="plans_list_name">Plans Editor</string>
+    <string name="done">Add Remainder</string>
+    <string name="repeater_title">Repeater</string>
+    <string name="days_name">days</string>
+    <string name="infinity">infinity</string>
+    <string name="undefined">undefined</string>
+
+    //Frequents
+    <string-array name="frequents">
+        <item>None</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
 
     //Day of week
     <string-array name="day_of_week">
         <item> Sunday </item>
         <item>Monday</item>
         <item>Tuesday</item>
-        <item>Tuesday</item>
+        <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>

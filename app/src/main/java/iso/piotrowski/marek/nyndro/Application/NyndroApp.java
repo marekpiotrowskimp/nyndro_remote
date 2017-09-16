@@ -20,7 +20,7 @@ public class NyndroApp extends com.activeandroid.app.Application {
         ActiveAndroid.initialize(getApplicationContext());
     }
 
-    public static Context getContect() {
+    public static Context getContext() {
         return instance;
     }
 

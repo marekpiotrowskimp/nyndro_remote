@@ -32,6 +32,10 @@ public class BuddaProgressBar extends View {
     private Paint drawPaint;
     private Context context;
     private int dx,dy,di,dj, progressGradient;
+    private LightingColorFilter colorFilter;
+    private LightingColorFilter colorFilterEmpty;
+    private Rect srcRectTemp;
+    private Rect desRectTemp;
 
     public BuddaProgressBar (Context context, AttributeSet attributeSet)
     {
@@ -62,6 +66,10 @@ public class BuddaProgressBar extends View {
         drawPaint.setFilterBitmap(true);
         drawPaint.setMaskFilter(new BlurMaskFilter(8,BlurMaskFilter.Blur.NORMAL));
         buddhaBitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_buddha_32);
+        colorFilter = new LightingColorFilter(0, colorBuddha);
+        colorFilterEmpty = new LightingColorFilter(0, 0);
+        srcRectTemp = new Rect();
+        desRectTemp = new Rect();
     }
 
     @Override
@@ -126,27 +134,30 @@ public class BuddaProgressBar extends View {
             for (int i=0;i<di;i++) {
                 int suma =j*di+i;
                 if (suma<progressGradient) {
+                    int left = i * dx;
+                    int top = j * dy;
                     if (suma<progress/1000) {
-                        drawPaint.setColorFilter(new LightingColorFilter(0,colorBuddha));
-                        canvas.drawBitmap(buddhaBitmap, i * dx, j * dy, drawPaint);
+                        drawPaint.setColorFilter(colorFilter);
+                        canvas.drawBitmap(buddhaBitmap, left, top, drawPaint);
                     } else
                     {
                         if (suma==progress/1000)
                         {
                             int devHeight = buddhaBitmap.getHeight();
                             devHeight = (int)(devHeight * (float)(1-((float)(progress-suma*1000)/1000)));
-                            Rect srcRect = new Rect(0,0,buddhaBitmap.getWidth(),devHeight);
-                            Rect desRect = new Rect(i*dx,j*dy,i*dx+buddhaBitmap.getWidth(),j*dy+devHeight);
-                            drawPaint.setColorFilter(new LightingColorFilter(0, 0x000000));
-                            canvas.drawBitmap(buddhaBitmap, srcRect, desRect, drawPaint);
 
-                            srcRect = new Rect(0,devHeight,buddhaBitmap.getWidth(),32);
-                            desRect = new Rect(i*dx,j*dy+devHeight,i*dx+buddhaBitmap.getWidth(),j*dy+buddhaBitmap.getHeight());
-                            drawPaint.setColorFilter(new LightingColorFilter(0, colorBuddha));
-                            canvas.drawBitmap(buddhaBitmap, srcRect, desRect, drawPaint);
+                            srcRectTemp.set(0,0,buddhaBitmap.getWidth(),devHeight);
+                            desRectTemp.set(left, top, left + buddhaBitmap.getWidth(), top + devHeight);
+                            drawPaint.setColorFilter(colorFilterEmpty);
+                            canvas.drawBitmap(buddhaBitmap, srcRectTemp, desRectTemp, drawPaint);
+
+                            srcRectTemp.set(0,devHeight,buddhaBitmap.getWidth(),buddhaBitmap.getHeight());
+                            desRectTemp.set(left, top + devHeight, left + buddhaBitmap.getWidth(), top +buddhaBitmap.getHeight());
+                            drawPaint.setColorFilter(colorFilter);
+                            canvas.drawBitmap(buddhaBitmap, srcRectTemp, desRectTemp, drawPaint);
                         }else {
-                            drawPaint.setColorFilter(new LightingColorFilter(0, 0x000000));
-                            canvas.drawBitmap(buddhaBitmap, i * dx, j * dy, drawPaint);
+                            drawPaint.setColorFilter(colorFilterEmpty);
+                            canvas.drawBitmap(buddhaBitmap, left, top, drawPaint);
                         }
                     }
                 }

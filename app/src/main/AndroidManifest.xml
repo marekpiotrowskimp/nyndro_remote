@@ -5,7 +5,7 @@
     <application
         android:name="iso.piotrowski.marek.nyndro.Application.NyndroApp"
         android:allowBackup="true"
-        android:backupAgent="NyndroBackupAgent"
+        android:backupAgent=".tools.NyndroBackupAgent"
         android:icon="@mipmap/icon_nyndro1"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -19,11 +19,12 @@
             android:value="practice" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="1" />
+            android:value="2" />
   
         <activity
-            android:name=".MainPracticsActivity"
+            android:name=".PracticeMain.MainPracticeActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +40,7 @@
 
         <receiver android:name=".RemainderService.RemainderReceiver">
             <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="iso.piotrowski.marek.nyndro.restart" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

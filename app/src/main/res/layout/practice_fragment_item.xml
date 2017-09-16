@@ -20,7 +20,7 @@
             android:layout_width="100dp"
             android:layout_height="150dp"
             android:contentDescription="Practice Image"
-            android:src="@drawable/buddha" />
+            android:src="@drawable/mahakala" />
 
         <TextView
             android:id="@+id/new_practice_name"

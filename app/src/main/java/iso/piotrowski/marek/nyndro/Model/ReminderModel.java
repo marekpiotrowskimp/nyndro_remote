@@ -11,9 +11,9 @@ import com.activeandroid.annotation.Table;
 public class ReminderModel extends Model {
 
     @Column(name = "PRACTICE_ID")
-    private Integer practiceId;
+    private long practiceId;
     @Column(name = "PRACTICE_DATE")
-    private Integer practiceDate;
+    private long practiceDate;
     @Column(name = "REPETITION")
     private Integer repetition;
     @Column(name = "ACTIVE")
@@ -36,20 +36,20 @@ public class ReminderModel extends Model {
         this.setRepeater(repeater);
     }
 
-    public Integer getPracticeId() {
+    public long getPracticeId() {
         return practiceId;
     }
 
-    public ReminderModel setPracticeId(Integer practiceId) {
+    public ReminderModel setPracticeId(long practiceId) {
         this.practiceId = practiceId;
         return this;
     }
 
-    public Integer getPracticeDate() {
+    public long getPracticeDate() {
         return practiceDate;
     }
 
-    public ReminderModel setPracticeDate(Integer practiceDate) {
+    public ReminderModel setPracticeDate(long practiceDate) {
         this.practiceDate = practiceDate;
         return this;
     }

@@ -1,0 +1,18 @@
+<tabs>
+    <tab
+        id="@+id/tab_practice"
+        icon="@mipmap/ic_practice" />
+    <tab
+        id="@+id/tab_statistic"
+        icon="@mipmap/ic_statistic" />
+    <tab
+        id="@+id/tab_history"
+        icon="@mipmap/ic_history" />
+    <tab
+        id="@+id/tab_plans"
+        icon="@mipmap/ic_plans" />
+    <tab
+        id="@+id/tab_counter"
+        icon="@mipmap/ic_tap_counter" />
+
+</tabs>

@@ -3,6 +3,12 @@ apply plugin: 'com.jakewharton.butterknife'
 
 android {
     signingConfigs {
+        key {
+            keyAlias 'androidkey'
+            keyPassword 'marek204811'
+            storeFile file('/Users/marek.piotrowski/Desktop/Key/klucz.jks')
+            storePassword 'marek204811'
+        }
     }
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
@@ -21,6 +27,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
+            signingConfig signingConfigs.key
+        }
+        debug {
+            signingConfig signingConfigs.key
         }
     }
 
@@ -40,6 +50,8 @@ android {
 repositories {
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://jitpack.io" }
+    maven { url 'http://raw.github.com/wada811/Android-DialogFragments/master/repository/' }
 }
 
 dependencies {
@@ -55,4 +67,14 @@ dependencies {
     //ButterKnife
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //Bottom bar
+    compile 'com.roughike:bottom-bar:2.3.1'
+    //Boom Menu
+    compile 'com.nightonke:boommenu:2.1.0'
+    //MP Android chart
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    //Calendar
+    compile 'com.github.vatsaldesai92:MyDynamicCalendarLibrary:1.0.1'
+    //Toggle
+    compile 'us.belka:androidtoggleswitch:1.2.2'
 }

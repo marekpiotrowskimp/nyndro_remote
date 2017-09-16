@@ -21,8 +21,8 @@
     <string name="max_repetition_name">Wymagana ilość  : </string>
     <string name="description_name">Opis            : </string>
     <string name="repetiton_name">Ilość powtórzeń : </string>
-    <string name="last_practice_date">O: </string>
-    <string name="next_practice_date">N: </string>
+    <string name="last_practice_date">Data ostatniej praktyki: </string>
+    <string name="next_practice_date">Data następnej praktyki: </string>
 
     <!--Practice class default values-->
     <string name="chenrizg">Kochające Oczy</string>
@@ -70,16 +70,38 @@
     <string name="average_weeks">Średnia tygodniowa:</string>
     <string name="average_months">Średnia miesięczna:</string>
     <string name="average_days">Średnia dzienna:</string>
-    <string name="expected_day">Przewidywany koniec:</string>
+    <string name="expected_day">Zakończenie:</string>
     <string name="add_remainder_button">DODAJ PRZYPOMNIENIE</string>
     <string name="modify_remainder_button">MODYFIKUJ PRZYPOMNIENIE</string>
     <string name="remaind_text_notificator">"Przypomnienie: "</string>
     <string name="app_label_plans">Plan - przypomnienia</string>
     <string name="app_label_practice">Dodaj praktykę</string>
     <string name="app_label_stats">Statystyki</string>
+    <string name="app_label_history">Historia</string>
     <string name="app_label_add_renainder">Nowe przypomnienie</string>
     <string name="cancel_action">ANULUJ</string>
     <string name="deleted_practice_info">"Usunięto "</string>
+    <string name="StatisticsPage">Statystyki</string>
+    <string name="HistoryPage">Historia</string>
+    <string name="default_fragment_name">Domyślna Nazwa</string>
+    <string name="tap_counter_name">Licznik praktyk</string>
+    <string name="add_practice">Praktyka dodana: %s</string>
+    <string name="practice_detail_progress_name">Postęp</string>
+    <string name="plans_list_name">Edycja planów</string>
+    <string name="done">Dodaj Przypomnienie</string>
+    <string name="repeater_title">Powtórzenia</string>
+    <string name="days_name">dni</string>
+    <string name="infinity">nieskończoność</string>
+    <string name="undefined">niezdefiniowany</string>
+
+
+    //Frequents
+    <string-array name="frequents">
+        <item>Jednorazowe</item>
+        <item>Codzienne</item>
+        <item>Tygodniowe</item>
+        <item>Miesięczne</item>
+    </string-array>
 
     //Day of week
     <string-array name="day_of_week">

@@ -1,9 +1,10 @@
 package iso.piotrowski.marek.nyndro.DataSource.ConstantsData;
 
-import java.util.Date;
+import android.support.annotation.NonNull;
 
-import iso.piotrowski.marek.nyndro.MainPracticsActivity;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
 
 /**
  * Created by Marek on 22.07.2016.
@@ -14,29 +15,32 @@ public class Practice {
     private int imageResourcesId;
     private int progress;
     private int maxRepetition;
-    private long lastPracticeDate;
-    private long nextPracticeDate;
     private int repetition;
 
 
-    public static final Practice practices[] = {
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.s_refuge), R.drawable.s_refuge,11000,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.s_refuge_desc), new Date().getTime(), new Date().getTime(), 108),
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.refuge), R.drawable.refuge,111111,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.refuge_desc), new Date().getTime(), new Date().getTime(), 108),
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.vajrasattva), R.drawable.vajrasattva,111111,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.vajrasattva_desc), new Date().getTime(), new Date().getTime(), 108),
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.amitabha),R.drawable.amitabha,100000,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.amitabha_desc), new Date().getTime(), new Date().getTime(), 108),
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.mandala),R.drawable.mandala,111111,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.mandala_desc), new Date().getTime(), new Date().getTime(), 108),
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.guru_yoga),R.drawable.guru_yoga,111111,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.guru_yoga_desc), new Date().getTime(), new Date().getTime(), 108),
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.chenrizg),R.drawable.z_chenrizg,111111,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.chenrizg_desc), new Date().getTime(), new Date().getTime(), 108),
-            new Practice(MainPracticsActivity.resourcesApp.getString(R.string.other_practice),R.drawable.mahakala,111111,
-                    0, MainPracticsActivity.resourcesApp.getString(R.string.other_practice_desc), new Date().getTime(), new Date().getTime(), 108),
+    public static final Practice[] practices = {
+            new Practice(getResourcesString(R.string.s_refuge), DrawableMapper.TypeOfImage.s_refuge.getValue() ,11000,
+                    0, getResourcesString(R.string.s_refuge_desc), 108),
+            new Practice(getResourcesString(R.string.refuge), DrawableMapper.TypeOfImage.refuge.getValue(),111111,
+                    0, getResourcesString(R.string.refuge_desc), 108),
+            new Practice(getResourcesString(R.string.vajrasattva), DrawableMapper.TypeOfImage.vajrasattva.getValue(),111111,
+                    0, getResourcesString(R.string.vajrasattva_desc), 108),
+            new Practice(getResourcesString(R.string.amitabha),DrawableMapper.TypeOfImage.amitabha.getValue(),100000,
+                    0, getResourcesString(R.string.amitabha_desc), 108),
+            new Practice(getResourcesString(R.string.mandala),DrawableMapper.TypeOfImage.mandala.getValue(),111111,
+                    0, getResourcesString(R.string.mandala_desc), 108),
+            new Practice(getResourcesString(R.string.guru_yoga),DrawableMapper.TypeOfImage.guru_yoga.getValue(),111111,
+                    0, getResourcesString(R.string.guru_yoga_desc), 108),
+            new Practice(getResourcesString(R.string.chenrizg),DrawableMapper.TypeOfImage.z_chenrizg.getValue(),111111,
+                    0, getResourcesString(R.string.chenrizg_desc), 108),
+            new Practice(getResourcesString(R.string.other_practice),DrawableMapper.TypeOfImage.mahakala.getValue(),111111,
+                    0, getResourcesString(R.string.other_practice_desc), 108),
     };
+
+    @NonNull
+    private static String getResourcesString(int s_refuge) {
+        return NyndroApp.getContext().getResources().getString(s_refuge);
+    }
 
     Practice (String name, int imageResourcesId, int maxRepetition){
         this.name=name;
@@ -44,12 +48,10 @@ public class Practice {
         this.maxRepetition=maxRepetition;
     }
 
-    Practice (String name, int imageResourcesId, int maxRepetition, int progress, String description, long lastPracticeDate, long nextPracticeDate, int repetition){
+    Practice (String name, int imageResourcesId, int maxRepetition, int progress, String description, int repetition){
         this(name,imageResourcesId,maxRepetition);
         this.description = description;
         this.progress = progress;
-        this.lastPracticeDate = lastPracticeDate;
-        this.nextPracticeDate=nextPracticeDate;
         this.repetition = repetition;
     }
 
@@ -71,14 +73,6 @@ public class Practice {
 
     public int getMaxRepetition() {
         return maxRepetition;
-    }
-
-    public long getLastPracticeDate() {
-        return lastPracticeDate;
-    }
-
-    public long getNextPracticeDate() {
-        return nextPracticeDate;
     }
 
     public int getRepetition() {

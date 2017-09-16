@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view_practice"
     android:layout_width="match_parent"
@@ -8,19 +7,26 @@
     android:layout_margin="4dp"
     card_view:cardBackgroundColor="@color/colorLightCoffee"
     card_view:cardCornerRadius="8dp">
-    <!--TODO Do new layout for Card practice-->
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp">
 
-    <ImageView
-        android:id="@+id/practice_image"
-        android:layout_marginLeft="4dp"
-        android:layout_width="50dp"
-        android:layout_height="75dp"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="Practice Image"
-        android:src="@mipmap/icon_nyndro1" />
+        <ImageView
+            android:id="@+id/practice_image"
+            android:layout_width="60dp"
+            android:layout_height="90dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/icon_nyndro1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="@string/c_marek_piotrowski_c"
+            android:textSize="@dimen/author_name_text_size" />
+
     </RelativeLayout>
 </android.support.v7.widget.CardView>

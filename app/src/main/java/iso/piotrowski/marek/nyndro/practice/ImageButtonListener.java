@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * Created by marek.piotrowski on 12/08/2017.
@@ -29,23 +30,9 @@ public class ImageButtonListener implements PracticeAdapter.IImageCardViewListen
         startEffect(view);
     }
 
-    public void startSoundEffect() {
-        MediaPlayer mediaPlayer = MediaPlayer.create(NyndroApp.getContect(), R.raw.tweet);
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                if (mediaPlayer != null) {
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
-            }
-        });
-        mediaPlayer.start();
-    }
-
     public void startEffect(final View view) {
-        startSoundEffect();
-        Animation animation = AnimationUtils.loadAnimation(NyndroApp.getContect(), R.anim.add_button_animation);
+        Utility.startSoundEffect(R.raw.tweet);
+        Animation animation = AnimationUtils.loadAnimation(NyndroApp.getContext(), R.anim.add_button_animation);
         view.clearAnimation();
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -55,7 +42,7 @@ public class ImageButtonListener implements PracticeAdapter.IImageCardViewListen
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                presenter.dataWereChanged();
+                presenter.refreshData();
             }
 
             @Override
@@ -63,7 +50,7 @@ public class ImageButtonListener implements PracticeAdapter.IImageCardViewListen
 
             }
         });
-        ((View) view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(NyndroApp.getContect(), R.anim.color_blinking_cardview));
+        ((View) view.getParent().getParent().getParent()).startAnimation(AnimationUtils.loadAnimation(NyndroApp.getContext(), R.anim.color_blinking_cardview));
         view.startAnimation(animation);
 
     }
