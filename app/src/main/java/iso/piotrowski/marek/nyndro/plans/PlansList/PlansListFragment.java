@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +72,7 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
 
     @Override
     public String getFragmentName() {
-        return NyndroApp.getContext().getResources().getString(R.string.plans_list_name) + String.format(" %tD", selectedDate);
+        return NyndroApp.getContext().getResources().getString(R.string.plans_list_name) + String.format(Locale.UK, " %tD", selectedDate);
     }
 
     @Override

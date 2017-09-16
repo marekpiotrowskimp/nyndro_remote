@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -94,7 +95,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         holder.historyProgress.setText(String.valueOf(history.getProgress()));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(history.getPracticeData());
-        holder.historyDate.setText(String.format("Data : %tD", calendar));
+        holder.historyDate.setText(String.format(Locale.UK, "Data : %tD", calendar));
         holder.historyRepetition.setText(String.valueOf(history.getRepetition()));
     }
 

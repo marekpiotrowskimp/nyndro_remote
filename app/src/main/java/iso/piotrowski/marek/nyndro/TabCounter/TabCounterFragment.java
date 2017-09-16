@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.PracticeMain.PracticeMainContract;
@@ -64,7 +66,7 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
     }
 
     private String getCount(int count) {
-        return String.format("%04d", count);
+        return String.format(Locale.UK, "%04d", count);
     }
 
     @Override

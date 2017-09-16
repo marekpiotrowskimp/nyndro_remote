@@ -12,6 +12,7 @@ import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -111,10 +112,10 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
     private void addCalendarEvent(Date date, String practiceName) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        String startHour = String.format("%tR", calendar);
+        String startHour = String.format(Locale.UK, "%tR", calendar);
         calendar.add(Calendar.HOUR, 1);
-        String stopHour = String.format("%tR", calendar);
-        dynamicCalendar.addEvent(String.format("%td-%tm-%tY", calendar, calendar, calendar),
+        String stopHour = String.format(Locale.UK, "%tR", calendar);
+        dynamicCalendar.addEvent(String.format(Locale.UK, "%td-%tm-%tY", calendar, calendar, calendar),
                 startHour,
                 stopHour,
                 practiceName, R.mipmap.ic_buddha_24);

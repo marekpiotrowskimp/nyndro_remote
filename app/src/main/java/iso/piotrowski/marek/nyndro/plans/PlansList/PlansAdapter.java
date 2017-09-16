@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,7 +74,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
         holder.setReminder(reminder);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(reminder.getPracticeDate());
-        holder.plansDate.setText(String.format("Time: %tT", calendar));
+        holder.plansDate.setText(String.format(Locale.UK, "Time: %tT", calendar));
 
         holder.plansPracticeImageId.setImageDrawable(NyndroApp.getContext().getResources().getDrawable(reminder.getPractice().getPracticeImageId()));
         holder.plansPracticeName.setText(reminder.getPractice().getName());

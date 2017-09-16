@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
@@ -153,7 +155,7 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
     }
 
     private String getFormatTextWithPracticeData(int resourcesId, String practiceData) {
-        return String.format("%s%s", Utility.getFormatEditFromResources(resourcesId),
+        return String.format(Locale.UK, "%s%s", Utility.getFormatEditFromResources(resourcesId),
                 practiceData);
     }
 

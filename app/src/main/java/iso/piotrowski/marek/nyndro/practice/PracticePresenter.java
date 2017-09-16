@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import java.util.Locale;
+
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
@@ -99,6 +101,6 @@ public class PracticePresenter extends NyndroPresenter implements PracticeContra
         Practice practice = Practice.practices[position];
         dataSource.insertPractice(practice);
         refreshData();
-        viewer.showMessage(String.format(NyndroApp.getContext().getResources().getString(R.string.add_practice), practice.getName()));
+        viewer.showMessage(String.format(Locale.UK, NyndroApp.getContext().getResources().getString(R.string.add_practice), practice.getName()));
     }
 }

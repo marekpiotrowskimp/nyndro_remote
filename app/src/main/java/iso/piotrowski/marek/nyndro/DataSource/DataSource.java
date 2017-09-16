@@ -9,6 +9,7 @@ import iso.piotrowski.marek.nyndro.GoogleAnalytics.Analytics;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * Created by marek.piotrowski on 11/08/2017.
@@ -111,10 +112,8 @@ public class DataSource implements IDataSource {
 
     @Override
     public void addRemainder(long date, int repeater, PracticeModel practice) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(date));
         Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddRemainder.toString(), practice.getName(),
-                calendar.toString() + ", " + practice.getString());
+                Utility.getStringDate(date) + ", " + practice.getString());
         DBQuery.addReminders(date, repeater, practice);
     }
 
