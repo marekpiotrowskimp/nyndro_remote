@@ -1,71 +1,27 @@
 {
   "project_info": {
-    "project_number": "80324512165",
-    "firebase_url": "https://hithere-148219.firebaseio.com",
-    "project_id": "hithere-148219",
-    "storage_bucket": "hithere-148219.appspot.com"
+    "project_number": "841761303143",
+    "firebase_url": "https://nyndro-9bb3e.firebaseio.com",
+    "project_id": "nyndro-9bb3e",
+    "storage_bucket": "nyndro-9bb3e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:80324512165:android:3184854875ceb7bc",
-        "android_client_info": {
-          "package_name": "iso.piotrowski.marek.hithere"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "80324512165-l1nla89sc6rl0mibjjg82mm9gae026di.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "iso.piotrowski.marek.hithere",
-            "certificate_hash": "646db1552731970679e8b20462904e07376153b8"
-          }
-        },
-        {
-          "client_id": "80324512165-lkdb11rcr45gpicuoa6bn18j2ehmkpmn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDE720L8AK_ifb_vPsFsw3i-XSUNK_0GQk"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "80324512165-lkdb11rcr45gpicuoa6bn18j2ehmkpmn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:80324512165:android:04fd881ad030a227",
+        "mobilesdk_app_id": "1:841761303143:android:04fd881ad030a227",
         "android_client_info": {
           "package_name": "iso.piotrowski.marek.nyndro"
         }
       },
       "oauth_client": [
         {
-          "client_id": "80324512165-lkdb11rcr45gpicuoa6bn18j2ehmkpmn.apps.googleusercontent.com",
+          "client_id": "841761303143-cb8ts8csdh8cc2mcsdpd1quisu1suk9h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDE720L8AK_ifb_vPsFsw3i-XSUNK_0GQk"
+          "current_key": "AIzaSyAZ06rOOyXZGXIap3rDmbID36aX3gEO1ow"
         }
       ],
       "services": {

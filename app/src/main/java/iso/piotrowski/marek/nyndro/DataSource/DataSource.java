@@ -80,7 +80,7 @@ public class DataSource implements IDataSource {
     @Override
     public void addHistoryForPractice(PracticeModel practice, int addProgress) {
         Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddHistory.toString(), practice.getName(),
-                String.valueOf(addProgress) + " " + practice.toString());
+                String.valueOf(addProgress) + ", " + practice.getString());
         DBQuery.addHistoryForPractice(practice, addProgress);
     }
 
@@ -114,7 +114,7 @@ public class DataSource implements IDataSource {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(date));
         Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddRemainder.toString(), practice.getName(),
-                calendar.toString() + " " + practice.toString());
+                calendar.toString() + ", " + practice.getString());
         DBQuery.addReminders(date, repeater, practice);
     }
 

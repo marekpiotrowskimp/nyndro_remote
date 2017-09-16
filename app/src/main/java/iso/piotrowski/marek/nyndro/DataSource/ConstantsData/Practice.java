@@ -81,6 +81,15 @@ public class Practice {
 
     @Override
     public String toString() {
-        return name;
+        StringBuilder practiceString = new StringBuilder();
+        practiceString.append(name);
+        practiceString.append(", ");
+        practiceString.append(progress);
+        practiceString.append(", ");
+        practiceString.append(maxRepetition);
+        practiceString.append(", ");
+        practiceString.append(repetition);
+        practiceString.append(";");
+        return practiceString.toString();
     }
 }

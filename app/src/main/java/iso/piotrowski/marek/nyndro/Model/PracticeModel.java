@@ -112,5 +112,18 @@ public class PracticeModel extends Model {
     public long getID() {
         return super.getId();
     }
+
+    public String getString() {
+        StringBuilder practiceString = new StringBuilder();
+        practiceString.append(name);
+        practiceString.append(", ");
+        practiceString.append(progress);
+        practiceString.append(", ");
+        practiceString.append(maxRepetition);
+        practiceString.append(", ");
+        practiceString.append(repetition);
+        practiceString.append(";");
+        return practiceString.toString();
+    }
 }
 

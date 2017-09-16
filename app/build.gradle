@@ -16,8 +16,8 @@ android {
         applicationId "iso.piotrowski.marek.nyndro"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 3
-        versionName '1.15'
+        versionCode 4
+        versionName '2.00'
         jackOptions {
             enabled true
         }
