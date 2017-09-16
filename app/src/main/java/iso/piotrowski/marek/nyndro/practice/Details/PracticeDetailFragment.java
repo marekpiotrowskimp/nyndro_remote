@@ -21,8 +21,8 @@ import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
 import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
-import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**

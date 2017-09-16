@@ -8,7 +8,7 @@ import java.util.Date;
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.plans.RepeaterDialog.RepeaterDialogFragment;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroPresenter;
 
 /**
  * Created by marek.piotrowski on 04/09/2017.

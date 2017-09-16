@@ -1,9 +1,11 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+import iso.piotrowski.marek.nyndro.GoogleAnalytics.Analytics;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
@@ -36,6 +38,7 @@ public class DataSource implements IDataSource {
 
     @Override
     public void insertPractice(Practice practice) {
+        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddPractice.toString(), practice.getName(), practice.toString());
         DBQuery.insertPractice(practice);
     }
 
@@ -76,6 +79,8 @@ public class DataSource implements IDataSource {
 
     @Override
     public void addHistoryForPractice(PracticeModel practice, int addProgress) {
+        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddHistory.toString(), practice.getName(),
+                String.valueOf(addProgress) + " " + practice.toString());
         DBQuery.addHistoryForPractice(practice, addProgress);
     }
 
@@ -106,6 +111,10 @@ public class DataSource implements IDataSource {
 
     @Override
     public void addRemainder(long date, int repeater, PracticeModel practice) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(date));
+        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddRemainder.toString(), practice.getName(),
+                calendar.toString() + " " + practice.toString());
         DBQuery.addReminders(date, repeater, practice);
     }
 

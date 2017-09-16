@@ -1,8 +1,7 @@
 package iso.piotrowski.marek.nyndro.history;
 
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroPresenter;
 
 /**
  * Created by marek.piotrowski on 18/08/2017.

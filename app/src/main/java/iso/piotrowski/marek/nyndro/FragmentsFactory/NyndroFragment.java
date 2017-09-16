@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.tools.Fragments;
+package iso.piotrowski.marek.nyndro.FragmentsFactory;
 
 import android.support.v4.app.Fragment;
 

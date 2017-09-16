@@ -8,7 +8,7 @@ import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroPresenter;
 
 /**
  * Created by marek.piotrowski on 18/08/2017.

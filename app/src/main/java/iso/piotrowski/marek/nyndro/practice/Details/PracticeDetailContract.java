@@ -1,8 +1,8 @@
 package iso.piotrowski.marek.nyndro.practice.Details;
 
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IBaseViewer;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IBasePresenter;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IBaseViewer;
 
 /**
  * Created by marek.piotrowski on 15/08/2017.

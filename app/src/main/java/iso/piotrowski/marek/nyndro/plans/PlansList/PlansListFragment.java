@@ -24,7 +24,7 @@ import iso.piotrowski.marek.nyndro.PracticeMain.PracticeMainContract;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.plans.RepeaterDialog.RepeaterDialogFragment;
 import iso.piotrowski.marek.nyndro.practice.SimpleCallbackForTouches;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 
 /**
  * Created by marek.piotrowski on 04/09/2017.

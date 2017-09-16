@@ -24,17 +24,18 @@ import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.GoogleAnalytics.Analytics;
 import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.BoomButtonFactory;
 import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.IBoomButtonAdapter;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
-import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IActivityDelegate;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IFragmentParams;
-import iso.piotrowski.marek.nyndro.tools.Fragments.INavigator;
-import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IActivityDelegate;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IFragmentParams;
+import iso.piotrowski.marek.nyndro.Navigator.INavigator;
+import iso.piotrowski.marek.nyndro.Navigator.Navigator;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 import iso.piotrowski.marek.nyndro.tools.UITool;
 
 
@@ -57,6 +58,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Analytics.startAnalytics(this);
         new PracticeMainPresenter(this, DataSource.getInstance());
         Navigator.initialization(new WeakReference<>(this));
         navigator = Navigator.getInstance();
@@ -202,6 +204,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
                 presenter.adjustBoomButtonToolBar(fragmentParams.getTypeOfBoomButton());
             }
             startAnimationForFloatingButton(fragmentParams.isButtonVisible() ? UITool.TypeOfButtonAnimation.Emerge : UITool.TypeOfButtonAnimation.Disappear);
+            Analytics.logEvent(fragmentParams.getTypeOf().toString(), fragmentParams.getFragmentName(), Analytics.TypeOfEvent.Fragment.toString());
         }
         setApplicationLabel(currentFragment);
         ActionBar supportActionBar = getSupportActionBar();
