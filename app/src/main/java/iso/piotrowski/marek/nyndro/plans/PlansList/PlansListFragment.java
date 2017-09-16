@@ -1,9 +1,9 @@
 package iso.piotrowski.marek.nyndro.plans.PlansList;
 
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -31,15 +31,16 @@ import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
  * Created by marek.piotrowski on 04/09/2017.
  */
 
-public class PlansListFragment extends NyndroFragment implements PlansListContract.IViewer, PlansAdapter.OnRemainderItemClickListener{
+public class PlansListFragment extends NyndroFragment implements PlansListContract.IViewer, PlansAdapter.OnRemainderItemClickListener {
 
-    @BindView(R.id.plans_recyclerview) RecyclerView plansRecyclerView;
+    @BindView(R.id.plans_recyclerview)
+    RecyclerView plansRecyclerView;
     private Date selectedDate;
 
-    public PlansListFragment () {
+    public PlansListFragment() {
     }
 
-    public static PlansListFragment getInstance(Date selectedDate){
+    public static PlansListFragment getInstance(Date selectedDate) {
         PlansListFragment plansListFragment = new PlansListFragment();
         plansListFragment.selectedDate = selectedDate;
         return plansListFragment;
@@ -48,7 +49,7 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_plans_list,container,false);
+        LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_plans_list, container, false);
         ButterKnife.bind(this, linearLayout);
         return linearLayout;
     }
@@ -61,7 +62,7 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
         getPresenter().loadPlansForDate(selectedDate);
     }
 
-    private PlansListContract.IPresenter getPresenter(){
+    private PlansListContract.IPresenter getPresenter() {
         return (PlansListContract.IPresenter) presenter;
     }
 
@@ -103,12 +104,7 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
 
     @Override
     public void getRepeaterToggle(RepeaterDialogFragment.OnRemainderDetailsListener remainderDetailsListener) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog_toggle");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        RepeaterDialogFragment.newInstance(remainderDetailsListener).show(getActivity().getFragmentManager(), "dialog_toggle");
+        RepeaterDialogFragment.newInstance(remainderDetailsListener).show(getActivity().getSupportFragmentManager(), "x");
     }
 
     @Override
@@ -122,7 +118,7 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
     }
 
     private void setItemTouchHelper() {
-        ItemTouchHelper.SimpleCallback callback =  new SimpleCallbackForTouches(0, ItemTouchHelper.LEFT, new SimpleCallbackForTouches.OnSwipedListener() {
+        ItemTouchHelper.SimpleCallback callback = new SimpleCallbackForTouches(0, ItemTouchHelper.LEFT, new SimpleCallbackForTouches.OnSwipedListener() {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 getPresenter().removeRemainder(((PlansAdapter.PlansHolder) viewHolder).getReminder().getID());
