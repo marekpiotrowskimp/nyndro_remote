@@ -37,6 +37,7 @@ import com.github.mikephil.charting.utils.MPPointF;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -139,17 +140,17 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
 
             if (!historyAnalysisResult.isEmpty()) {
                 holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
-                holder.practiceName.setText(String.format(" %s", historyAnalysisResult.get("practice_name").toString()));
+                holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_name").toString()));
                 if (holder.practiceDays != null)
-                    holder.practiceDays.setText(String.format(" %s", historyAnalysisResult.get("practice_days").toString()));
+                    holder.practiceDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_days").toString()));
                 if (holder.practiceAverageWeeks != null)
-                    holder.practiceAverageWeeks.setText(String.format(" %s", historyAnalysisResult.get("average_week").toString()));
+                    holder.practiceAverageWeeks.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("average_week").toString()));
                 if (holder.practiceAverageMonths != null)
-                    holder.practiceAverageMonths.setText(String.format(" %s", historyAnalysisResult.get("average_month").toString()));
+                    holder.practiceAverageMonths.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("average_month").toString()));
                 if (holder.practiceAverageDays != null)
-                    holder.practiceAverageDays.setText(String.format(" %s", historyAnalysisResult.get("average_days").toString()));
+                    holder.practiceAverageDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("average_days").toString()));
                 if (holder.practiceExpectedDay != null)
-                    holder.practiceExpectedDay.setText(String.format(" %s %s\n%s", historyAnalysisResult.get("finish_practice").toString(),
+                    holder.practiceExpectedDay.setText(String.format(Locale.UK, " %s %s\n%s", historyAnalysisResult.get("finish_practice").toString(),
                             NyndroApp.getContext().getResources().getString(R.string.days_name),
                             historyAnalysisResult.get("finish_practice_date").toString()));
 
@@ -160,7 +161,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         } else {
             Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
             holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
-            holder.practiceName.setText(String.format(" %s", historyAnalysisResult.get("practice_name").toString()));
+            holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_name").toString()));
         }
     }
 

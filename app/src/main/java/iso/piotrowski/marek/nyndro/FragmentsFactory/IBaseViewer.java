@@ -1,4 +1,4 @@
-package iso.piotrowski.marek.nyndro.tools.Fragments;
+package iso.piotrowski.marek.nyndro.FragmentsFactory;
 
 /**
  * Created by marek.piotrowski on 26/08/2017.

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
 import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
@@ -13,6 +12,7 @@ import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,9 +21,9 @@ import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.plans.PlansList.PlansListFragment;
-import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.Navigator;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.Navigator.Navigator;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 
 public class PlansFragment extends NyndroFragment implements PlansContract.IViewer {
 
@@ -112,10 +112,10 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
     private void addCalendarEvent(Date date, String practiceName) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        String startHour = String.format("%tR", calendar);
+        String startHour = String.format(Locale.UK, "%tR", calendar);
         calendar.add(Calendar.HOUR, 1);
-        String stopHour = String.format("%tR", calendar);
-        dynamicCalendar.addEvent(String.format("%td-%tm-%tY", calendar, calendar, calendar),
+        String stopHour = String.format(Locale.UK, "%tR", calendar);
+        dynamicCalendar.addEvent(String.format(Locale.UK, "%td-%tm-%tY", calendar, calendar, calendar),
                 startHour,
                 stopHour,
                 practiceName, R.mipmap.ic_buddha_24);

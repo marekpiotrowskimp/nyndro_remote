@@ -1,7 +1,7 @@
 package iso.piotrowski.marek.nyndro.TabCounter;
 
-import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IBaseViewer;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IBasePresenter;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IBaseViewer;
 
 /**
  * Created by marek.piotrowski on 11/09/2017.

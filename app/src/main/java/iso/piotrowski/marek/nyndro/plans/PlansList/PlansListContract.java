@@ -5,8 +5,8 @@ import java.util.List;
 
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.plans.RepeaterDialog.RepeaterDialogFragment;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IBasePresenter;
-import iso.piotrowski.marek.nyndro.tools.Fragments.IBaseViewer;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IBasePresenter;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.IBaseViewer;
 
 /**
  * Created by marek.piotrowski on 04/09/2017.

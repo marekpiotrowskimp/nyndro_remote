@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 
 public class StatsFragment extends NyndroFragment implements StatsContract.IViewer {
     private RecyclerView statsRecyclerView;

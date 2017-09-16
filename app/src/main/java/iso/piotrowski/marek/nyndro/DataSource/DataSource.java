@@ -4,9 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
+import iso.piotrowski.marek.nyndro.GoogleAnalytics.Analytics;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
  * Created by marek.piotrowski on 11/08/2017.
@@ -36,6 +38,7 @@ public class DataSource implements IDataSource {
 
     @Override
     public void insertPractice(Practice practice) {
+        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddPractice.toString(), practice.getName(), "");
         DBQuery.insertPractice(practice);
     }
 
@@ -76,6 +79,8 @@ public class DataSource implements IDataSource {
 
     @Override
     public void addHistoryForPractice(PracticeModel practice, int addProgress) {
+        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddHistory.toString(), practice.getName(),
+                String.valueOf(addProgress) + ", " + practice.getStringProgress());
         DBQuery.addHistoryForPractice(practice, addProgress);
     }
 
@@ -106,6 +111,8 @@ public class DataSource implements IDataSource {
 
     @Override
     public void addRemainder(long date, int repeater, PracticeModel practice) {
+        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddRemainder.toString(), practice.getName(),
+                Utility.getStringDate(date));
         DBQuery.addReminders(date, repeater, practice);
     }
 

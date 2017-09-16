@@ -1,6 +1,6 @@
-package iso.piotrowski.marek.nyndro.tools.Fragments;
+package iso.piotrowski.marek.nyndro.Navigator;
 
-import android.support.v4.app.Fragment;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 
 /**
  * Created by marek.piotrowski on 24/08/2017.

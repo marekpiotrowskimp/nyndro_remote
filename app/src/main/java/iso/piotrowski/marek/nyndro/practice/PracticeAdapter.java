@@ -14,6 +14,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
@@ -127,7 +129,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             holder.practiceStatus.setText(String.valueOf(practice.getProgress()) + " / " + String.valueOf(practice.getMaxRepetition()));
             holder.practiceRepetition.setText(String.valueOf(practice.getRepetition()));
             float percentage = ((float) practice.getProgress()) / ((float) practice.getMaxRepetition())*100;
-            holder.progressPercentage.setText(String.format("%.2f%%", percentage));
+            holder.progressPercentage.setText(String.format(Locale.UK, "%.2f%%", percentage));
             setNextAndLastDateOfPractice(holder, practice);
             holder.cardView.setOnClickListener(onClickToShowPracticeDetails(position));
             holder.practiceRepetitionAdd.setOnClickListener(onClickToAddRepetition(holder, position));

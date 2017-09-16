@@ -1,6 +1,4 @@
-package iso.piotrowski.marek.nyndro.tools.Fragments;
-
-import android.support.v4.app.Fragment;
+package iso.piotrowski.marek.nyndro.FragmentsFactory;
 
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.TabCounter.TabCounterFragment;

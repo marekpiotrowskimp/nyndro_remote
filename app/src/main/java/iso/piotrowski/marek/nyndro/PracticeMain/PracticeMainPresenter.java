@@ -2,7 +2,7 @@ package iso.piotrowski.marek.nyndro.PracticeMain;
 
 import iso.piotrowski.marek.nyndro.DataSource.IDataSource;
 import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.BoomButtonFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroPresenter;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroPresenter;
 
 /**
  * Created by marek.piotrowski on 21/08/2017.

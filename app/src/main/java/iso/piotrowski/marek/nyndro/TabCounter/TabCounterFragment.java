@@ -14,14 +14,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import butterknife.ButterKnife;
+import java.util.Locale;
+
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.PracticeMain.PracticeMainContract;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.tools.Fragments.FragmentsFactory;
-import iso.piotrowski.marek.nyndro.tools.Fragments.NyndroFragment;
-import iso.piotrowski.marek.nyndro.tools.Utility;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 
 /**
  * Created by marek.piotrowski on 26/08/2017.
@@ -66,7 +66,7 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
     }
 
     private String getCount(int count) {
-        return String.format("%04d", count);
+        return String.format(Locale.UK, "%04d", count);
     }
 
     @Override

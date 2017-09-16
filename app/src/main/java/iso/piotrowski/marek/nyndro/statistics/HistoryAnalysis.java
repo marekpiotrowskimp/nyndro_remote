@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -80,7 +81,7 @@ public class HistoryAnalysis {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
         calendar.add(Calendar.SECOND, daysToEnd * 3600 * 24);
-        String calculatedEnd = String.format(" %tD", calendar);
+        String calculatedEnd = String.format(Locale.UK, " %tD", calendar);
         String dateOfEndText = daysToEnd > 1026 ?
                 NyndroApp.getContext().getString(R.string.infinity) : calculatedEnd;
         analysisResult.put("finish_practice_date", new AnalysisInfo(daysToEnd == 0 ? NyndroApp.getContext().getString(R.string.undefined) : dateOfEndText));

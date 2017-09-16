@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.R;
@@ -39,15 +40,21 @@ public class Utility {
         return calendar.getTime();
     }
 
+    public static String getStringDate (long date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        return String.format(Locale.UK , "%td-%tm-%tY %tR", calendar, calendar, calendar, calendar);
+    }
+
     public static void setUpPracticeDate(TextView practiceDateView, long date, int practiceDateResId) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);
-        practiceDateView.setText(String.format("%s %s", getFormatEditFromResources(practiceDateResId),
-                date == -1 ? getFormatEditFromResources(R.string.NoDateToShow) : String.format(" %tD", calendar)));
+        practiceDateView.setText(String.format(Locale.UK, "%s %s", getFormatEditFromResources(practiceDateResId),
+                date == -1 ? getFormatEditFromResources(R.string.NoDateToShow) : String.format(Locale.UK, " %tD", calendar)));
     }
 
     public static String getFormatEditFromResources(int resourcesId) {
-        return String.format("%s", NyndroApp.getContext().getResources().getText(resourcesId));
+        return String.format(Locale.UK, "%s", NyndroApp.getContext().getResources().getText(resourcesId));
     }
 
     public static void startSoundEffect(int resourcesRawId) {
