@@ -45,14 +45,19 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
         @BindView(R.id.autorenew_image) ImageView repeaterImage;
         @BindView(R.id.autorenew_text) TextView repeaterName;
         CardView cardView;
+        private ReminderModel reminder;
         PlansHolder (CardView cardView){
             super(cardView);
             this.cardView = cardView;
             ButterKnife.bind(this, this.cardView);
         }
 
-        public long getRemainderId(){
-            return reminderList.get(getAdapterPosition()).getID();
+        public ReminderModel getReminder() {
+            return reminder;
+        }
+
+        public void setReminder(ReminderModel reminder) {
+            this.reminder = reminder;
         }
     }
 
@@ -65,6 +70,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
     @Override
     public void onBindViewHolder(PlansHolder holder, final int position) {
         ReminderModel reminder = reminderList.get(position);
+        holder.setReminder(reminder);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(reminder.getPracticeDate());
         holder.plansDate.setText(String.format("Time: %tT", calendar));

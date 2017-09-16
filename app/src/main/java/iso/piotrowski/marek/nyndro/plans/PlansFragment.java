@@ -69,7 +69,7 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         new PlanPresenter(this, DataSource.getInstance());
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_plans, container, false);
+        View layout = inflater.inflate(R.layout.fragment_plans, container, false);
         ButterKnife.bind(this, layout);
         return layout;
     }

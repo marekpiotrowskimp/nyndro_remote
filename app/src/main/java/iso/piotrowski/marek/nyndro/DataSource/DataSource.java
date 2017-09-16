@@ -61,7 +61,7 @@ public class DataSource implements IDataSource {
 
     @Override
     public ReminderModel fetchNextPlanedOfPractice(long practiceId) {
-        return null;
+        return DBQuery.getNearestRemainderForPractice(practiceId);
     }
 
     @Override

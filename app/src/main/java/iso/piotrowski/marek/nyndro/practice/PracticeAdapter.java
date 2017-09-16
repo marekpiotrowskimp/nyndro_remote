@@ -93,7 +93,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
 
     @Override
     public ViewPracticeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cv;
+        CardView cv = null;
         switch (TypeOfCardView.values()[viewType]) {
             case Standard:
                 cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_practice, parent, false);
@@ -101,8 +101,6 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             case End:
                 cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_practice_blank, parent, false);
                 break;
-            default:
-                cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_practice, parent, false);
         }
         return new ViewPracticeHolder(cv);
     }
@@ -132,7 +130,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
             holder.progressPercentage.setText(String.format("%.2f%%", percentage));
             setNextAndLastDateOfPractice(holder, practice);
             holder.cardView.setOnClickListener(onClickToShowPracticeDetails(position));
-            holder.practiceRapetitionAdd.setOnClickListener(onClickToAddRepetition(holder, position));
+            holder.practiceRepetitionAdd.setOnClickListener(onClickToAddRepetition(holder, position));
         }
     }
 
@@ -175,6 +173,10 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         return new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress<1) {
+                    progress = 1;
+                    holder.multiplePracticeSeekBar.setProgress(progress);
+                }
                 holder.practiceRepetitionMultiple.setText(String.valueOf(progress));
             }
             @Override
@@ -201,7 +203,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         @BindView(R.id.practice_date_next) @Nullable TextView practiceDateNext;
         @BindView(R.id.practice_status_percent) @Nullable TextView progressPercentage;
         @BindView(R.id.multiple_seek_bar) @Nullable SeekBar multiplePracticeSeekBar;
-        @BindView(R.id.practice_repetition_add) @Nullable ImageButton practiceRapetitionAdd;
+        @BindView(R.id.practice_repetition_add) @Nullable ImageButton practiceRepetitionAdd;
         @BindView(R.id.practice_progress) @Nullable ProgressBar practiceProgress;
 
         ViewPracticeHolder(CardView cardView) {

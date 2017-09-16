@@ -88,7 +88,7 @@
     <string name="add_practice">Praktyka dodana: %s</string>
     <string name="practice_detail_progress_name">Postęp</string>
     <string name="plans_list_name">Edycja planów</string>
-    <string name="done">Zakończ</string>
+    <string name="done">Dodaj Przypomnienie</string>
     <string name="repeater_title">Powtórzenia</string>
     <string name="days_name">dni</string>
     <string name="infinity">nieskończoność</string>

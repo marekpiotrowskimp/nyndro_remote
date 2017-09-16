@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -105,8 +106,9 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
         getPresenter().setCounter(getPresenter().getCounter() + 1);
+        if (soundOn) view.playSoundEffect(SoundEffectConstants.CLICK);
     }
 
     private TabCounterContract.IPresenter getPresenter(){
@@ -121,7 +123,6 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
     @Override
     public void refreshCounter(int counter) {
         this.counter.setText(getCount(counter));
-        if (soundOn) Utility.startSoundEffect(R.raw.tap);
     }
 
     @Override

@@ -40,6 +40,7 @@
 
         <receiver android:name=".RemainderService.RemainderReceiver">
             <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="iso.piotrowski.marek.nyndro.restart" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

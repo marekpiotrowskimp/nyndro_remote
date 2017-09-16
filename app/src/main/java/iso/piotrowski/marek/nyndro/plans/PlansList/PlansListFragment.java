@@ -124,9 +124,7 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
         ItemTouchHelper.SimpleCallback callback =  new SimpleCallbackForTouches(0, ItemTouchHelper.LEFT, new SimpleCallbackForTouches.OnSwipedListener() {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (viewHolder instanceof PlansAdapter.PlansHolder) {
-                    getPresenter().removeRemainder(((PlansAdapter.PlansHolder) viewHolder).getRemainderId());
-                }
+                getPresenter().removeRemainder(((PlansAdapter.PlansHolder) viewHolder).getReminder().getID());
                 getPresenter().refreshPlansForDate(selectedDate);
             }
         });
@@ -136,7 +134,6 @@ public class PlansListFragment extends NyndroFragment implements PlansListContra
 
     @Override
     public void OnClick(View view, int position, ReminderModel reminder) {
-//        Navigator.getInstance().changeFragmentInContainer(AddRemainderFragment.getInstance(reminder), true);
     }
 
 }

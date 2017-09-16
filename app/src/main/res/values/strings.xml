@@ -78,7 +78,7 @@
     <string name="add_practice">Practice was added: %s</string>
     <string name="practice_detail_progress_name">Progress</string>
     <string name="plans_list_name">Plans Editor</string>
-    <string name="done">Done</string>
+    <string name="done">Add Remainder</string>
     <string name="repeater_title">Repeater</string>
     <string name="days_name">days</string>
     <string name="infinity">infinity</string>

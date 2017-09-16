@@ -48,6 +48,10 @@ public class DBQuery {
         return new Select().from(HistoryModel.class).where("PRACTICE_ID = ?", practiceId).orderBy("PRACTICE_DATE DESC").executeSingle();
     }
 
+    public static ReminderModel getNearestRemainderForPractice(long practiceId) {
+        return new Select().from(ReminderModel.class).where("PRACTICE_ID = ?", practiceId).orderBy("PRACTICE_DATE DESC").executeSingle();
+    }
+
     public static List<HistoryModel> getAllHistoryForPractice(long practiceId) {
         return new Select().from(HistoryModel.class).where("PRACTICE_ID = ?", practiceId).orderBy("PRACTICE_DATE DESC").execute();
     }
