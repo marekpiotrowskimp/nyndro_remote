@@ -113,16 +113,9 @@ public class PracticeModel extends Model {
         return super.getId();
     }
 
-    public String getString() {
+    public String getStringProgress() {
         StringBuilder practiceString = new StringBuilder();
-        practiceString.append(name);
-        practiceString.append(", ");
         practiceString.append(progress);
-        practiceString.append(", ");
-        practiceString.append(maxRepetition);
-        practiceString.append(", ");
-        practiceString.append(repetition);
-        practiceString.append(";");
         return practiceString.toString();
     }
 }

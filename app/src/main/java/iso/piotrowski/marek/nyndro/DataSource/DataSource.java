@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.DataSource;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class DataSource implements IDataSource {
 
     @Override
     public void insertPractice(Practice practice) {
-        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddPractice.toString(), practice.getName(), practice.toString());
+        Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddPractice.toString(), practice.getName(), "");
         DBQuery.insertPractice(practice);
     }
 
@@ -81,7 +80,7 @@ public class DataSource implements IDataSource {
     @Override
     public void addHistoryForPractice(PracticeModel practice, int addProgress) {
         Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddHistory.toString(), practice.getName(),
-                String.valueOf(addProgress) + ", " + practice.getString());
+                String.valueOf(addProgress) + ", " + practice.getStringProgress());
         DBQuery.addHistoryForPractice(practice, addProgress);
     }
 
@@ -113,7 +112,7 @@ public class DataSource implements IDataSource {
     @Override
     public void addRemainder(long date, int repeater, PracticeModel practice) {
         Analytics.logPracticeEvent(Analytics.TypeOfEvent.AddRemainder.toString(), practice.getName(),
-                Utility.getStringDate(date) + ", " + practice.getString());
+                Utility.getStringDate(date));
         DBQuery.addReminders(date, repeater, practice);
     }
 
