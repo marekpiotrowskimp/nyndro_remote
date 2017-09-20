@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
+    android:layout_margin="4dp"
     app:cardBackgroundColor="@color/colorLightCoffee"
     app:cardCornerRadius="8dp"
     app:contentPadding="-4dp">
@@ -29,9 +29,7 @@
             android:layout_width="40dp"
             android:layout_height="60dp"
             android:layout_below="@+id/plans_practice_name"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_layout"
-            android:padding="4dp" />
+            android:layout_margin="4dp"/>
 
         <TextView
             android:id="@+id/plans_date"
@@ -42,7 +40,8 @@
             android:gravity="center"
             android:layout_toRightOf="@+id/plans_image"
             android:layout_toLeftOf="@+id/renew_remainders_layout"
-            android:background="@drawable/rounded_layout"
+            android:layout_alignTop="@+id/plans_image"
+            android:layout_alignBottom="@+id/plans_image"
             android:lines="1"
             android:padding="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -56,7 +55,6 @@
             android:layout_alignParentRight="true"
             android:padding="4dp"
             android:layout_margin="4dp"
-            android:background="@drawable/rounded_layout"
             android:orientation="vertical">
 
             <ImageView

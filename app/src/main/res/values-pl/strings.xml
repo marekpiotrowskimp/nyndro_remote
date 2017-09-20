@@ -93,6 +93,7 @@
     <string name="days_name">dni</string>
     <string name="infinity">nieskończoność</string>
     <string name="undefined">niezdefiniowany</string>
+    <string name="time_for_remainder">Godzina: %tT</string>
 
 
     //Frequents

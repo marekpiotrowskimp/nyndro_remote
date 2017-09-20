@@ -22,8 +22,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_margin="2dp"
-            android:background="@drawable/rounded_layout"
-            android:padding="2dp" />
+            android:layout_marginLeft="8dp" />
 
         <ImageButton
             android:id="@+id/history_expand_section_button"

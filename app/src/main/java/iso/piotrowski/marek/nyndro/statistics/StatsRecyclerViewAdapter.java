@@ -45,6 +45,7 @@ import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
@@ -139,7 +140,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
             Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
 
             if (!historyAnalysisResult.isEmpty()) {
-                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
+                holder.practiceImageId.setImageBitmap(UITool.makeRoundCorners(historyAnalysisResult.get("practice_image_id").getNumber(),16));
                 holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_name").toString()));
                 if (holder.practiceDays != null)
                     holder.practiceDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_days").toString()));
@@ -196,7 +197,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
                 return mActivities[(int) value % mActivities.length];
             }
         });
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(Color.GRAY);
 
         YAxis yAxis = radarChart.getYAxis();
         yAxis.setTypeface(mTfExtraBoldItalic);

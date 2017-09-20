@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.R;
 
 /**
@@ -59,7 +62,8 @@ public class RepeaterDialogFragment extends DialogFragment {
     }
 
     private void setUpToggleSwitch() {
-        toggleSwitch.setLabels(new ArrayList<String>(){{add("None"); add("Daily"); add("Weekly"); add("Monthly");}});
+        ArrayList<String> labels = new ArrayList<>(Arrays.asList(NyndroApp.getContext().getResources().getStringArray(R.array.frequents)));
+        toggleSwitch.setLabels(labels);
         toggleSwitch.setCheckedTogglePosition(0);
     }
 

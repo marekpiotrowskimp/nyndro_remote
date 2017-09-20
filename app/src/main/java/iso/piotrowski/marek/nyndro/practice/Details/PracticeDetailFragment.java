@@ -25,6 +25,7 @@ import iso.piotrowski.marek.nyndro.UIComponents.BuddaProgressBar;
 import iso.piotrowski.marek.nyndro.tools.DrawableMapper;
 import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
 import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 import iso.piotrowski.marek.nyndro.tools.Utility;
 
 /**
@@ -127,8 +128,8 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
 
     private void viewPractice (TypeOfEditMode typeViewPractice)
     {
-        practiceImage.setImageDrawable(NyndroApp.getContext().getResources().getDrawable(
-                DrawableMapper.getDrawableLargeId(DrawableMapper.TypeOfImage.values()[practice.getRawPracticeImageId()])));
+        practiceImage.setImageBitmap(UITool.makeRoundCorners(
+                DrawableMapper.getDrawableLargeId(DrawableMapper.TypeOfImage.values()[practice.getRawPracticeImageId()]),16));
         practiceProgress.setMaxProgress(practice.getMaxRepetition());
         practiceProgress.setProgress(practice.getProgress());
 

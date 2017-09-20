@@ -83,6 +83,7 @@
     <string name="days_name">days</string>
     <string name="infinity">infinity</string>
     <string name="undefined">undefined</string>
+    <string name="time_for_remainder">Time: %tT</string>
 
     //Frequents
     <string-array name="frequents">

@@ -11,7 +11,7 @@
     <!--Card View Color-->
     <color name="colorLightCoffee">#eeddcc</color>
     <color name="colorLightCoffeeDarker">#E0D0C0</color>
-    <color name="colorLightCoffeeDarker2">#AAC0B0A0</color>
+    <color name="colorLightCoffeeDarker2">#33C0B0A0</color>
 
     <!--Detail edit Fragment-->
     <color name="colorGrayLight">#F0F0F0</color>

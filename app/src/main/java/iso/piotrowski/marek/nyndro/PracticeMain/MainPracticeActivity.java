@@ -1,5 +1,7 @@
 package iso.piotrowski.marek.nyndro.PracticeMain;
 
+import android.content.ComponentName;
+import android.content.pm.PackageManager;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +31,7 @@ import iso.piotrowski.marek.nyndro.GoogleAnalytics.Analytics;
 import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.BoomButtonFactory;
 import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.IBoomButtonAdapter;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.RemainderService.RemainderReceiver;
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
 import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
@@ -67,7 +71,8 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         setUpBottomBar();
         setSupportActionBar(toolbar);
         restoreApplicationInstance(savedInstanceState);
-        startRemainderService();
+//        startRemainderService();
+        startService();
         presenter.adjustBoomButtonToolBar(PracticeMainContract.TypeOfBoomButton.AddedPractice);
     }
 
@@ -163,12 +168,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         title.setText(fragmentName != null ? fragmentName.getFragmentName() : getResources().getString(R.string.app_name));
     }
 
-    private void startRemainderService() {
-        Intent intent2 = new Intent(this, RemainderService.class);
-        startService(intent2);
-    }
-
-
     @Override
     public void onBackPressed() {
         if (navigator.goBack()) {
@@ -210,5 +209,37 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) supportActionBar.setDisplayHomeAsUpEnabled(navigator.countOfFragments() > 0);
     }
-    
+
+    @Override
+    protected void onDestroy() {
+//        startService();
+        super.onDestroy();
+    }
+
+    private void startService() {
+        enableService();
+        Log.d("MainPracticeActivity", "[service] send start");
+        Intent intent = new Intent("iso.piotrowski.marek.nyndro.start");
+        intent.putExtra("information", "restore");
+        sendBroadcast(intent);
+    }
+
+    private void enableReceiver(){
+        ComponentName receiver = new ComponentName(this, RemainderReceiver.class);
+        PackageManager pm = getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+    }
+
+    private void enableService(){
+        ComponentName receiver = new ComponentName(this, RemainderService.class);
+        PackageManager pm = getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+        enableReceiver();
+    }
 }

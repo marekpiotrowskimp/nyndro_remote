@@ -19,6 +19,7 @@ import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.DataSection;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 
 /**
  * Created by Marek on 02.08.2016.
@@ -85,8 +86,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     }
 
     private void bindSectionCard(ViewStatsHolder holder, DataSection section) {
-        holder.historyPracticeImageId.setImageDrawable(NyndroApp.getContext().getResources().getDrawable(
-                section.getPracticeImageId()));
+        holder.historyPracticeImageId.setImageBitmap(UITool.makeRoundCorners(section.getPracticeImageId(),32));
         holder.featuredPracticeName.setText(section.getName());
         holder.expandSectionButton.setImageResource(section.isExpanded() ? R.mipmap.ic_less : R.mipmap.ic_more);
     }
