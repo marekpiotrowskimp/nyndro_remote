@@ -3,7 +3,6 @@ package iso.piotrowski.marek.nyndro.Application;
 import android.content.Context;
 
 import com.activeandroid.ActiveAndroid;
-import com.activeandroid.app.Application;
 
 /**
  * Created by marek.piotrowski on 12/08/2017.

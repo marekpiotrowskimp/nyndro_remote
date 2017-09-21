@@ -1,11 +1,14 @@
 package iso.piotrowski.marek.nyndro.tools;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import java.util.Locale;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.PracticeMain.MainPracticeActivity;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.RemainderService.RemainderReceiver;
 
 /**
  * Created by Marek on 02.08.2016.
@@ -100,4 +104,21 @@ public class Utility {
         notificationManager.notify(notificationId, notification);
     }
 
+    public static void setAlarm(Context context, int inTime) {
+        AlarmManager alarmMgr;
+        PendingIntent alarmIntent;
+        alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intentToService = new Intent(context, RemainderReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intentToService, 0);
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, new Date().getTime() + inTime,
+                inTime, alarmIntent);
+    }
+
+    public static void runService(Context context, Class<?> aClass) {
+        ComponentName receiver = new ComponentName(context, aClass);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+    }
 }

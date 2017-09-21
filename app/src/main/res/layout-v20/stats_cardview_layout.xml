@@ -47,7 +47,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/statistics_dayofpractice_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -65,7 +64,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_average_week_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -83,7 +81,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_average_month_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -101,7 +98,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_average_days_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -119,7 +115,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_expected_end_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

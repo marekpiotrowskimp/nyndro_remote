@@ -1,13 +1,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/practice_detail_scroll_view"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:fillViewport="false"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/fragment_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
@@ -194,7 +192,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/practice_date_last_next_group_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/practice_repetition_group_layout"

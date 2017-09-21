@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,8 +17,6 @@ import android.view.animation.AnimationUtils;
 
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.R;
-
-import static android.R.attr.width;
 
 /**
  * Created by marek.piotrowski on 22/08/2017.

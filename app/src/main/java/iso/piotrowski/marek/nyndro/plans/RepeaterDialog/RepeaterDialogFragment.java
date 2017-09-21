@@ -1,5 +1,6 @@
 package iso.piotrowski.marek.nyndro.plans.RepeaterDialog;
 
+import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -70,7 +70,11 @@ public class RepeaterDialogFragment extends DialogFragment {
     @OnClick(R.id.repeater_button)
     public void onButtonClick(View view) {
         if (toggleSwitchListener != null) {
-            toggleSwitchListener.onRemainderDetailsDone(timePicker.getCurrentHour(), timePicker.getCurrentMinute(), toggleSwitch.getCheckedTogglePosition());
+            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                toggleSwitchListener.onRemainderDetailsDone(timePicker.getCurrentHour(), timePicker.getCurrentMinute(), toggleSwitch.getCheckedTogglePosition());
+            } else {
+                toggleSwitchListener.onRemainderDetailsDone(timePicker.getHour(), timePicker.getMinute(), toggleSwitch.getCheckedTogglePosition());
+            }
         }
         dismiss();
     }
