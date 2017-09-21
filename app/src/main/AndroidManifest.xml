@@ -2,12 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="iso.piotrowski.marek.nyndro">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name="iso.piotrowski.marek.nyndro.Application.NyndroApp"
         android:allowBackup="true"
         android:backupAgent=".tools.NyndroBackupAgent"
         android:icon="@mipmap/icon_nyndro1"
         android:label="@string/app_name"
+        android:launchMode="singleTop"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -20,9 +24,10 @@
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="2" />
-  
+
         <activity
             android:name=".PracticeMain.MainPracticeActivity"
+            android:excludeFromRecents="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -35,13 +40,24 @@
 
         <service
             android:name=".RemainderService.RemainderService"
-            android:enabled="true"
-            android:exported="false" />
+            android:enabled="false"
+            android:exported="false"
+            android:process=":iso.piotrowski.marek.nyndro.RemainderProcess" />
 
-        <receiver android:name=".RemainderService.RemainderReceiver">
+        <receiver
+            android:name=".RemainderService.RemainderReceiver"
+            android:enabled="false"
+            android:process=":iso.piotrowski.marek.nyndro.RemainderReceiverProcess">
             <intent-filter>
-                <action android:name="android.intent.action.SCREEN_ON" />
-                <action android:name="iso.piotrowski.marek.nyndro.restart" />
+                <action android:name="iso.piotrowski.marek.nyndro.start" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".RemainderService.RebootReceiver"
+            android:enabled="false"
+            android:process=":iso.piotrowski.marek.nyndro.RebootReceiverProcess">
+            <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>

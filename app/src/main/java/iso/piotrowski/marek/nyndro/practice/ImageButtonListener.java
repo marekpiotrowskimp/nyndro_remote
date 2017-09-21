@@ -1,6 +1,5 @@
 package iso.piotrowski.marek.nyndro.practice;
 
-import android.media.MediaPlayer;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;

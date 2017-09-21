@@ -1,5 +1,6 @@
 package iso.piotrowski.marek.nyndro.plans.RepeaterDialog;
 
+import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.R;
 
 /**
@@ -59,14 +62,19 @@ public class RepeaterDialogFragment extends DialogFragment {
     }
 
     private void setUpToggleSwitch() {
-        toggleSwitch.setLabels(new ArrayList<String>(){{add("None"); add("Daily"); add("Weekly"); add("Monthly");}});
+        ArrayList<String> labels = new ArrayList<>(Arrays.asList(NyndroApp.getContext().getResources().getStringArray(R.array.frequents)));
+        toggleSwitch.setLabels(labels);
         toggleSwitch.setCheckedTogglePosition(0);
     }
 
     @OnClick(R.id.repeater_button)
     public void onButtonClick(View view) {
         if (toggleSwitchListener != null) {
-            toggleSwitchListener.onRemainderDetailsDone(timePicker.getCurrentHour(), timePicker.getCurrentMinute(), toggleSwitch.getCheckedTogglePosition());
+            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                toggleSwitchListener.onRemainderDetailsDone(timePicker.getCurrentHour(), timePicker.getCurrentMinute(), toggleSwitch.getCheckedTogglePosition());
+            } else {
+                toggleSwitchListener.onRemainderDetailsDone(timePicker.getHour(), timePicker.getMinute(), toggleSwitch.getCheckedTogglePosition());
+            }
         }
         dismiss();
     }

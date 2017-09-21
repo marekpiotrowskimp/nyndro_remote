@@ -56,8 +56,8 @@ public class DataSection<DataModel> {
         childList.add(child);
     }
 
-    public void addSection (DataSection dataSection){
-        getSectionList().add(dataSection);
+    public void addSection (DataSection<DataModel> dataSection){
+        if (dataSection != null) getSectionList().add(dataSection);
     }
 
     public List<DataModel> getChildList() {
@@ -114,40 +114,40 @@ public class DataSection<DataModel> {
     public int getSize(){
         int size = isExpanded() ? childList.size() : 0;
         size += childList.size() > 0 ? 1 : 0;
-        for (DataSection dataSection : getSectionList()){
+        for (DataSection<DataModel> dataSection : getSectionList()){
             size += dataSection.getSize();
         }
         return size;
     }
 
-    public class SectionResult<DataModel> {
+    public class SectionResult<DataModelSectionResult> {
         private TypeOfData typeOfData;
-        private DataModel data;
-        private DataSection section;
+        private DataModelSectionResult data;
+        private DataSection<DataModelSectionResult> section;
 
         public TypeOfData getTypeOfData() {
             return typeOfData;
         }
 
-        public SectionResult<DataModel> setTypeOfData(TypeOfData typeOfData) {
+        public SectionResult<DataModelSectionResult> setTypeOfData(TypeOfData typeOfData) {
             this.typeOfData = typeOfData;
             return this;
         }
 
-        public DataModel getData() {
+        public DataModelSectionResult getData() {
             return data;
         }
 
-        public SectionResult<DataModel> setData(DataModel data) {
+        public SectionResult<DataModelSectionResult> setData(DataModelSectionResult data) {
             this.data = data;
             return this;
         }
 
-        public DataSection getSection() {
+        public DataSection<DataModelSectionResult> getSection() {
             return section;
         }
 
-        public SectionResult<DataModel> setSection(DataSection section) {
+        public SectionResult<DataModelSectionResult> setSection(DataSection<DataModelSectionResult> section) {
             this.section = section;
             return this;
         }

@@ -27,14 +27,12 @@
 
         <ImageView
             android:id="@+id/statystics_practice_image_id"
-            android:layout_width="100dp"
-            android:layout_height="150dp"
+            android:layout_width="80dp"
+            android:layout_height="120dp"
             android:layout_below="@+id/statystics_practice_name"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
-            android:padding="4dp"
-            android:background="@drawable/rounded_layout" />
+            android:layout_marginTop="4dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,11 +44,9 @@
             android:padding="2dp"
             android:layout_below="@id/statystics_practice_name"
             android:layout_toRightOf="@id/statystics_practice_image_id"
-            android:background="@drawable/rounded_layout"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/statistics_dayofpractice_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -58,6 +54,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/count_practice_stats" />
 
                 <TextView
@@ -67,7 +64,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_average_week_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -75,6 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/average_weeks" />
 
                 <TextView
@@ -84,7 +81,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_average_month_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -92,6 +88,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/average_months" />
 
                 <TextView
@@ -101,7 +98,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_average_days_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -109,6 +105,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/average_days" />
 
                 <TextView
@@ -118,7 +115,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/statistics_expected_end_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -126,6 +122,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/expected_day" />
 
                 <TextView
@@ -135,15 +132,19 @@
             </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:id="@+id/separator_1"
+            android:layout_below="@id/statystics_practice_image_id"
+            style="@style/Separator"/>
+
         <LinearLayout
             android:id="@+id/statistics_dayofweek_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/statystics_practice_image_id"
-            android:layout_below="@id/statystics_practice_image_id"
+            android:layout_below="@id/separator_1"
             android:layout_marginBottom="4dp"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/rounded_layout"
+            android:layout_marginRight="4dp"
             android:orientation="vertical">
 
             <com.github.mikephil.charting.charts.PieChart
@@ -153,12 +154,16 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/separator_2"
+            android:layout_below="@id/statistics_dayofweek_layout"
+            style="@style/Separator"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/statistics_dayofweek_layout"
-            android:layout_below="@id/statistics_dayofweek_layout"
-            android:background="@drawable/rounded_layout"
+            android:layout_below="@id/separator_2"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="4dp"
             android:orientation="vertical">

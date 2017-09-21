@@ -1,18 +1,12 @@
 package iso.piotrowski.marek.nyndro.RemainderService;
 
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Binder;
-import android.os.Handler;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.compat.BuildConfig;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -20,17 +14,17 @@ import java.util.Date;
 import java.util.List;
 
 import iso.piotrowski.marek.nyndro.DataSource.DBQuery;
-import iso.piotrowski.marek.nyndro.PracticeMain.MainPracticeActivity;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 public class RemainderService extends IntentService {
 
     public static final int NOTIFICATION_ID = 6669;
     private static final String TAG = "RemainderService";
-    private final IBinder binder = new RemainderBinder();
     private BroadcastReceiver receiver;
-    private int runnerCount = 0;
+    private int delayMillis = 5000;
+
 
     public RemainderService() {
         super("RemainderService");
@@ -38,26 +32,21 @@ public class RemainderService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
-    }
-
-    public class RemainderBinder extends Binder {
-        public RemainderService getRemainderService() {
-            return RemainderService.this;
-        }
+        if (BuildConfig.DEBUG) Log.d(TAG, "onHandleIntent: [service] receive intend");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        return START_STICKY;
+        if (BuildConfig.DEBUG) Log.d(TAG, "onStartCommand: [service] start");
+        doRemind();
+        setUpBroadcastReceiver();
+        return START_NOT_STICKY;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        doRemind();
-        setUpBroadcastReceiver();
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate: [service] start");
     }
 
     private void setUpBroadcastReceiver() {
@@ -65,45 +54,28 @@ public class RemainderService extends IntentService {
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                runnerCount++;
+                if (BuildConfig.DEBUG) Log.d(TAG, "onReceive: [service] SCREEN ON");
                 doRemind();
             }
         };
-
         registerReceiver(receiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
     }
 
-    private class ReminderRunnable implements Runnable {
-
-        private final int fixRunnerId;
-        private Handler handler;
-        ReminderRunnable (Handler handler, int runnerId){
-            this.handler = handler;
-            this.fixRunnerId = runnerId;
-        }
-        @Override
-        public void run() {
-            Log.d(TAG, "[service] run: " + runnerCount + " " + fixRunnerId);
-            List<ReminderModel> reminderList = DBQuery.getReminders();
-            for (ReminderModel reminder : reminderList) {
-                Calendar actualCalendar = getCalendarFor(new Date().getTime());
-                Calendar remainderCalendar = getCalendarFor(reminder.getPracticeDate());
-                if (actualCalendar.compareTo(remainderCalendar) > 0) {
-                    SendNotification(getNotificationMessageFor(reminder).toString(), (int) reminder.getPracticeId());
-                    if (reminder.getRepeater() == 0) {
-                        DBQuery.deleteReminder(reminder.getID());
-                    } else {
-                        calculateNewDateOfRemainder(reminder, actualCalendar);
-                    }
-                }
-            }
-            if (fixRunnerId == runnerCount) handler.postDelayed(this, 30000);
-        }
-    }
-
     private void doRemind() {
-        final Handler handlerRemind = new Handler();
-        handlerRemind.postDelayed(new ReminderRunnable(handlerRemind, runnerCount), 30000);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ReminderRunnable reminderRunnable = new ReminderRunnable();
+                if (BuildConfig.DEBUG) Log.d(TAG, "[service] run: Thread");
+                reminderRunnable.run();
+                try {
+                    Thread.sleep(delayMillis);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                stopSelf();
+            }
+        }).start();
     }
 
     private void calculateNewDateOfRemainder(ReminderModel reminder, Calendar actualCalendar) {
@@ -127,12 +99,45 @@ public class RemainderService extends IntentService {
         }
     }
 
-    @NonNull
-    private StringBuilder getNotificationMessageFor(ReminderModel reminder) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(getString(R.string.remaind_text_notificator));
-        builder.append(reminder.getPractice().getName());
-        return builder;
+    @Override
+    public void onDestroy() {
+        if (BuildConfig.DEBUG) Log.d(TAG, "onDestroy: [service] send restart");
+//        Intent intent = new Intent("iso.piotrowski.marek.nyndro.start");
+//        intent.putExtra("information", "restore");
+//        sendBroadcast(intent);
+        super.onDestroy();
+    }
+
+    private class ReminderRunnable implements Runnable {
+
+        ReminderRunnable() {
+        }
+
+        @Override
+        public void run() {
+            if (BuildConfig.DEBUG) Log.d(TAG, "[service] run: ReminderRunner");
+            List<ReminderModel> reminderList = DBQuery.getReminders();
+            for (ReminderModel reminder : reminderList) {
+                Calendar actualCalendar = getCalendarFor(new Date().getTime());
+                Calendar remainderCalendar = getCalendarFor(reminder.getPracticeDate());
+                if (actualCalendar.compareTo(remainderCalendar) > 0) {
+                    Utility.SendNotification(getNotificationMessageFor(reminder).toString(), (int) reminder.getPracticeId() + NOTIFICATION_ID);
+                    if (reminder.getRepeater() == 0) {
+                        DBQuery.deleteReminder(reminder.getID());
+                    } else {
+                        calculateNewDateOfRemainder(reminder, actualCalendar);
+                    }
+                }
+            }
+        }
+
+        @NonNull
+        private StringBuilder getNotificationMessageFor(ReminderModel reminder) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(getString(R.string.remaind_text_notificator));
+            builder.append(reminder.getPractice().getName());
+            return builder;
+        }
     }
 
     @NonNull
@@ -142,38 +147,4 @@ public class RemainderService extends IntentService {
         return calendar;
     }
 
-    private void SendNotification(String text, int notificationId) {
-        Intent intent = new Intent(this, MainPracticeActivity.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainPracticeActivity.class);
-        stackBuilder.addNextIntent(intent);
-
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Notification notification = new Notification.Builder(this).setSmallIcon(R.mipmap.icon_nyndro1)
-                .setContentTitle(getString(R.string.app_name))
-                .setAutoCancel(true)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setContentIntent(pendingIntent)
-                .setContentText(text)
-                .build();
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID + notificationId, notification);
-    }
-
-    @Override
-    public void onDestroy() {
-        Intent intent = new Intent("iso.piotrowski.marek.nyndro.restart");
-        intent.putExtra("information", "restore");
-        sendBroadcast(intent);
-        super.onDestroy();
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
-    }
 }

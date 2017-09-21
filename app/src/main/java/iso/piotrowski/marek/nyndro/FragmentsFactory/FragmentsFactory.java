@@ -29,6 +29,8 @@ public class FragmentsFactory {
                 return TypeOfFragment.Plans;
             case R.id.tab_counter:
                 return TypeOfFragment.TapCounter;
+            default:
+                break;
         }
         return TypeOfFragment.None;
     }
@@ -45,6 +47,8 @@ public class FragmentsFactory {
                 return R.id.tab_plans;
             case TapCounter:
                 return R.id.tab_counter;
+            default:
+                break;
         }
         return 0;
     }
@@ -61,6 +65,8 @@ public class FragmentsFactory {
                 return PlansFragment.getInstance();
             case TapCounter:
                 return TabCounterFragment.getInstance();
+            default:
+                break;
         }
         return null;
     }

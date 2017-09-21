@@ -15,10 +15,10 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.DataSection;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 
 /**
  * Created by Marek on 02.08.2016.
@@ -69,7 +69,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         switch (historyResult.getTypeOfData()){
             case Section:
                 bindSectionCard(holder, historyResult.getSection());
-                holder.expandSectionButton.setOnClickListener(new View.OnClickListener() {
+                if (holder.expandSectionButton != null) holder.expandSectionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         boolean isExpanded = historyResult.getSection().isExpanded();
@@ -84,19 +84,18 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         }
     }
 
-    private void bindSectionCard(ViewStatsHolder holder, DataSection section) {
-        holder.historyPracticeImageId.setImageDrawable(NyndroApp.getContext().getResources().getDrawable(
-                section.getPracticeImageId()));
-        holder.featuredPracticeName.setText(section.getName());
-        holder.expandSectionButton.setImageResource(section.isExpanded() ? R.mipmap.ic_less : R.mipmap.ic_more);
+    private void bindSectionCard(ViewStatsHolder holder, DataSection<HistoryModel> section) {
+        if (holder.historyPracticeImageId != null) holder.historyPracticeImageId.setImageBitmap(UITool.makeRoundCorners(section.getPracticeImageId(),32));
+        if (holder.featuredPracticeName!=null) holder.featuredPracticeName.setText(section.getName());
+        if (holder.expandSectionButton != null) holder.expandSectionButton.setImageResource(section.isExpanded() ? R.mipmap.ic_less : R.mipmap.ic_more);
     }
 
     private void bindDataCard(ViewStatsHolder holder, HistoryModel history) {
-        holder.historyProgress.setText(String.valueOf(history.getProgress()));
+        if (holder.historyProgress !=null) holder.historyProgress.setText(String.valueOf(history.getProgress()));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(history.getPracticeData());
-        holder.historyDate.setText(String.format(Locale.UK, "Data : %tD", calendar));
-        holder.historyRepetition.setText(String.valueOf(history.getRepetition()));
+        if (holder.historyDate !=null) holder.historyDate.setText(String.format(Locale.UK, "Data : %tD", calendar));
+        if (holder.historyRepetition != null) holder.historyRepetition.setText(String.valueOf(history.getRepetition()));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package iso.piotrowski.marek.nyndro.plans;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -122,7 +123,11 @@ public class PlansFragment extends NyndroFragment implements PlansContract.IView
     }
 
     private int getColor(int colorId) {
-        return NyndroApp.getContext().getResources().getColor(colorId);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return NyndroApp.getContext().getResources().getColor(colorId);
+        } else {
+            return NyndroApp.getContext().getResources().getColor(colorId, null);
+        }
     }
 
 

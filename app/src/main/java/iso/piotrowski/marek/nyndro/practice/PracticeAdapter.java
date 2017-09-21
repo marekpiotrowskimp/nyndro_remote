@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 import iso.piotrowski.marek.nyndro.tools.Utility;
 
 import static iso.piotrowski.marek.nyndro.practice.PracticeAdapter.TypeOfCardView.Standard;
@@ -122,7 +123,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewPr
         holder.setPractice(practice);
         if (practice != null) {
             holder.practiceImage.setContentDescription(practice.getName());
-            holder.practiceImage.setImageDrawable(holder.cardView.getResources().getDrawable(practice.getPracticeImageId()));
+            holder.practiceImage.setImageBitmap(UITool.makeRoundCorners(practice.getPracticeImageId(), 16));
             holder.practiceName.setText(practice.getName().replace("\n", " "));
             holder.practiceProgress.setMax(practice.getMaxRepetition());
             holder.practiceProgress.setProgress(practice.getProgress());

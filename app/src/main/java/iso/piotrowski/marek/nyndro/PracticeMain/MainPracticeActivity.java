@@ -2,7 +2,6 @@ package iso.piotrowski.marek.nyndro.PracticeMain;
 
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -23,11 +22,14 @@ import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.DataSource.DataSource;
 import iso.piotrowski.marek.nyndro.GoogleAnalytics.Analytics;
 import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.BoomButtonFactory;
 import iso.piotrowski.marek.nyndro.PracticeMain.BoomButton.IBoomButtonAdapter;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.RemainderService.RebootReceiver;
+import iso.piotrowski.marek.nyndro.RemainderService.RemainderReceiver;
 import iso.piotrowski.marek.nyndro.RemainderService.RemainderService;
 import iso.piotrowski.marek.nyndro.practice.PracticeMainFragment;
 import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
@@ -37,6 +39,7 @@ import iso.piotrowski.marek.nyndro.Navigator.INavigator;
 import iso.piotrowski.marek.nyndro.Navigator.Navigator;
 import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 import iso.piotrowski.marek.nyndro.tools.UITool;
+import iso.piotrowski.marek.nyndro.tools.Utility;
 
 
 public class MainPracticeActivity extends AppCompatActivity implements PracticeMainContract.IViewer, IActivityDelegate {
@@ -67,7 +70,7 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         setUpBottomBar();
         setSupportActionBar(toolbar);
         restoreApplicationInstance(savedInstanceState);
-        startRemainderService();
+        setAlarmForRemainder();
         presenter.adjustBoomButtonToolBar(PracticeMainContract.TypeOfBoomButton.AddedPractice);
     }
 
@@ -163,12 +166,6 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         title.setText(fragmentName != null ? fragmentName.getFragmentName() : getResources().getString(R.string.app_name));
     }
 
-    private void startRemainderService() {
-        Intent intent2 = new Intent(this, RemainderService.class);
-        startService(intent2);
-    }
-
-
     @Override
     public void onBackPressed() {
         if (navigator.goBack()) {
@@ -210,5 +207,16 @@ public class MainPracticeActivity extends AppCompatActivity implements PracticeM
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) supportActionBar.setDisplayHomeAsUpEnabled(navigator.countOfFragments() > 0);
     }
-    
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void setAlarmForRemainder() {
+        Utility.runService(NyndroApp.getContext(), RebootReceiver.class);
+        Utility.runService(NyndroApp.getContext(), RemainderReceiver.class);
+        Utility.runService(NyndroApp.getContext(), RemainderService.class);
+        Utility.setAlarm(NyndroApp.getContext(), 5000);
+    }
 }

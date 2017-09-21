@@ -1,7 +1,5 @@
 package iso.piotrowski.marek.nyndro.FragmentsFactory;
 
-import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
-
 /**
  * Created by marek.piotrowski on 26/08/2017.
  */

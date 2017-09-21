@@ -1,8 +1,8 @@
 package iso.piotrowski.marek.nyndro.statistics;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -17,7 +17,6 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -35,7 +34,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -45,7 +43,7 @@ import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.tools.Utility;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 
 /**
  * Created by Marek on 05.08.2016.
@@ -57,7 +55,6 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
     private String[] months;
     private Typeface mTfLight = Typeface.createFromAsset(NyndroApp.getContext().getAssets(), "OpenSans-Light.ttf");
     private Typeface mTfExtraBoldItalic = Typeface.createFromAsset(NyndroApp.getContext().getAssets(), "OpenSans-ExtraBoldItalic.ttf");
-    private int colors[] = {0xa52a2a, 0x7fff00, 0x6495ed, 0xdc143c, 0xff1493, 0x228b22, 0xffd700, 0x008000, 0xff4500, 0xFFA07A, 0x00FFFF, 0x90EE90};
 
     private enum TypeOfStats {
         Full(0), Empty(1);
@@ -139,7 +136,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
             Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
 
             if (!historyAnalysisResult.isEmpty()) {
-                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
+                holder.practiceImageId.setImageBitmap(UITool.makeRoundCorners(historyAnalysisResult.get("practice_image_id").getNumber(),16));
                 holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_name").toString()));
                 if (holder.practiceDays != null)
                     holder.practiceDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_days").toString()));
@@ -160,7 +157,11 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
             }
         } else {
             Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
-            holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
+            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
+            } else {
+                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber(), null));
+            }
             holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_name").toString()));
         }
     }
@@ -196,7 +197,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
                 return mActivities[(int) value % mActivities.length];
             }
         });
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(Color.GRAY);
 
         YAxis yAxis = radarChart.getYAxis();
         yAxis.setTypeface(mTfExtraBoldItalic);

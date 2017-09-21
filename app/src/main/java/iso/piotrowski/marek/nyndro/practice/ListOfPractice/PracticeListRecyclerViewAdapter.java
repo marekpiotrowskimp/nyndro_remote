@@ -1,5 +1,6 @@
 package iso.piotrowski.marek.nyndro.practice.ListOfPractice;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +37,13 @@ public class PracticeListRecyclerViewAdapter extends RecyclerView.Adapter<Practi
         holder.mItem = mPractices[position];
         holder.mNameView.setText(mPractices[position].getName());
         holder.mDescriptionView.setText(mPractices[position].getDescription());
-        holder.mImageView.setImageDrawable(holder.mView.getResources().getDrawable(
-                DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[mPractices[position].getImageResourcesId()])));
-
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            holder.mImageView.setImageDrawable(holder.mView.getResources().getDrawable(
+                    DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[mPractices[position].getImageResourcesId()])));
+        } else {
+            holder.mImageView.setImageDrawable(holder.mView.getResources().getDrawable(
+                    DrawableMapper.getDrawableId(DrawableMapper.TypeOfImage.values()[mPractices[position].getImageResourcesId()]), null));
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

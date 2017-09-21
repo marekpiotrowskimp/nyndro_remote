@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 
 /**
  * Created by Marek on 10.08.2016.
@@ -74,9 +75,9 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.PlansHolder>
         holder.setReminder(reminder);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(reminder.getPracticeDate());
-        holder.plansDate.setText(String.format(Locale.UK, "Time: %tT", calendar));
+        holder.plansDate.setText(String.format(Locale.UK, NyndroApp.getContext().getString(R.string.time_for_remainder), calendar));
 
-        holder.plansPracticeImageId.setImageDrawable(NyndroApp.getContext().getResources().getDrawable(reminder.getPractice().getPracticeImageId()));
+        holder.plansPracticeImageId.setImageBitmap(UITool.makeRoundCorners(reminder.getPractice().getPracticeImageId(), 24));
         holder.plansPracticeName.setText(reminder.getPractice().getName());
         holder.repeaterName.setText(typeOfRepeater[reminder.getRepeater()]);
         holder.repeaterImage.setVisibility(reminder.getRepeater() > 0 ? View.VISIBLE : View.INVISIBLE);

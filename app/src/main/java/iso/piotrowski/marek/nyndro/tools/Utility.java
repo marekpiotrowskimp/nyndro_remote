@@ -1,5 +1,14 @@
 package iso.piotrowski.marek.nyndro.tools;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.widget.TextView;
 
@@ -8,7 +17,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.PracticeMain.MainPracticeActivity;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.RemainderService.RemainderReceiver;
 
 /**
  * Created by Marek on 02.08.2016.
@@ -69,5 +80,45 @@ public class Utility {
             }
         });
         mediaPlayer.start();
+    }
+
+    public static void SendNotification(String text, int notificationId) {
+        Intent intent = new Intent(NyndroApp.getContext(), MainPracticeActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(NyndroApp.getContext());
+        stackBuilder.addParentStack(MainPracticeActivity.class);
+        stackBuilder.addNextIntent(intent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new Notification.Builder(NyndroApp.getContext()).setSmallIcon(R.mipmap.icon_nyndro1)
+                .setContentTitle(NyndroApp.getContext().getString(R.string.app_name))
+                .setAutoCancel(true)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentIntent(pendingIntent)
+                .setContentText(text)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) NyndroApp.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(notificationId, notification);
+    }
+
+    public static void setAlarm(Context context, int inTime) {
+        AlarmManager alarmMgr;
+        PendingIntent alarmIntent;
+        alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intentToService = new Intent(context, RemainderReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intentToService, 0);
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, new Date().getTime() + inTime,
+                inTime, alarmIntent);
+    }
+
+    public static void runService(Context context, Class<?> aClass) {
+        ComponentName receiver = new ComponentName(context, aClass);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
     }
 }
