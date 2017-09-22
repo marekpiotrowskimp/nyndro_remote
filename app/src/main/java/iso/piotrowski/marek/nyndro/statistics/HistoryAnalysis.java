@@ -11,12 +11,25 @@ import java.util.concurrent.TimeUnit;
 import iso.piotrowski.marek.nyndro.Application.NyndroApp;
 import iso.piotrowski.marek.nyndro.Model.AnalysisInfo;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
+import iso.piotrowski.marek.nyndro.Model.PracticeModel;
 import iso.piotrowski.marek.nyndro.R;
 
 /**
  * Created by Marek on 05.08.2016.
  */
 public class HistoryAnalysis {
+
+    public static final String AVERAGE_WEEK = "average_week";
+    public static final String AVERAGE_MONTH = "average_month";
+    public static final String AVERAGE_DAYS = "average_days";
+    public static final String FINISH_PRACTICE_DATE = "finish_practice_date";
+    public static final String PREFIX_MONTH = "month_";
+    public static final String PREFIX_DAY = "day_";
+    public static final String PRACTICE_DAYS = "practice_days";
+    public static final String FINISH_PRACTICE = "finish_practice";
+    public static final String PRACTICE_NAME = "practice_name";
+    public static final String PRACTICE_IMAGE_ID = "practice_image_id";
+
 
     private Map<String, AnalysisInfo> analysisResult;
 
@@ -71,12 +84,12 @@ public class HistoryAnalysis {
         int max_repetition = historyList.get(0).getPractice().getMaxRepetition();
         int progress = historyList.get(0).getPractice().getProgress();
 
-        analysisResult.put("average_week", new AnalysisInfo(countWeeks > 0 ? sum / countWeeks : 0));
-        analysisResult.put("average_month", new AnalysisInfo(countMonth > 0 ? sum / countMonth : 0));
+        analysisResult.put(AVERAGE_WEEK, new AnalysisInfo(countWeeks > 0 ? sum / countWeeks : 0));
+        analysisResult.put(AVERAGE_MONTH, new AnalysisInfo(countMonth > 0 ? sum / countMonth : 0));
         int averageDays = days > 0 ? sum / days : 0;
-        analysisResult.put("average_days", new AnalysisInfo(averageDays));
+        analysisResult.put(AVERAGE_DAYS, new AnalysisInfo(averageDays));
         int daysToEnd = (averageDays > 0) && (max_repetition > progress) ? (max_repetition - progress) / averageDays : 0;
-        analysisResult.put("finish_practice", new AnalysisInfo(daysToEnd));
+        analysisResult.put(FINISH_PRACTICE, new AnalysisInfo(daysToEnd));
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
@@ -84,15 +97,15 @@ public class HistoryAnalysis {
         String calculatedEnd = String.format(Locale.UK, " %tD", calendar);
         String dateOfEndText = daysToEnd > 1026 ?
                 NyndroApp.getContext().getString(R.string.infinity) : calculatedEnd;
-        analysisResult.put("finish_practice_date", new AnalysisInfo(daysToEnd == 0 ? NyndroApp.getContext().getString(R.string.undefined) : dateOfEndText));
+        analysisResult.put(FINISH_PRACTICE_DATE, new AnalysisInfo(daysToEnd == 0 ? NyndroApp.getContext().getString(R.string.undefined) : dateOfEndText));
         return analysisResult;
     }
 
     private Map<String, AnalysisInfo> getPracticeInformation(List<HistoryModel> historyList, Map<String, AnalysisInfo> analysisResult) {
         HistoryModel historyFirst = historyList.get(0);
-        analysisResult.put("practice_name", new AnalysisInfo(historyFirst.getPractice().getName()));
-        analysisResult.put("practice_image_id", new AnalysisInfo(historyFirst.getPractice().getPracticeImageId()));
-        analysisResult.put("practice_days", new AnalysisInfo(historyList.size()));
+        analysisResult.put(PRACTICE_NAME, new AnalysisInfo(historyFirst.getPractice().getName()));
+        analysisResult.put(PRACTICE_IMAGE_ID, new AnalysisInfo(historyFirst.getPractice().getPracticeImageId()));
+        analysisResult.put(PRACTICE_DAYS, new AnalysisInfo(historyList.size()));
         return analysisResult;
     }
 
@@ -104,7 +117,7 @@ public class HistoryAnalysis {
             practiceMonths[calendar.get(Calendar.MONTH)]++;
         }
         for (int ind = 0; ind < 12; ind++) {
-            String key = "month_" + Integer.toString(ind);
+            String key = PREFIX_MONTH + Integer.toString(ind);
             analysisResult.put(key, new AnalysisInfo(practiceMonths[ind]));
         }
         return analysisResult;
@@ -119,7 +132,7 @@ public class HistoryAnalysis {
             practiceDays[calendar.get(Calendar.DAY_OF_WEEK) - 1]++;
         }
         for (int ind = 0; ind < 7; ind++) {
-            String key = "day_" + Integer.toString(ind);
+            String key = PREFIX_DAY + Integer.toString(ind);
             analysisResult.put(key, new AnalysisInfo(practiceDays[ind]));
         }
         return analysisResult;
@@ -129,8 +142,12 @@ public class HistoryAnalysis {
         return analysisResult;
     }
 
-    public void setAnalysisResult(Map<String, AnalysisInfo> analysisResult) {
-        this.analysisResult = analysisResult;
+    public void setEmptyAnalysis(PracticeModel practice) {
+        Map<String, AnalysisInfo> analysisEmpty = new HashMap<String, AnalysisInfo>();
+        analysisEmpty.put(PRACTICE_NAME, new AnalysisInfo(practice.getName()));
+        analysisEmpty.put(PRACTICE_IMAGE_ID, new AnalysisInfo(practice.getPracticeImageId()));
+        analysisResult = analysisEmpty;
     }
+
 
 }

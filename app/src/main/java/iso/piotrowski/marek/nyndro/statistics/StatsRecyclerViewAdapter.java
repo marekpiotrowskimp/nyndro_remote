@@ -136,20 +136,20 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
             Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
 
             if (!historyAnalysisResult.isEmpty()) {
-                holder.practiceImageId.setImageBitmap(UITool.makeRoundCorners(historyAnalysisResult.get("practice_image_id").getNumber(),16));
-                holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_name").toString()));
+                holder.practiceImageId.setImageBitmap(UITool.makeRoundCorners(historyAnalysisResult.get(HistoryAnalysis.PRACTICE_IMAGE_ID).getNumber(),16));
+                holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.PRACTICE_NAME).toString()));
                 if (holder.practiceDays != null)
-                    holder.practiceDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_days").toString()));
+                    holder.practiceDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.PRACTICE_DAYS).toString()));
                 if (holder.practiceAverageWeeks != null)
-                    holder.practiceAverageWeeks.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("average_week").toString()));
+                    holder.practiceAverageWeeks.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.AVERAGE_WEEK).toString()));
                 if (holder.practiceAverageMonths != null)
-                    holder.practiceAverageMonths.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("average_month").toString()));
+                    holder.practiceAverageMonths.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.AVERAGE_MONTH).toString()));
                 if (holder.practiceAverageDays != null)
-                    holder.practiceAverageDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("average_days").toString()));
+                    holder.practiceAverageDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.AVERAGE_DAYS).toString()));
                 if (holder.practiceExpectedDay != null)
-                    holder.practiceExpectedDay.setText(String.format(Locale.UK, " %s %s\n%s", historyAnalysisResult.get("finish_practice").toString(),
+                    holder.practiceExpectedDay.setText(String.format(Locale.UK, " %s %s\n%s", historyAnalysisResult.get(HistoryAnalysis.FINISH_PRACTICE).toString(),
                             NyndroApp.getContext().getResources().getString(R.string.days_name),
-                            historyAnalysisResult.get("finish_practice_date").toString()));
+                            historyAnalysisResult.get(HistoryAnalysis.FINISH_PRACTICE_DATE).toString()));
 
                 setUpPieChart(holder.pieChartDays, historyAnalysisResult);
                 setUpRadarChart(holder.radarChartMonths, historyAnalysisResult);
@@ -158,11 +158,11 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         } else {
             Map<String, AnalysisInfo> historyAnalysisResult = historyAnalysis[position].getAnalysisResult();
             if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber()));
+                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get(HistoryAnalysis.PRACTICE_IMAGE_ID).getNumber()));
             } else {
-                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get("practice_image_id").getNumber(), null));
+                holder.practiceImageId.setImageDrawable(holder.cardView.getResources().getDrawable(historyAnalysisResult.get(HistoryAnalysis.PRACTICE_IMAGE_ID).getNumber(), null));
             }
-            holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get("practice_name").toString()));
+            holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.PRACTICE_NAME).toString()));
         }
     }
 
@@ -249,14 +249,14 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
     private ArrayList<RadarEntry> getRadarEntries(Map<String, AnalysisInfo> historyAnalysisResult) {
         int max = 1;
         for (int i = 0; i < 12; i++) {
-            String key = "month_" + Integer.toString(i);
+            String key = HistoryAnalysis.PREFIX_MONTH + Integer.toString(i);
             int number = historyAnalysisResult.get(key).getNumber();
             max = number > max ? number : max;
         }
 
         ArrayList<RadarEntry> entries = new ArrayList<RadarEntry>();
         for (int i = 0; i < 12; i++) {
-            String key = "month_" + Integer.toString(i);
+            String key = HistoryAnalysis.PREFIX_MONTH + Integer.toString(i);
             int number = historyAnalysisResult.get(key).getNumber();
             entries.add(new RadarEntry(((float)number / (float)max) * (float)100));
         }
@@ -361,7 +361,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
         for (int i = 0; i < 7; i++) {
-            String key = "day_" + Integer.toString(i);
+            String key = HistoryAnalysis.PREFIX_DAY + Integer.toString(i);
             int number = historyAnalysisResult.get(key).getNumber();
             entries.add(new PieEntry((float) (number),
                     days[i]));

@@ -35,10 +35,7 @@ public class StatsPresenter extends NyndroPresenter implements StatsContract.IPr
             List<HistoryModel> historyList = dataSource.fetchHistoryForPractice(practice.getID());
             historyAnalysis[ind] = new HistoryAnalysis(historyList);
             if (historyAnalysis[ind].getAnalysisResult().isEmpty()) {
-                Map<String, AnalysisInfo> analysisEmpty = new HashMap<String, AnalysisInfo>();
-                            analysisEmpty.put("practice_name", new AnalysisInfo(practice.getName()));
-                            analysisEmpty.put("practice_image_id", new AnalysisInfo(practice.getPracticeImageId()));
-                historyAnalysis[ind].setAnalysisResult(analysisEmpty);
+                historyAnalysis[ind].setEmptyAnalysis(practice);
             }
         }
         return historyAnalysis;
