@@ -6,8 +6,17 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
 import java.util.regex.Pattern;
 
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.BuildConfig;
 import iso.piotrowski.marek.nyndro.R;
 
 import static org.junit.Assert.assertFalse;
@@ -17,6 +26,10 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by marek.piotrowski on 22/09/2017.
  */
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
+@PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*" })
+@PrepareForTest(NyndroApp.class)
 public class DrawableMapperTest {
     @Before
     public void setUp() throws Exception {
