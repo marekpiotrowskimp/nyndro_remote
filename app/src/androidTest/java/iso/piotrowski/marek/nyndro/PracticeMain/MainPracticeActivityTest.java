@@ -27,6 +27,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 
 /**
@@ -63,14 +64,14 @@ public class MainPracticeActivityTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         onView(withId(R.id.edit_toolbar)).perform(click());
-        TestTools.delay(3000);
+        TestTools.delay(300);
         onView(withId(R.id.practice_name_edit)).perform(scrollTo(), replaceText("NEW PRACTICE"), closeSoftKeyboard());
         onView(withId(R.id.practice_status_progress_edit)).perform(scrollTo(), replaceText("1108"), closeSoftKeyboard());
         TestTools.delay(300);
         onView(withId(R.id.edit_toolbar)).perform(click());
         TestTools.delay(300);
         onView(withId(R.id.practice_name_featured)).check(matches(withText("NEW PRACTICE")));
-        onView(withId(R.id.practice_status_progress_detail)).check(matches(withText("1108")));
+        onView(withId(R.id.practice_status_progress_detail)).check(matches(withText(containsString("1108"))));
 
         pressBack();
     }
