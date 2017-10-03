@@ -26,10 +26,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by marek.piotrowski on 22/09/2017.
  */
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
-@PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*" })
-@PrepareForTest(NyndroApp.class)
+@RunWith(MockitoJUnitRunner.class)
 public class DrawableMapperTest {
     @Before
     public void setUp() throws Exception {
