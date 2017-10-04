@@ -48,6 +48,7 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
 
     private LinearLayout getLayout(Context context) {
         LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setId(R.id.counter_layout);
         linearLayout.setVisibility(View.VISIBLE);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -57,6 +58,7 @@ public class TabCounterFragment extends NyndroFragment implements View.OnClickLi
         linearLayout.setOnClickListener(this);
 
         counter = new TextView(context);
+        counter.setId(R.id.counter_text);
         counter.setText(getCount(0));
         counter.setTextSize(120);
         counter.setAlpha(1f);

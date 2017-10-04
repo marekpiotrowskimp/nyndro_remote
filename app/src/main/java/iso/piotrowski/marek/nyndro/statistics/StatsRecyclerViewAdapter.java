@@ -137,7 +137,7 @@ public class StatsRecyclerViewAdapter extends RecyclerView.Adapter<StatsRecycler
 
             if (!historyAnalysisResult.isEmpty()) {
                 holder.practiceImageId.setImageBitmap(UITool.makeRoundCorners(historyAnalysisResult.get(HistoryAnalysis.PRACTICE_IMAGE_ID).getNumber(),16));
-                holder.practiceName.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.PRACTICE_NAME).toString()));
+                holder.practiceName.setText(String.format(Locale.UK, "%s", historyAnalysisResult.get(HistoryAnalysis.PRACTICE_NAME).toString()));
                 if (holder.practiceDays != null)
                     holder.practiceDays.setText(String.format(Locale.UK, " %s", historyAnalysisResult.get(HistoryAnalysis.PRACTICE_DAYS).toString()));
                 if (holder.practiceAverageWeeks != null)
