@@ -1,169 +1,149 @@
 package iso.piotrowski.marek.nyndro.plans;
 
-
-import android.support.v4.app.FragmentTransaction;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
+import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
+
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.Model.ReminderModel;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.practice.PracticeAdapter;
-import iso.piotrowski.marek.nyndro.practice.PracticeDatabaseHelper;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
+import iso.piotrowski.marek.nyndro.plans.PlansList.PlansListFragment;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.Navigator.Navigator;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 
+public class PlansFragment extends NyndroFragment implements PlansContract.IViewer {
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class PlansFragment extends Fragment {
-
-    private RecyclerView plansRecyclerView;
-    private SQLiteDatabase db;
-    private Cursor cursorPlans;
+    @BindView(R.id.dynamic_calendar) MyDynamicCalendar dynamicCalendar;
 
     public PlansFragment() {
     }
 
-    private class OnRemainderItemClickListener implements PlansAdapter.OnRemainderItemClickListener{
-        @Override
-        public void OnClick(View view, int position) {
-            Fragment fragment = new AddRemainderFragment();
-            Bundle bundle = new Bundle();
-            cursorPlans.moveToPosition(position);
-            bundle.putInt("plan_id",cursorPlans.getInt(PlansAdapter.REMAINDER_ID));
-            bundle.putInt("practice_id",cursorPlans.getInt(PlansAdapter.REMAINDER_PRACTICE_ID));
-            bundle.putLong("date",cursorPlans.getLong(PlansAdapter.REMAINDER_DATE));
-            bundle.putInt("repeat",cursorPlans.getInt(PlansAdapter.REMAINDER_REPEATER));
-            fragment.setArguments(bundle);
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_fragment_container, fragment,"visible_tag");
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            fragmentTransaction.commit();
+    private PlansContract.IPresenter getPresenter(){
+        return (PlansContract.IPresenter)presenter;
+    }
+
+    public static PlansFragment getInstance(){
+        return new PlansFragment();
+    }
+
+    @Override
+    public void setPresenter(PlansContract.IPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showPlans(List<ReminderModel> reminderList) {
+        showPlans(reminderList, false);
+    }
+
+    @Override
+    public void refreshPlans(List<ReminderModel> reminderList) {
+        showPlans(reminderList, true);
+    }
+
+    public void showPlans(List<ReminderModel> reminderList, boolean refresh) {
+        dynamicCalendar.deleteAllEvent();
+        for (ReminderModel reminder : reminderList){
+            Date date = new Date();
+            date.setTime(reminder.getPracticeDate());
+            addCalendarEvent(date, reminder.getPractice().getName());
         }
+        dynamicCalendar.refreshCalendar();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        try {
-            PracticeDatabaseHelper databaseHelper = new PracticeDatabaseHelper(getActivity());
-            db = databaseHelper.getWritableDatabase();
-            plansRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_plans, container, false);
-            PlansAdapter plansAdapter = new PlansAdapter();
-            cursorPlans = SQLHelper.getRemainderCursor(db, 1);
-            plansAdapter.setCursorPlans(cursorPlans);
-            plansAdapter.setOnRemainderItemClickListener(new OnRemainderItemClickListener());
-            plansRecyclerView.setAdapter(plansAdapter);
-        } catch (SQLiteException e) {
-        }
-
-        plansRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        return plansRecyclerView;
+        new PlanPresenter(this, DataSource.getInstance());
+        View layout = inflater.inflate(R.layout.fragment_plans, container, false);
+        ButterKnife.bind(this, layout);
+        return layout;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setItemTouchHelper();
+        setUpDynamicCalendar(dynamicCalendar);
+        getPresenter().loadPlansData();
+    }
+
+    private void setUpDynamicCalendar(MyDynamicCalendar myCalendar) {
+        myCalendar.showMonthViewWithBelowEvents();
+        myCalendar.setCalendarBackgroundColor(getColor(R.color.colorLightCoffeeDarker));
+        myCalendar.setHeaderBackgroundColor(getColor(R.color.colorPrimaryDark));
+        myCalendar.setHeaderTextColor(getColor(R.color.colorLightCoffee));
+        myCalendar.setNextPreviousIndicatorColor(getColor(R.color.white));
+        myCalendar.setWeekDayLayoutBackgroundColor(getColor(R.color.colorLightCoffeeDarker2));
+        myCalendar.setWeekDayLayoutTextColor(getColor(R.color.whiteDark10));
+        myCalendar.setDatesOfMonthBackgroundColor(getColor(R.color.colorGray));
+        myCalendar.setCurrentDateBackgroundColor(getColor(R.color.colorLightCoffeeDarker));
+        myCalendar.setCurrentDateTextColor(getColor(R.color.colorPrimaryDark));
+        myCalendar.setEventCellBackgroundColor(getColor(R.color.colorLightCoffeeDarker));
+        myCalendar.setEventCellTextColor(getColor(R.color.black));
+        myCalendar.setBelowMonthEventTextColor(getColor(R.color.black));
+        myCalendar.isSaturdayOff(true, getColor(R.color.colorPrimary), getColor(R.color.white));
+        myCalendar.isSundayOff(true, getColor(R.color.colorPrimary), getColor(R.color.white));
+        myCalendar.setOnDateClickListener(new OnDateClickListener() {
+            @Override
+            public void onClick(Date date) {
+            }
+
+            @Override
+            public void onLongClick(Date date) {
+                Navigator.getInstance().changeFragmentInContainer(PlansListFragment.getInstance(date), true);
+            }
+        });
+    }
+
+    private void addCalendarEvent(Date date, String practiceName) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        String startHour = String.format(Locale.UK, "%tR", calendar);
+        calendar.add(Calendar.HOUR, 1);
+        String stopHour = String.format(Locale.UK, "%tR", calendar);
+        dynamicCalendar.addEvent(String.format(Locale.UK, "%td-%tm-%tY", calendar, calendar, calendar),
+                startHour,
+                stopHour,
+                practiceName, R.mipmap.ic_buddha_24);
+    }
+
+    private int getColor(int colorId) {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return NyndroApp.getContext().getResources().getColor(colorId);
+        } else {
+            return NyndroApp.getContext().getResources().getColor(colorId, null);
+        }
+    }
+
+
+    @Override
+    public String getFragmentName() {
+        return NyndroApp.getContext().getResources().getString(R.string.app_label_plans);
     }
 
     @Override
-    public void onDestroy() {
-        if (db != null) db.close();
-        if (cursorPlans != null) cursorPlans.close();
-        super.onDestroy();
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.Plans;
     }
 
-    private void setItemTouchHelper() {
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                SQLHelper.deletePlan(db, cursorPlans, viewHolder.getAdapterPosition());
-                PlansAdapter plansAdapter = new PlansAdapter();
-                cursorPlans = SQLHelper.getRemainderCursor(db, 1);
-                plansAdapter.setCursorPlans(cursorPlans);
-                plansAdapter.setOnRemainderItemClickListener(new OnRemainderItemClickListener());
-                plansRecyclerView.swapAdapter(plansAdapter, false);
-            }
-
-
-            @Override
-            public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (isCurrentlyActive) {
-                    final int margine = 10;
-                    View itemView = viewHolder.itemView;
-                    int x, y, width, height;
-                    x = itemView.getLeft() + margine;
-                    y = itemView.getTop() + margine;
-                    width = itemView.getWidth() - margine * 2;
-                    height = itemView.getHeight() - margine * 2;
-
-                    Paint paint = new Paint();
-
-                    paint.setARGB(220, 10, 10, 10);
-                    paint.setTextSize(40);
-                    String deleteText = getActivity().getString(R.string.delete_practice);
-                    c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2 + 8, paint);
-                }
-
-                super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (isCurrentlyActive) {
-                    final int margine = 10;
-                    View itemView = viewHolder.itemView;
-                    int x, y, width, height;
-                    x = itemView.getLeft() + margine;
-                    y = itemView.getTop() + margine;
-                    width = itemView.getWidth() - margine * 2;
-                    height = itemView.getHeight() - margine * 2;
-
-                    Paint paint = new Paint();
-
-                    paint.setARGB(255, 255, 50, 50);
-                    c.drawRect(new Rect(x, y, x + width, y + height), paint);
-                    paint.setARGB(220, 250, 250, 255);
-                    paint.setTextSize(40);
-                    String deleteText = getActivity().getString(R.string.delete_practice);
-                    c.drawText(deleteText, x + width - paint.measureText(deleteText), y + height / 2 + 8, paint);
-                }
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(plansRecyclerView);
+    @Override
+    public boolean isButtonVisible() {
+        return false;
     }
 
-
-    private void setAnimationFab() {
-        FloatingActionButton actionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_new_practice);
-
-
-    }
 }

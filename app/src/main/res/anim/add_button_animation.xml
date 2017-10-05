@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<translate-->
+    <!--android:fillBefore="false"-->
+    <!--android:fillAfter="false"-->
+    <!--android:fillEnabled="false"-->
+    <!--android:duration="1000"-->
+    <!--android:fromYDelta="0"-->
+    <!--android:toYDelta="-100"/>-->
+    <!--<translate-->
+    <!--android:startOffset="1000"-->
+    <!--android:fillBefore="false"-->
+    <!--android:fillAfter="false"-->
+    <!--android:fillEnabled="false"-->
+    <!--android:duration="1000"-->
+    <!--android:fromYDelta="-100"-->
+    <!--android:toYDelta="0"/>-->
+    <!--<scale-->
+        <!--android:fillBefore="false"-->
+        <!--android:fillAfter="false"-->
+        <!--android:fillEnabled="false"-->
+        <!--android:duration="250"-->
+        <!--android:fromXScale="1"-->
+        <!--android:toXScale="1.86"-->
+        <!--android:pivotX="50%"-->
+        <!--android:pivotY="50%"-->
+        <!--android:fromYScale="1"-->
+        <!--android:toYScale="1.86"-->
+        <!--/>-->
+    <!--<scale-->
+        <!--android:fillBefore="false"-->
+        <!--android:fillAfter="false"-->
+        <!--android:fillEnabled="false"-->
+        <!--android:duration="250"-->
+        <!--android:startOffset = "260"-->
+        <!--android:fromXScale="1.86"-->
+        <!--android:toXScale="1.0"-->
+        <!--android:pivotX="50%"-->
+        <!--android:pivotY="50%"-->
+        <!--android:fromYScale="1.86"-->
+        <!--android:toYScale="1.0"-->
+        <!--/>-->
+
+    <rotate
+    android:duration="250"
+    android:startOffset = "250"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:fromDegrees="0"
+    android:toDegrees="90"
+    />
+    <!--<rotate-->
+    <!--android:duration="250"-->
+    <!--android:startOffset = "500"-->
+    <!--android:pivotX="50%"-->
+    <!--android:pivotY="50%"-->
+    <!--android:fromDegrees="25"-->
+    <!--android:toDegrees="-25"-->
+    <!--/>-->
+    <!--<rotate-->
+    <!--android:duration="250"-->
+    <!--android:startOffset = "750"-->
+    <!--android:pivotX="50%"-->
+    <!--android:pivotY="50%"-->
+    <!--android:fromDegrees="-25"-->
+    <!--android:toDegrees="0"-->
+    <!--/>-->
+
+</set>

@@ -7,9 +7,9 @@
     </declare-styleable>
 
     <declare-styleable name="BarChart">
-        <attr name="text_size" format="integer"/>
-        <attr name="bar_size" format="integer"/>
-        <attr name="bar_margin" format="integer"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="bar_size" format="dimension"/>
+        <attr name="bar_margin" format="dimension"/>
         <attr name="max_count" format="integer"/>
         <attr name="column_count" format="integer"/>
         <attr name="color_bar_chart" format="color"/>
