@@ -39,7 +39,6 @@ public class RemainderService extends IntentService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (BuildConfig.DEBUG) Log.d(TAG, "onStartCommand: [service] start");
         doRemind();
-        setUpBroadcastReceiver();
         return START_NOT_STICKY;
     }
 
@@ -47,18 +46,6 @@ public class RemainderService extends IntentService {
     public void onCreate() {
         super.onCreate();
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate: [service] start");
-    }
-
-    private void setUpBroadcastReceiver() {
-        receiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (BuildConfig.DEBUG) Log.d(TAG, "onReceive: [service] SCREEN ON");
-                doRemind();
-            }
-        };
-        registerReceiver(receiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
     }
 
     private void doRemind() {
@@ -102,9 +89,6 @@ public class RemainderService extends IntentService {
     @Override
     public void onDestroy() {
         if (BuildConfig.DEBUG) Log.d(TAG, "onDestroy: [service] send restart");
-//        Intent intent = new Intent("iso.piotrowski.marek.nyndro.start");
-//        intent.putExtra("information", "restore");
-//        sendBroadcast(intent);
         super.onDestroy();
     }
 

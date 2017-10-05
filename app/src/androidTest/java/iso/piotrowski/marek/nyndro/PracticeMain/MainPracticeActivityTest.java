@@ -5,11 +5,12 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.KeyEvent;
 
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import iso.piotrowski.marek.nyndro.DataSource.ConstantsData.Practice;
 import iso.piotrowski.marek.nyndro.R;
@@ -17,22 +18,16 @@ import iso.piotrowski.marek.nyndro.TestTools;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
-import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 
@@ -42,6 +37,7 @@ import static org.hamcrest.core.StringStartsWith.startsWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MainPracticeActivityTest {
     private static final String NEW_PRACTICE = "NEW PRACTICE";
     private static final String PRACTICE_COUNT = "1108";
@@ -49,7 +45,7 @@ public class MainPracticeActivityTest {
     public ActivityTestRule<MainPracticeActivity> activityTestRule = new ActivityTestRule<>(MainPracticeActivity.class);
 
     @Test
-    public void testBoomButtonAddPractice() {
+    public void test01BoomButtonAddPractice() {
 
         ViewInteraction frameLayout = onView(withId(R.id.boom_menu_button));
         for (int index = 0; index < Practice.practices.length; index++) {
@@ -69,7 +65,7 @@ public class MainPracticeActivityTest {
     }
 
     @Test
-    public void testPracticeDetails() {
+    public void test02PracticeDetails() {
         onView(withId(R.id.practice_main_recycleView))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
@@ -94,7 +90,7 @@ public class MainPracticeActivityTest {
     }
 
     @Test
-    public void testStatistics() {
+    public void test03Statistics() {
         TestTools.delay(7500);
         onView(withId(R.id.tab_statistic)).perform(click());
         TestTools.delay(250);
@@ -108,7 +104,7 @@ public class MainPracticeActivityTest {
     }
 
     @Test
-    public void testHistory() {
+    public void test04History() {
         TestTools.delay(250);
         onView(withId(R.id.tab_history)).perform(click());
         TestTools.delay(250);
@@ -119,7 +115,7 @@ public class MainPracticeActivityTest {
     }
 
     @Test
-    public void testPlansRemainders() {
+    public void test05PlansRemainders() {
         TestTools.delay(250);
         onView(withId(R.id.tab_plans)).perform(click());
         TestTools.delay(250);
@@ -140,7 +136,7 @@ public class MainPracticeActivityTest {
     }
 
     @Test
-    public void testTapCounter() {
+    public void test06TapCounter() {
         TestTools.delay(250);
         onView(withId(R.id.tab_counter)).perform(click());
         TestTools.delay(250);
