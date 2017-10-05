@@ -2,6 +2,7 @@ package iso.piotrowski.marek.nyndro.statistics;
 
 import android.content.Context;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
 @PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*" })
-@PrepareForTest(NyndroApp.class)
+@PrepareForTest({NyndroApp.class, PracticeModel.class})
 public class HistoryAnalysisTest {
     private HistoryAnalysis analysis;
 
@@ -52,6 +53,13 @@ public class HistoryAnalysisTest {
     @Rule
     public PowerMockRule rule = new PowerMockRule();
 
+    @Before
+    public void setUp() throws Exception {
+        practiceModel = mock(PracticeModel.class);
+        when(practiceModel.getName()).thenReturn("name");
+        when(practiceModel.getPracticeImageId()).thenReturn(999);
+    }
+
     @Test
     public void emptyAnalysis() throws Exception {
         analysis = new HistoryAnalysis(new LinkedList<>());
@@ -61,9 +69,7 @@ public class HistoryAnalysisTest {
     @Test
     public void emptyResult() throws Exception {
         analysis = new HistoryAnalysis(new LinkedList<>());
-        practiceModel = mock(PracticeModel.class);
-        when(practiceModel.getName()).thenReturn("name");
-        when(practiceModel.getPracticeImageId()).thenReturn(999);
+
         analysis.setEmptyAnalysis(practiceModel);
         assertTrue(analysis.getAnalysisResult().get(HistoryAnalysis.PRACTICE_NAME).toString().contentEquals("name"));
         assertTrue(analysis.getAnalysisResult().get(HistoryAnalysis.PRACTICE_IMAGE_ID).toString().contentEquals("999"));
@@ -71,10 +77,6 @@ public class HistoryAnalysisTest {
 
     @Test
     public void historyResult() throws Exception {
-        practiceModel = mock(PracticeModel.class);
-        when(practiceModel.getName()).thenReturn("name");
-        when(practiceModel.getPracticeImageId()).thenReturn(999);
-
         List<HistoryModel> historyModelList = new LinkedList<>();
 
         historyModel = mock(HistoryModel.class);

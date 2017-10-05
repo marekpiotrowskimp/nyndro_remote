@@ -33,16 +33,16 @@ import static org.mockito.Mockito.when;
 public class ParserTest {
 
     @Mock
-    PracticeModel practiceModel;
+    PracticeModel practiceModelParserTest;
 
     @Mock
-    PracticeModel practiceModel2;
+    PracticeModel practiceModelParserTest2;
 
     @Mock
-    HistoryModel historyModel;
+    HistoryModel historyModelParserTest;
 
     @Mock
-    HistoryModel historyModel2;
+    HistoryModel historyModelParserTest2;
 
     private DataSection<HistoryModel> dataSection;
     private final String practice1 = "practice1";
@@ -53,35 +53,35 @@ public class ParserTest {
     public void setUp() throws Exception {
         List<HistoryModel> historyModelList = new LinkedList<>();
 
-        practiceModel = mock(PracticeModel.class);
-        when(practiceModel.getName()).thenReturn(practice1);
-        when(practiceModel.getPracticeImageId()).thenReturn(999);
-        when(practiceModel.getID()).thenReturn(1L);
-        practiceModel2 = mock(PracticeModel.class);
+        practiceModelParserTest = mock(PracticeModel.class);
+        when(practiceModelParserTest.getName()).thenReturn(practice1);
+        when(practiceModelParserTest.getPracticeImageId()).thenReturn(999);
+        when(practiceModelParserTest.getID()).thenReturn(1L);
+        practiceModelParserTest2 = mock(PracticeModel.class);
 
-        when(practiceModel2.getName()).thenReturn(practice2);
-        when(practiceModel2.getPracticeImageId()).thenReturn(1001);
-        when(practiceModel2.getID()).thenReturn(2L);
+        when(practiceModelParserTest2.getName()).thenReturn(practice2);
+        when(practiceModelParserTest2.getPracticeImageId()).thenReturn(1001);
+        when(practiceModelParserTest2.getID()).thenReturn(2L);
 
-        historyModel = mock(HistoryModel.class);
-        when(historyModel.getPracticeId()).thenReturn(5L);
-        when(historyModel.getPracticeData()).thenReturn(1506535866000L); //1506449466000
-        when(historyModel.getID()).thenReturn(1L);
-        when(historyModel.getPractice()).thenReturn(practiceModel);
-        when(historyModel.getPracticeId()).thenReturn(1L);
-        when(historyModel.getProgress()).thenReturn(1000);
-        when(historyModel.getRepetition()).thenReturn(500);
-        historyModelList.add(historyModel);
+        historyModelParserTest = mock(HistoryModel.class);
+        when(historyModelParserTest.getPracticeId()).thenReturn(5L);
+        when(historyModelParserTest.getPracticeData()).thenReturn(1506535866000L); //1506449466000
+        when(historyModelParserTest.getID()).thenReturn(1L);
+        when(historyModelParserTest.getPractice()).thenReturn(practiceModelParserTest);
+        when(historyModelParserTest.getPracticeId()).thenReturn(1L);
+        when(historyModelParserTest.getProgress()).thenReturn(1000);
+        when(historyModelParserTest.getRepetition()).thenReturn(500);
+        historyModelList.add(historyModelParserTest);
 
-        historyModel2 = mock(HistoryModel.class);
-        when(historyModel2.getPracticeId()).thenReturn(5L);
-        when(historyModel2.getPracticeData()).thenReturn(1506449466000L); //1506449466000
-        when(historyModel2.getID()).thenReturn(2L);
-        when(historyModel2.getPractice()).thenReturn(practiceModel2);
-        when(historyModel2.getPracticeId()).thenReturn(2L);
-        when(historyModel2.getProgress()).thenReturn(500);
-        when(historyModel2.getRepetition()).thenReturn(108);
-        historyModelList.add(historyModel2);
+        historyModelParserTest2 = mock(HistoryModel.class);
+        when(historyModelParserTest2.getPracticeId()).thenReturn(5L);
+        when(historyModelParserTest2.getPracticeData()).thenReturn(1506449466000L); //1506449466000
+        when(historyModelParserTest2.getID()).thenReturn(2L);
+        when(historyModelParserTest2.getPractice()).thenReturn(practiceModelParserTest2);
+        when(historyModelParserTest2.getPracticeId()).thenReturn(2L);
+        when(historyModelParserTest2.getProgress()).thenReturn(500);
+        when(historyModelParserTest2.getRepetition()).thenReturn(108);
+        historyModelList.add(historyModelParserTest2);
 
         dataSection = Parser.convertHistoryModelToSectioned(historyModelList);
     }
