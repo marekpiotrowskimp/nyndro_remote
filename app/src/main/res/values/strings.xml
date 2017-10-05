@@ -1,19 +1,8 @@
 <resources>
     <string name="app_name">Nyndro</string>
-    <string name="settings">Settings</string>
-    <string name="action_share">Share</string>
-    <string name="information">SANGA BYDGOSZCZ\nVisit our website :)</string>
 
 
     <!--main text to drawer-->
-    <string-array name="drawer_list_option">
-        <item>Practice</item>
-        <item>Statistics</item>
-        <item>Planning</item>
-    </string-array>
-    <string name="open_drawer">Open</string>
-    <string name="close_drawer">Close</string>
-    <string name="donation">SANGA BYDGOSZCZ</string>
 
     <!--Practice Adapter -->
     <string name="name_practice">Name of practice : </string>
@@ -21,8 +10,8 @@
     <string name="max_repetition_name">Required repetition : </string>
     <string name="description_name">Description : </string>
     <string name="repetiton_name">The number of repetitions : </string>
-    <string name="last_practice_date">L: </string>
-    <string name="next_practice_date">N: </string>
+    <string name="last_practice_date">Last practice date: </string>
+    <string name="next_practice_date">Next practice date: </string>
 
     <!--Practice class default values-->
     <string name="chenrizg">Chenrizg</string>
@@ -44,37 +33,50 @@
 
 
     <!--Snackbar action add repetition-->
-    <string name="add_fab_snackbar">If you made a mistake you can cancel the last operation! </string>
-    <string name="action_snackbar">Cancel</string>
 
     <string name="edit_toolbar">Edit</string>
-    <string name="delete_practice">Delete!</string>
-    <string name="name_practice_stats">Name: </string>
     <string name="count_practice_stats">Number of practiced days:</string>
-    <string name="day_of_practice_stats">days</string>
     <string name="no_state">No statistics</string>
-    <string name="number_of_practices_in_months">Number of practices by months</string>
-    <string name="number_of_practices_in_days">Number of practices by weeks</string>
+    <string name="number_of_practices_in_days">Number of practices by days</string>
     <string name="average_weeks">Weekly average:</string>
     <string name="average_months">Monthly average:</string>
     <string name="average_days">Daily average:</string>
-    <string name="expected_day">Expected end of practice:</string>
-    <string name="add_remainder_button">ADD REMINDER</string>
-    <string name="modify_remainder_button">UPDATE REMINDER</string>
+    <string name="expected_day">Expected end:</string>
     <string name="remaind_text_notificator">"Reminder: "</string>
     <string name="app_label_plans">Plan - Reminder</string>
     <string name="app_label_practice">Add the practice</string>
     <string name="app_label_stats">Statistics</string>
-    <string name="app_label_add_renainder">New reminder</string>
+    <string name="app_label_history">History</string>
     <string name="cancel_action">CANCEL</string>
     <string name="deleted_practice_info">"Removed "</string>
+    <string name="NoDateToShow">-----------</string>
+    <string name="c_marek_piotrowski_c">(c) Marek Piotrowski (c)</string>
+    <string name="default_fragment_name">Default Name</string>
+    <string name="tap_counter_name">Tap Counter</string>
+    <string name="add_practice">Practice was added: %s</string>
+    <string name="practice_detail_progress_name">Progress</string>
+    <string name="plans_list_name">Plans Editor</string>
+    <string name="done">Add Remainder</string>
+    <string name="repeater_title">Repeater</string>
+    <string name="days_name">days</string>
+    <string name="infinity">infinity</string>
+    <string name="undefined">undefined</string>
+    <string name="time_for_remainder">Time: %tT</string>
+
+    //Frequents
+    <string-array name="frequents">
+        <item>None</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
 
     //Day of week
     <string-array name="day_of_week">
         <item> Sunday </item>
         <item>Monday</item>
         <item>Tuesday</item>
-        <item>Tuesday</item>
+        <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>

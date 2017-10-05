@@ -1,76 +1,105 @@
 package iso.piotrowski.marek.nyndro.history;
 
-import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Model.DataSection;
+import iso.piotrowski.marek.nyndro.Model.HistoryModel;
 import iso.piotrowski.marek.nyndro.R;
+import iso.piotrowski.marek.nyndro.tools.UITool;
 
 /**
  * Created by Marek on 02.08.2016.
  */
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.ViewStatsHolder> {
-   // "_id","PRACTICE_ID","PROGRESS","PRACTICE_DATE","REPETITION"
 
-    public static final int STATS_ID=0;
-    public static final int STATS_PRACTICE_ID=1;
-    public static final int STATS_PROGRESS=2;
-    public static final int STATS_DATE=3;
-    public static final int STATS_REPETITON=4;
-    public static final int STATS_PRACTICE_NAME=5;
-    public static final int STATS_PRACTICE_IMAGE_ID=6;
-    public static final int STATS_PRACTICE_MAX_REPETITION=7;
-    private Cursor cursorStats;
+    private DataSection<HistoryModel> historyList;
 
-    public HistoryRecyclerViewAdapter(Cursor cursorStats)
-    {
-        this.cursorStats=cursorStats;
+    public HistoryRecyclerViewAdapter(DataSection<HistoryModel> historyList) {
+        this.historyList = historyList;
     }
 
-    public class ViewStatsHolder extends RecyclerView.ViewHolder{
-        CardView cv;
-        public ViewStatsHolder(CardView cv){
-            super(cv);
-            this.cv=cv;
+    public class ViewStatsHolder extends RecyclerView.ViewHolder {
+        @Nullable @BindView(R.id.history_practice_image) ImageView historyPracticeImageId;
+        @Nullable @BindView(R.id.history_progress) TextView historyProgress;
+        @Nullable @BindView(R.id.history_date) TextView historyDate;
+        @Nullable @BindView(R.id.history_repetition) TextView historyRepetition;
+        @Nullable @BindView(R.id.history_practice_name_featured) TextView featuredPracticeName;
+        @Nullable @BindView(R.id.history_expand_section_button) ImageButton expandSectionButton;
+        ViewStatsHolder(CardView cardView) {
+            super(cardView);
+            ButterKnife.bind(this, cardView);
         }
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return historyList.getType(position).getValue();
+    }
+
+    @Override
     public ViewStatsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cv;
-        cv = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_history_cardview,parent,false);
-        return new ViewStatsHolder(cv);
+        CardView cardView = null;
+        switch (DataSection.TypeOfData.values()[viewType]) {
+            case Section:
+                cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_section_cardview, parent, false);
+                break;
+            case Data:
+                cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_history_cardview, parent, false);
+                break;
+        }
+        return new ViewStatsHolder(cardView);
     }
 
     @Override
     public void onBindViewHolder(ViewStatsHolder holder, int position) {
+        DataSection<HistoryModel>.SectionResult<HistoryModel> historyResult = historyList.get(position);
+        switch (historyResult.getTypeOfData()){
+            case Section:
+                bindSectionCard(holder, historyResult.getSection());
+                if (holder.expandSectionButton != null) holder.expandSectionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean isExpanded = historyResult.getSection().isExpanded();
+                        historyResult.getSection().setExpanded(!isExpanded);
+                        notifyDataSetChanged();
+                    }
+                });
+                break;
+            case Data:
+                bindDataCard(holder, historyResult.getData());
+                break;
+        }
+    }
 
-        ImageView statePracticeImageId = (ImageView)holder.cv.findViewById(R.id.stats_image);
-        TextView statsPracticeName = (TextView) holder.cv.findViewById(R.id.stats_practice_name);
-        TextView statsProgress = (TextView) holder.cv.findViewById(R.id.stats_progress);
-        TextView statsDate = (TextView) holder.cv.findViewById(R.id.stats_date);
-        TextView statsRepetition = (TextView) holder.cv.findViewById(R.id.stats_repetition);
+    private void bindSectionCard(ViewStatsHolder holder, DataSection<HistoryModel> section) {
+        if (holder.historyPracticeImageId != null) holder.historyPracticeImageId.setImageBitmap(UITool.makeRoundCorners(section.getPracticeImageId(),32));
+        if (holder.featuredPracticeName!=null) holder.featuredPracticeName.setText(section.getName());
+        if (holder.expandSectionButton != null) holder.expandSectionButton.setImageResource(section.isExpanded() ? R.mipmap.ic_less : R.mipmap.ic_more);
+    }
 
-        cursorStats.moveToPosition(position);
-        statsProgress.setText(Integer.toString(cursorStats.getInt(STATS_PROGRESS)));
+    private void bindDataCard(ViewStatsHolder holder, HistoryModel history) {
+        if (holder.historyProgress !=null) holder.historyProgress.setText(String.valueOf(history.getProgress()));
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(cursorStats.getLong(STATS_DATE));
-        statsDate.setText(String.format("Data : %tD",calendar));
-        statsRepetition.setText(Integer.toString(cursorStats.getInt(STATS_REPETITON)));
-
-        statePracticeImageId.setImageDrawable(holder.cv.getResources().getDrawable(cursorStats.getInt(STATS_PRACTICE_IMAGE_ID)));
-        statsPracticeName.setText(cursorStats.getString(STATS_PRACTICE_NAME));
-
+        calendar.setTimeInMillis(history.getPracticeData());
+        if (holder.historyDate !=null) holder.historyDate.setText(String.format(Locale.UK, "Data : %tD", calendar));
+        if (holder.historyRepetition != null) holder.historyRepetition.setText(String.valueOf(history.getRepetition()));
     }
 
     @Override
     public int getItemCount() {
-        return cursorStats.getCount();
+        return historyList.getSize();
     }
 }

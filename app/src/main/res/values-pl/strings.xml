@@ -1,19 +1,8 @@
 <resources>
     <string name="app_name">Nyndro</string>
-    <string name="settings">Ustawienia</string>
-    <string name="action_share">Udostępnij</string>
-    <string name="information">SANGA BYDGOSZCZ\nZapraszamy na naszą stronę :)</string>
 
 
     <!--main text to drawer-->
-    <string-array name="drawer_list_option">
-        <item>Praktyka</item>
-        <item>Statystyka</item>
-        <item>Planowanie</item>
-    </string-array>
-    <string name="open_drawer">Otwórz</string>
-    <string name="close_drawer">Zamknij</string>
-    <string name="donation">SANGA BYDGOSZCZ</string>
 
     <!--Practice Adapter -->
     <string name="name_practice">Nazwa praktyki  : </string>
@@ -21,8 +10,8 @@
     <string name="max_repetition_name">Wymagana ilość  : </string>
     <string name="description_name">Opis            : </string>
     <string name="repetiton_name">Ilość powtórzeń : </string>
-    <string name="last_practice_date">O: </string>
-    <string name="next_practice_date">N: </string>
+    <string name="last_practice_date">Data ostatniej praktyki: </string>
+    <string name="next_practice_date">Data następnej praktyki: </string>
 
     <!--Practice class default values-->
     <string name="chenrizg">Kochające Oczy</string>
@@ -56,30 +45,42 @@
     <!--<string name="guru_yoga_desc">Guru Yoga</string>-->
 
     <!--Snackbar action add repetition-->
-    <string name="add_fab_snackbar">Jeśli się pomyliłeś to cofnij ostatnią operację! </string>
-    <string name="action_snackbar">Cofnij</string>
 
     <string name="edit_toolbar">Edycja</string>
-    <string name="delete_practice">Kasowanie!</string>
-    <string name="name_practice_stats">Nazwa: </string>
     <string name="count_practice_stats">Ilość praktykowanych dni:</string>
-    <string name="day_of_practice_stats">dni</string>
     <string name="no_state">Brak statystyk</string>
-    <string name="number_of_practices_in_months">Ilość praktyk w rozbiciu na miesiące</string>
     <string name="number_of_practices_in_days">Ilość praktyk w rozbiciu na dni tygodnia</string>
     <string name="average_weeks">Średnia tygodniowa:</string>
     <string name="average_months">Średnia miesięczna:</string>
     <string name="average_days">Średnia dzienna:</string>
-    <string name="expected_day">Przewidywany koniec:</string>
-    <string name="add_remainder_button">DODAJ PRZYPOMNIENIE</string>
-    <string name="modify_remainder_button">MODYFIKUJ PRZYPOMNIENIE</string>
+    <string name="expected_day">Zakończenie:</string>
     <string name="remaind_text_notificator">"Przypomnienie: "</string>
     <string name="app_label_plans">Plan - przypomnienia</string>
     <string name="app_label_practice">Dodaj praktykę</string>
     <string name="app_label_stats">Statystyki</string>
-    <string name="app_label_add_renainder">Nowe przypomnienie</string>
+    <string name="app_label_history">Historia</string>
     <string name="cancel_action">ANULUJ</string>
     <string name="deleted_practice_info">"Usunięto "</string>
+    <string name="default_fragment_name">Domyślna Nazwa</string>
+    <string name="tap_counter_name">Licznik praktyk</string>
+    <string name="add_practice">Praktyka dodana: %s</string>
+    <string name="practice_detail_progress_name">Postęp</string>
+    <string name="plans_list_name">Edycja planów</string>
+    <string name="done">Dodaj Przypomnienie</string>
+    <string name="repeater_title">Powtórzenia</string>
+    <string name="days_name">dni</string>
+    <string name="infinity">nieskończoność</string>
+    <string name="undefined">niezdefiniowany</string>
+    <string name="time_for_remainder">Godzina: %tT</string>
+
+
+    //Frequents
+    <string-array name="frequents">
+        <item>Jednorazowe</item>
+        <item>Codzienne</item>
+        <item>Tygodniowe</item>
+        <item>Miesięczne</item>
+    </string-array>
 
     //Day of week
     <string-array name="day_of_week">

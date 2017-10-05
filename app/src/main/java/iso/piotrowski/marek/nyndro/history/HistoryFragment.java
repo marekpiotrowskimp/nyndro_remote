@@ -1,11 +1,7 @@
 package iso.piotrowski.marek.nyndro.history;
 
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,50 +9,78 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import iso.piotrowski.marek.nyndro.practice.PracticeDatabaseHelper;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import iso.piotrowski.marek.nyndro.Application.NyndroApp;
+import iso.piotrowski.marek.nyndro.DataSource.DataSource;
+import iso.piotrowski.marek.nyndro.Model.HistoryModel;
+import iso.piotrowski.marek.nyndro.Model.parsers.Parser;
 import iso.piotrowski.marek.nyndro.R;
-import iso.piotrowski.marek.nyndro.tools.SQLHelper;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.FragmentsFactory;
+import iso.piotrowski.marek.nyndro.FragmentsFactory.NyndroFragment;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends NyndroFragment implements HistoryContract.IViewer {
 
-    private RecyclerView statsRecyclerView;
-    private SQLiteDatabase db;
-    private Cursor cursorStats;
+    @BindView(R.id.history_recyclerview) RecyclerView statsRecyclerView;
 
     public HistoryFragment() {
-        // Required empty public constructor
     }
 
+    public static HistoryFragment getInstance(){
+        return new HistoryFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_history, container, false);
-
-        statsRecyclerView = (RecyclerView)linearLayout.findViewById(R.id.history_recyclerview);
-
-        try {
-            PracticeDatabaseHelper practiceDatabaseHelper = new PracticeDatabaseHelper(getActivity());
-            db = practiceDatabaseHelper.getWritableDatabase();
-            cursorStats = SQLHelper.getHistoryCursor(db);
-            HistoryRecyclerViewAdapter historyRecyclerViewAdapter = new HistoryRecyclerViewAdapter(cursorStats);
-            statsRecyclerView.setAdapter(historyRecyclerViewAdapter);
-        }catch (SQLiteException e){}
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        statsRecyclerView.setLayoutManager(linearLayoutManager);
-        return linearLayout;
+        new HistoryPresenter(this, DataSource.getInstance());
+        LinearLayout historicalLayout = (LinearLayout) inflater.inflate(R.layout.fragment_history, container, false);
+        ButterKnife.bind(this, historicalLayout);
+        return historicalLayout;
     }
 
     @Override
-    public void onDestroy() {
-        if (cursorStats!=null) cursorStats.close();
-        if (db!=null) db.close();
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
+        getPresenter().loadHistoryData();
     }
 
+    private HistoryContract.IPresenter getPresenter(){
+        return (HistoryContract.IPresenter) presenter;
+    }
+
+    @Override
+    public void setPresenter(HistoryContract.IPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showHistory(List<HistoryModel> historyList) {
+        HistoryRecyclerViewAdapter historyRecyclerViewAdapter =
+                new HistoryRecyclerViewAdapter(Parser.convertHistoryModelToSectioned(historyList));
+        statsRecyclerView.setAdapter(historyRecyclerViewAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        statsRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public String getFragmentName() {
+        return NyndroApp.getContext().getResources().getString(R.string.app_label_history);
+    }
+
+    @Override
+    public FragmentsFactory.TypeOfFragment getTypeOf() {
+        return FragmentsFactory.TypeOfFragment.History;
+    }
+
+    @Override
+    public boolean isButtonVisible() {
+        return false;
+    }
 }

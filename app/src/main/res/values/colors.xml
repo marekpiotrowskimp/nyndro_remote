@@ -3,16 +3,15 @@
     <color name="colorPrimary">#b53f51</color>
     <color name="colorPrimaryDark">#9F303F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorWhiteTransparent">#22FFFFFF</color>
+    <color name="colorGray">#EEEEEE</color>
 <!--Drawer colors-->
-    <color name="colorDrawer">#EE6F303F</color>
-    <color name="colorTextDrawer">#FFFFFF</color>
     <!--Card View Color-->
     <color name="colorLightCoffee">#eeddcc</color>
     <color name="colorLightCoffeeDarker">#E0D0C0</color>
+    <color name="colorLightCoffeeDarker2">#33C0B0A0</color>
 
     <!--Detail edit Fragment-->
-    <color name="colorGrayLight">#F0F0F0</color>
 
-    <color name="custom_theme_color">#b0b0ff</color>
-    <color name="ic_plus">#a18f8f</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

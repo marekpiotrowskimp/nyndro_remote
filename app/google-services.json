@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "841761303143",
+    "firebase_url": "https://nyndro-9bb3e.firebaseio.com",
+    "project_id": "nyndro-9bb3e",
+    "storage_bucket": "nyndro-9bb3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841761303143:android:04fd881ad030a227",
+        "android_client_info": {
+          "package_name": "iso.piotrowski.marek.nyndro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841761303143-cb8ts8csdh8cc2mcsdpd1quisu1suk9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ06rOOyXZGXIap3rDmbID36aX3gEO1ow"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
