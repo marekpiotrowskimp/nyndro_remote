@@ -36,4 +36,11 @@ public class Analytics {
         params.putString("description", description);
         firebaseAnalytics.logEvent(type, params);
     }
+
+    public static void logErrorEvent(String type, String name, String description) {
+        Bundle params = new Bundle();
+        params.putString("name", name);
+        params.putString("description", description);
+        firebaseAnalytics.logEvent(type, params);
+    }
 }

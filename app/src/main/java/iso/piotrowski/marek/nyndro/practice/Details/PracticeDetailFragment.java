@@ -105,12 +105,12 @@ public class PracticeDetailFragment extends NyndroFragment implements PracticeDe
                              Bundle savedInstanceState) {
         new PracticeDetailPresenter(this, DataSource.getInstance());
         View practiceDetailView = inflater.inflate(R.layout.fragment_practice_detail, container, false);
+        ButterKnife.bind(this, practiceDetailView);
         if (savedInstanceState != null) {
-            practiceId = savedInstanceState.getLong(PRACTICE_ID);
+            practiceId = savedInstanceState.getLong(PRACTICE_ID, -1);
             getPresenter().loadPracticeData(practiceId);
         }
         setHasOptionsMenu(true);
-        ButterKnife.bind(this, practiceDetailView);
         return practiceDetailView;
     }
 

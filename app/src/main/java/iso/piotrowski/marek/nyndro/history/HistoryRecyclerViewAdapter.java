@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import iso.piotrowski.marek.nyndro.Model.DataSection;
 import iso.piotrowski.marek.nyndro.Model.HistoryModel;
+import iso.piotrowski.marek.nyndro.Model.parsers.Parser;
 import iso.piotrowski.marek.nyndro.R;
 import iso.piotrowski.marek.nyndro.tools.UITool;
 
@@ -85,7 +86,9 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     }
 
     private void bindSectionCard(ViewStatsHolder holder, DataSection<HistoryModel> section) {
-        if (holder.historyPracticeImageId != null) holder.historyPracticeImageId.setImageBitmap(UITool.makeRoundCorners(section.getPracticeImageId(),32));
+        if ((holder.historyPracticeImageId != null) && (section.getPracticeImageId() > Parser.NoImageOfPractice)) {
+            holder.historyPracticeImageId.setImageBitmap(UITool.makeRoundCorners(section.getPracticeImageId(), 32));
+        }
         if (holder.featuredPracticeName!=null) holder.featuredPracticeName.setText(section.getName());
         if (holder.expandSectionButton != null) holder.expandSectionButton.setImageResource(section.isExpanded() ? R.mipmap.ic_less : R.mipmap.ic_more);
     }
